@@ -37,11 +37,19 @@ module.exports = {
           config: './webpack.renderer.config.js',
           entryPoints: [
             {
-              html: './src/index.html',
-              js: './src/renderer.js',
-              name: 'main_window',
+              html: './src/renderer/left.html',
+              js: './src/renderer/renderer-left.js',
+              name: 'left_pane',
               preload: {
-                js: './src/preload.js',
+                js: './src/renderer/preload-left.js',
+              },
+            },
+            {
+              html: './src/renderer/right.html',
+              js: './src/renderer/renderer-right.js',
+              name: 'right_pane',
+              preload: {
+                js: './src/renderer/preload-right.js',
               },
             },
           ],

@@ -1,5 +1,6 @@
 const { app, BaseWindow, WebContentsView } = require('electron');
 const path = require('node:path');
+const constants = require('./constants')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -7,23 +8,36 @@ if (require('electron-squirrel-startup')) {
 }
 
 const createWindow = () => {
-  const win = new BaseWindow({width: 800, height: 600})
+  const win = new BaseWindow({width: constants.WINDOW_WIDTH, height: constants.WINDOW_HEIGHT, backgroundColor: 'silver'})
 
   const leftView = new WebContentsView({
     webPreferences: {
-      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+      preload: LEFT_PANE_PRELOAD_WEBPACK_ENTRY,
     }
   })
-  leftView.webContents.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
+  leftView.webContents.loadURL(LEFT_PANE_WEBPACK_ENTRY)
   win.contentView.addChildView(leftView)
 
   const rightView = new WebContentsView({
+    webPreferences: {
+      preload: RIGHT_PANE_PRELOAD_WEBPACK_ENTRY,
+    }
   })
-  rightView.webContents.loadURL('https://electronjs.org')
+  rightView.webContents.loadURL(RIGHT_PANE_WEBPACK_ENTRY)
   win.contentView.addChildView(rightView)
 
-  leftView.setBounds({ x: 0, y: 0, width: 400, height: 600 })
-  rightView.setBounds({ x: 400, y: 0, width: 400, height: 600 })
+  leftView.setBounds({
+    x: 0,
+    y: 0,
+    width: constants.LEFT_PANEL_WIDTH,
+    height: constants.WINDOW_HEIGHT
+  })
+  rightView.setBounds({
+    x: constants.LEFT_PANEL_WIDTH + constants.BAR_WIDTH,
+    y: 0,
+    width: constants.WINDOW_WIDTH - constants.LEFT_PANEL_WIDTH - constants.BAR_WIDTH,
+    height: constants.WINDOW_HEIGHT
+  })
 };
 
 // This method will be called when Electron has finished
