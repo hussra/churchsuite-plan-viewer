@@ -28,4 +28,29 @@
 
 import './left.css';
 
-console.log('👋 This message is being logged by "renderer.js", included via webpack');
+console.log('👋 This message is being logged by "renderer-left.js", included via webpack');
+
+const populatePlans = async () => {
+    // Remove all but '--Select plan--'
+    for (const el of document.querySelectorAll('#plan option')) {
+        if (el.value !== '') {
+            el.remove()
+        }
+    }
+
+    const plans = await window.electronAPI.getPlans()
+    const planSelect = document.getElementById('plan')
+
+    for (let i in plans) {
+        let option = document.createElement('option')
+        option.innerHTML = plans[i].date
+        option.setAttribute('value', plans[i].id)
+        planSelect.append(option)
+    }
+}
+
+const load = async () => {
+    await populatePlans()
+}
+
+load()

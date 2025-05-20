@@ -1,6 +1,7 @@
 const { app, Menu, BaseWindow, WebContentsView } = require('electron')
 const path = require('node:path')
 const constants = require('./constants')
+const ipcHandlers = require('./ipcHandlers')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -87,6 +88,7 @@ const createMenu = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  ipcHandlers.addIpcHandlers()
   createWindow()
   createMenu()
 
