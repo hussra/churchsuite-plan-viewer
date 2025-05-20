@@ -2,7 +2,6 @@ const { ipcMain } = require('electron')
 
 module.exports = {
     addIpcHandlers: function() {
-        console.log('Adding IPC handlers')
         ipcMain.handle('getPlans', () => {
             return [
                 {
