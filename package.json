@@ -34,7 +34,8 @@
     "style-loader": "^3.3.4"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.1"
+    "electron-squirrel-startup": "^1.0.1",
+    "electron-store": "^10.0.1"
   },
   "packageManager": "yarn@4.9.1"
 }

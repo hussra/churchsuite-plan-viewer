@@ -3,11 +3,17 @@ import { path } from 'node:path'
 import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './constants.js'
 import { addIpcHandlers } from './ipcHandlers'
 import getIcon from './icon.js'
+import { getSettings, saveSettings, isConfigured } from './settings.js'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit()
 }
+
+let settings = getSettings()
+console.log(settings.account)
+console.log(settings.client_secret)
+console.log(settings.client_id)
 
 let leftView, rightView
 
