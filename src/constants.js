@@ -1,6 +1,4 @@
-module.exports = Object.freeze({
-    WINDOW_WIDTH: 1200,
-    WINDOW_HEIGHT: 800,
-    LEFT_PANEL_WIDTH: 300,
-    BAR_WIDTH: 2
-})
+export const WINDOW_WIDTH = 1200
+export const WINDOW_HEIGHT = 800
+export const LEFT_PANEL_WIDTH = 300
+export const BAR_WIDTH = 2

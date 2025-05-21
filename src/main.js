@@ -1,7 +1,7 @@
-const { app, Menu, BaseWindow, WebContentsView } = require('electron')
-const path = require('node:path')
-const constants = require('./constants')
-const ipcHandlers = require('./ipcHandlers')
+import { app, Menu, BaseWindow, WebContentsView } from 'electron'
+import { path } from 'node:path'
+import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './constants.js'
+import { addIpcHandlers } from './ipcHandlers'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -11,7 +11,7 @@ if (require('electron-squirrel-startup')) {
 let leftView, rightView
 
 const createWindow = () => {
-  const win = new BaseWindow({width: constants.WINDOW_WIDTH, height: constants.WINDOW_HEIGHT, backgroundColor: 'silver'})
+  const win = new BaseWindow({width: WINDOW_WIDTH, height: WINDOW_HEIGHT, backgroundColor: 'silver'})
 
   leftView = new WebContentsView({
     webPreferences: {
@@ -32,14 +32,14 @@ const createWindow = () => {
   leftView.setBounds({
     x: 0,
     y: 0,
-    width: constants.LEFT_PANEL_WIDTH,
-    height: constants.WINDOW_HEIGHT
+    width: LEFT_PANEL_WIDTH,
+    height: WINDOW_HEIGHT
   })
   rightView.setBounds({
-    x: constants.LEFT_PANEL_WIDTH + constants.BAR_WIDTH,
+    x: LEFT_PANEL_WIDTH + BAR_WIDTH,
     y: 0,
-    width: constants.WINDOW_WIDTH - constants.LEFT_PANEL_WIDTH - constants.BAR_WIDTH,
-    height: constants.WINDOW_HEIGHT
+    width: WINDOW_WIDTH - LEFT_PANEL_WIDTH - BAR_WIDTH,
+    height: WINDOW_HEIGHT
   })
 }
 
@@ -88,7 +88,7 @@ const createMenu = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  ipcHandlers.addIpcHandlers()
+  addIpcHandlers()
   createWindow()
   createMenu()
 
