@@ -1,16 +1,21 @@
 import { ipcMain } from 'electron'
+import { getPlans } from './api'
 
-export function addIpcHandlers() {
-    ipcMain.handle('getPlans', () => {
-        return [
-            {
-                id: 12,
-                date: '2025-05-25'
-            },
-            {
-                id: 13,
-                date: '2025-06-01'
+export async function addIpcHandlers() {
+    ipcMain.handle('getPlans', async () => {
+
+        const planData = await getPlans()
+        console.log(planData)
+
+        return planData.data.map((plan) => {
+            return {
+                id: plan.id,
+                date: plan.date
             }
-        ]
+        })
+    })
+
+    ipcMain.handle('changePlan', (event, planId) => {
+        console.log('Selected plan ' + planId)
     })
 }

@@ -47,7 +47,13 @@ const populatePlans = async () => {
     }
 }
 
+const changePlan = (event) => {
+    const planId = document.getElementById('plan').value
+    window.electronAPI.changePlan(planId)
+}
+
 const load = async () => {
+    document.getElementById('plan').addEventListener('change', changePlan)
     await populatePlans()
 }
 
