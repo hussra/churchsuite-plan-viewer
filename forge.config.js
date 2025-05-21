@@ -4,12 +4,18 @@ const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 module.exports = {
   packagerConfig: {
     asar: true,
+    icon: 'assets/icon'
   },
   rebuildConfig: {},
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        name: "churchsuite-plan-viewer",
+        productName: "ChurchSuite Plan Viewer",
+        iconUrl: "https://raw.githubusercontent.com/hussra/churchsuite-plan-viewer/refs/heads/main/assets/icon.ico",
+        setupIcon: "./assets/icon.ico"
+      },
     },
     {
       name: '@electron-forge/maker-zip',
