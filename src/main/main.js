@@ -2,6 +2,7 @@ import { app, Menu, BaseWindow, WebContentsView } from 'electron'
 import { path } from 'node:path'
 import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './constants.js'
 import { addIpcHandlers } from './ipcHandlers'
+import getIcon from './icon.js'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -11,7 +12,12 @@ if (require('electron-squirrel-startup')) {
 let leftView, rightView
 
 const createWindow = () => {
-  const win = new BaseWindow({width: WINDOW_WIDTH, height: WINDOW_HEIGHT, backgroundColor: 'silver'})
+  const win = new BaseWindow({
+    width: WINDOW_WIDTH,
+    height: WINDOW_HEIGHT,
+    backgroundColor: 'silver'
+  })
+  win.setIcon(getIcon())
 
   leftView = new WebContentsView({
     webPreferences: {
