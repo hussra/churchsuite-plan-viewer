@@ -23,6 +23,10 @@ const populatePlans = async () => {
     }
 }
 
+const exportPDF = () => {
+    window.electronAPI.exportPDF()
+}
+
 const changePlan = (event) => {
     const planId = document.getElementById('plan').value
     window.electronAPI.changePlan(planId)
@@ -30,6 +34,7 @@ const changePlan = (event) => {
 
 const load = async () => {
     document.getElementById('plan').addEventListener('change', changePlan)
+    document.getElementById('exportPDF').addEventListener('click', exportPDF)
     await populatePlans()
 }
 

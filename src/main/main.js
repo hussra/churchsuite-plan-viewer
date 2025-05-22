@@ -6,6 +6,8 @@ import getIcon from './icon.js'
 import { getSettings, saveSettings, isConfigured } from './settings.js'
 import { getPlan } from './api.js'
 import { Liquid } from 'liquidjs'
+import * as os from 'node:os'
+import * as fs from 'fs'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -112,6 +114,21 @@ export async function setPlan(planId) {  // TODO: Move this somewhere else
       rightView.webContents.send('setPlan', rendered)
     })
   }
+}
+
+
+export async function exportPDF() { // TODO: Move this somewhere else
+  const pdfPath = path.join(os.homedir(), 'Desktop', 'plan.pdf')
+  rightView.webContents.printToPDF({
+    printBackground: true
+  }).then(data => {
+    fs.writeFile(pdfPath, data, (error) => {
+      if (error) throw error
+      console.log(`Wrote PDF successfully to ${pdfPath}`)
+    })
+  }).catch(error => {
+    console.log(`Failed to write PDF to ${pdfPath}: `, error)
+  })
 }
 
 
