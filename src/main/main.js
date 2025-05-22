@@ -118,7 +118,7 @@ export async function setPlan(planId) {  // TODO: Move this somewhere else
 
 
 export async function exportPDF() { // TODO: Move this somewhere else
-  const pdfPath = path.join(os.homedir(), 'Desktop', 'plan.pdf')
+  const pdfPath = path.join(app.getPath('downloads'), 'plan.pdf')
   rightView.webContents.printToPDF({
     printBackground: true
   }).then(data => {
