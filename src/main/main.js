@@ -1,10 +1,11 @@
 import { app, Menu, BaseWindow, WebContentsView } from 'electron'
-import { path } from 'node:path'
+import * as path from 'node:path'
 import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './constants.js'
 import { addIpcHandlers } from './ipcHandlers'
 import getIcon from './icon.js'
 import { getSettings, saveSettings, isConfigured } from './settings.js'
 import { getPlan } from './api.js'
+import { Liquid } from 'liquidjs'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -13,6 +14,11 @@ if (require('electron-squirrel-startup')) {
 
 let settings = getSettings()
 let leftView, rightView
+console.log(path.resolve(__dirname, 'views/'))
+const engine = new Liquid({
+  root: path.resolve(__dirname, 'views/'),  // root for layouts/includes lookup
+  extname: '.liquid'          // used for layouts/includes, defaults "")
+})
 
 const createWindow = () => {
   const win = new BaseWindow({
@@ -96,8 +102,15 @@ const createMenu = () => {
 
 export async function setPlan(planId) {
   let planData = await getPlan(planId)
-  console.log(planData)
-  rightView.webContents.send('setPlan', JSON.stringify(planData, null, 2))
+
+  console.log(JSON.stringify(planData, null, 2))
+
+  //const tpl = engine.parse('Welcome to {{v}}!')
+  //engine.render(tpl, { v: 'Liquid' }).then((rendered) => {
+  engine.renderFile('default', { v: 'Liquid' }).then((rendered) => {
+    console.log(rendered)
+    rightView.webContents.send('setPlan', JSON.stringify(rendered, null, 2))
+  })
 }
 
 

@@ -9,10 +9,23 @@
 
 <body>
   <h1>ChurchSuite Plan Viewer</h1>
-  <p>Please select the plan you would like to view.</p>
-  <select id="plan">
-    <option value="">--Select plan--</option>
-  </select>
+  <form>
+    <div class="form-group mb-3">
+      <label for="plan">Plan to view</label>
+      <div class="input-group">
+        <select class="form-select" id="plan">
+          <option value="">--Select plan--</option>
+        </select>
+        <button class="btn btn-outline-secondary" type="button" id="refreshButton">
+          <i class="bi bi-arrow-clockwise"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <button type="button" class="btn btn-primary"><i class="bi bi-printer"></i> Print</button>
+    </div>
+  </form>
 </body>
 
 </html>

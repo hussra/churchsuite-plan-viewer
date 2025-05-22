@@ -30,7 +30,14 @@ import './right.css';
 import $ from 'jquery'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+// import { Liquid } from 'liquidjs'
 
-window.electronAPI.onSetPlan((value) => {
-    $('#planContents').val(value)
+// const engine = new Liquid()
+
+window.electronAPI.onSetPlan((planDetail) => {
+    $('#planContents').val(planDetail)
+    // const tpl = engine.parse('Welcome to {{v}}!')
+    // engine.render(tpl, { v: 'Liquid' }).then((rendered) => {
+
+    // })
 })
