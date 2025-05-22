@@ -97,7 +97,7 @@ const createMenu = () => {
 export async function setPlan(planId) {
   let planData = await getPlan(planId)
   console.log(planData)
-  rightView.webContents.send('setPlan', JSON.stringify(planData))
+  rightView.webContents.send('setPlan', JSON.stringify(planData, null, 2))
 }
 
 
