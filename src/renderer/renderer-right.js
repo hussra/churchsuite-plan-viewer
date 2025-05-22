@@ -27,3 +27,7 @@
  */
 
 import './right.css';
+
+window.electronAPI.onSetPlan((value) => {
+    alert('Plan ID is now' + value)
+})

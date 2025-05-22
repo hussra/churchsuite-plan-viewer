@@ -1,5 +1,6 @@
 import { ipcMain } from 'electron'
 import { getPlans } from './api'
+import { setPlan } from './main'
 
 export async function addIpcHandlers() {
     ipcMain.handle('getPlans', async () => {
@@ -15,6 +16,6 @@ export async function addIpcHandlers() {
     })
 
     ipcMain.handle('changePlan', (event, planId) => {
-        console.log('Selected plan ' + planId)
+        setPlan(planId)
     })
 }
