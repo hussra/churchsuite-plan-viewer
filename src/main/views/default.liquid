@@ -1,8 +1,8 @@
 <h2>{{plan.plan.name}}</h2>
 <h3>{{plan.plan.date}} {{plan.plan.time}}</h3>
 
-<ul>
+<table class="plan">
   {% for item in plan.items %}
     {% render 'item', item: item %}
   {% endfor %}
-</ul>
+</table>

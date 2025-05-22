@@ -23,6 +23,8 @@ const createWindow = () => {
   const win = new BaseWindow({
     width: WINDOW_WIDTH,
     height: WINDOW_HEIGHT,
+    useContentSize: true,
+    resizable: false, // TODO: Make resizable and remember size
     backgroundColor: 'silver',
     title: 'ChurchSuite Plan Viewer'
   })
@@ -100,7 +102,7 @@ const createMenu = () => {
 }
 
 
-export async function setPlan(planId) {
+export async function setPlan(planId) {  // TODO: Move this somewhere else
   let planData = await getPlan(planId)
 
   if (JSON.stringify(planData) === '{}') {

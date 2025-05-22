@@ -4,6 +4,19 @@ body {
   padding: 2rem;
 }
 
-textarea {
+table.plan {
   width: 100%;
+  border-collapse: collapse;
+}
+
+table.plan td,
+table.plan th {
+  border: 1px solid grey;
+}
+
+table.plan tr.heading {
+  background-color: green;
+  color: white;
+  text-align: center;
+  font-weight: bold;
 }
