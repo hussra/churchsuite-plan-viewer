@@ -11,9 +11,9 @@
   <h1>ChurchSuite Plan Viewer</h1>
   <form>
     <div class="form-group mb-3">
-      <label for="plan">Plan to view</label>
+      <label for="plan">Select a plan</label>
       <div class="input-group">
-        <select class="form-select" id="plan">
+        <select class="form-select" id="plan" aria-label="Select a plan">
           <option value="">--Select plan--</option>
         </select>
         <button class="btn btn-outline-secondary" type="button" id="refreshButton">
@@ -22,8 +22,24 @@
       </div>
     </div>
 
+    <div class="form-group mb-3">
+      <label for="pagesize">Page size</label>
+      <select class="form-select" id="pagesize" aria-label="Page size">
+        <option value="a4">A4</option>
+        <option value="letter">Letter</option>
+      </select>
+    </div>
+
+    <div class="form-group mb-3">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="twoup">
+        <label class="form-check-label" for="twoup">2 copies per sheet</label>
+      </div>
+    </div>
+
     <div class="mb-3">
       <button type="button" class="btn btn-primary"><i class="bi bi-printer"></i> Print</button>
+      <button type="button" class="btn btn-secondary"><i class="bi bi-file-earmark-pdf"></i> Download PDF</button>
     </div>
   </form>
 </body>
