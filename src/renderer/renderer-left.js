@@ -27,6 +27,9 @@
  */
 
 import './left.css';
+import $ from 'jquery'
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const populatePlans = async () => {
     // Remove all but '--Select plan--'

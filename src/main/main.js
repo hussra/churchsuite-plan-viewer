@@ -4,6 +4,7 @@ import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './cons
 import { addIpcHandlers } from './ipcHandlers'
 import getIcon from './icon.js'
 import { getSettings, saveSettings, isConfigured } from './settings.js'
+import { getPlan } from './api.js'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -93,8 +94,10 @@ const createMenu = () => {
 }
 
 
-export const setPlan = (planId) => {
-  rightView.webContents.send('setPlan', planId)
+export async function setPlan(planId) {
+  let planData = await getPlan(planId)
+  console.log(planData)
+  rightView.webContents.send('setPlan', JSON.stringify(planData))
 }
 
 

@@ -27,7 +27,10 @@
  */
 
 import './right.css';
+import $ from 'jquery'
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 window.electronAPI.onSetPlan((value) => {
-    alert('Plan ID is now' + value)
+    $('#planContents').val(value)
 })

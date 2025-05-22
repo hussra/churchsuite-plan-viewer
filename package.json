@@ -34,8 +34,11 @@
     "style-loader": "^3.3.4"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.6",
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^10.0.1",
+    "jquery": "^3.7.1",
     "undici": "^7.10.0"
   },
   "packageManager": "yarn@4.9.1"
