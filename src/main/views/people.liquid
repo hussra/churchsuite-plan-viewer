@@ -1,3 +1,4 @@
-{% for person in people %}
-    {{person.first_name}}{%- if forloop.last != true %}, {%- endif %}
+{% for person in people -%}
+    {{person.first_name}}
+    {%- if forloop.last != true %}, {% endif %}
 {% endfor %}
