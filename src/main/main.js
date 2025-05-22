@@ -11,10 +11,6 @@ if (require('electron-squirrel-startup')) {
 }
 
 let settings = getSettings()
-console.log(settings.account)
-console.log(settings.client_secret)
-console.log(settings.client_id)
-
 let leftView, rightView
 
 const createWindow = () => {

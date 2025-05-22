@@ -5,7 +5,6 @@ export async function addIpcHandlers() {
     ipcMain.handle('getPlans', async () => {
 
         const planData = await getPlans()
-        console.log(planData)
 
         return planData.data.map((plan) => {
             return {
