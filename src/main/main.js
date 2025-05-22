@@ -105,11 +105,8 @@ export async function setPlan(planId) {
 
   console.log(JSON.stringify(planData, null, 2))
 
-  //const tpl = engine.parse('Welcome to {{v}}!')
-  //engine.render(tpl, { v: 'Liquid' }).then((rendered) => {
-  engine.renderFile('default', { v: 'Liquid' }).then((rendered) => {
-    console.log(rendered)
-    rightView.webContents.send('setPlan', JSON.stringify(rendered, null, 2))
+  engine.renderFile('default', { v: 'Liquid', plan: planData }).then((rendered) => {
+    rightView.webContents.send('setPlan', rendered)
   })
 }
 

@@ -35,9 +35,5 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 // const engine = new Liquid()
 
 window.electronAPI.onSetPlan((planDetail) => {
-    $('#planContents').val(planDetail)
-    // const tpl = engine.parse('Welcome to {{v}}!')
-    // engine.render(tpl, { v: 'Liquid' }).then((rendered) => {
-
-    // })
+    $('#planContents').html(planDetail)
 })
