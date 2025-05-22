@@ -14,7 +14,6 @@ if (require('electron-squirrel-startup')) {
 
 let settings = getSettings()
 let leftView, rightView
-console.log(path.resolve(__dirname, 'views/'))
 const engine = new Liquid({
   root: path.resolve(__dirname, 'views/'),  // root for layouts/includes lookup
   extname: '.liquid'          // used for layouts/includes, defaults "")
@@ -24,7 +23,8 @@ const createWindow = () => {
   const win = new BaseWindow({
     width: WINDOW_WIDTH,
     height: WINDOW_HEIGHT,
-    backgroundColor: 'silver'
+    backgroundColor: 'silver',
+    title: 'ChurchSuite Plan Viewer'
   })
   win.setIcon(getIcon())
 
@@ -103,11 +103,13 @@ const createMenu = () => {
 export async function setPlan(planId) {
   let planData = await getPlan(planId)
 
-  console.log(JSON.stringify(planData, null, 2))
-
-  engine.renderFile('default', { v: 'Liquid', plan: planData }).then((rendered) => {
-    rightView.webContents.send('setPlan', rendered)
-  })
+  if (JSON.stringify(planData) === '{}') {
+    rightView.webContents.send('setPlan', "")
+  } else {
+    engine.renderFile('default', { v: 'Liquid', plan: planData }).then((rendered) => {
+      rightView.webContents.send('setPlan', rendered)
+    })
+  }
 }
 
 

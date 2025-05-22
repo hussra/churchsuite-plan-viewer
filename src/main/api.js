@@ -37,7 +37,12 @@ async function getAuthHeaders() {
 export async function getPlans() {
     const headers = await getAuthHeaders()
 
-    const { statusCode, body } = await request('https://api.churchsuite.com/v2/planning/plans?starts_after=2025-05-19', {
+    let yourDate = new Date()
+    const offset = yourDate.getTimezoneOffset();
+    yourDate = new Date(yourDate.getTime() - (offset * 60 * 1000) - 86400000);
+    let yesterday = yourDate.toISOString().split('T')[0]
+
+    const { statusCode, body } = await request(`https://api.churchsuite.com/v2/planning/plans?starts_after=${yesterday}`, {
         headers: headers
     })
 
@@ -46,8 +51,6 @@ export async function getPlans() {
 
 async function getPlanDetail(planId) {
     const headers = await getAuthHeaders()
-
-    console.log(`https://api.churchsuite.com/v2/planning/plans/${planId}`)
 
     const { statusCode, body } = await request(`https://api.churchsuite.com/v2/planning/plans/${planId}`, {
         headers: headers
@@ -58,8 +61,6 @@ async function getPlanDetail(planId) {
 
 async function getPlanItems(planId) {
     const headers = await getAuthHeaders()
-
-    console.log(`https://api.churchsuite.com/v2/planning/plans/${planId}`)
 
     const { statusCode, body } = await request(`https://api.churchsuite.com/v2/planning/plan_items?plan_ids%5B%5D=${planId}`, {
         headers: headers
