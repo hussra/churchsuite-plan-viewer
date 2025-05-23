@@ -22,6 +22,7 @@ table.plan {
 table.plan td,
 table.plan th {
   border: 1px solid grey;
+  font-size: 1.2rem;
 }
 
 table.plan tr.heading {
@@ -29,4 +30,5 @@ table.plan tr.heading {
   color: white;
   text-align: center;
   font-weight: bold;
+  font-size: 1.4rem;
 }
