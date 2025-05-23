@@ -162,13 +162,17 @@ export async function exportPDF() { // TODO: Move this somewhere else
       pageSize: 'A4'
     }).then(data => {
 
-      let twoUp = true // TODO take this from preferences!
+      let twoUp = false // TODO take this from preferences!
 
-      pdf = coherentpdf.fromMemory(data, '')
-      mergedPdf = coherentpdf.mergeSimple([pdf, pdf])
-      coherentpdf.twoUp(mergedPdf)
-      coherentpdf.rotate(mergedPdf, coherentpdf.all(mergedPdf), 90)
-      coherentpdf.toFile(twoUp ? mergedPdf : pdf, result.filePath, false, false)
+      if (twoUp) {
+        pdf = coherentpdf.fromMemory(data, '')
+        mergedPdf = coherentpdf.mergeSimple([pdf, pdf])
+        coherentpdf.twoUp(mergedPdf)
+        coherentpdf.rotate(mergedPdf, coherentpdf.all(mergedPdf), 90)
+        coherentpdf.toFile(twoUp ? mergedPdf : pdf, result.filePath, false, false)
+      } else {
+        fs.writeFileSync(result.filePath, data)
+      }
 
       shell.openPath(result.filePath)
     }).catch((err) => {
