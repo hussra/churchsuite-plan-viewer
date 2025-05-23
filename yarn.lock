@@ -1754,6 +1754,7 @@ __metadata:
     "@vercel/webpack-asset-relocator-loader": "npm:1.7.3"
     bootstrap: "npm:^5.3.6"
     bootstrap-icons: "npm:^1.13.1"
+    coherentpdf: "npm:^2.5.5"
     copy-webpack-plugin: "npm:^13.0.0"
     css-loader: "npm:^6.11.0"
     electron: "npm:36.2.1"
@@ -1865,6 +1866,13 @@ __metadata:
   version: 1.0.4
   resolution: "clone@npm:1.0.4"
   checksum: 10c0/2176952b3649293473999a95d7bebfc9dc96410f6cbd3d2595cf12fd401f63a4bf41a7adbfd3ab2ff09ed60cb9870c58c6acdd18b87767366fabfc163700f13b
+  languageName: node
+  linkType: hard
+
+"coherentpdf@npm:^2.5.5":
+  version: 2.5.5
+  resolution: "coherentpdf@npm:2.5.5"
+  checksum: 10c0/17a47ac5d0e749cdb7df72b15ab99a96b114a835770f1a6c5fc6e8e9f16db0ab8dc532896592fd3b33e4c4baea919dd114264cedc87a1b7990cfddbcb5c80dbe
   languageName: node
   linkType: hard
 

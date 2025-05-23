@@ -9,6 +9,7 @@ import { Liquid } from 'liquidjs'
 import * as os from 'node:os'
 import * as fs from 'fs'
 import { shell } from 'electron'
+import coherentpdf from 'coherentpdf'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -153,20 +154,32 @@ export async function exportPDF() { // TODO: Move this somewhere else
   }).then((result) => {
     if (result.cancelled) return
 
+    let pdf
+    let mergedPdf
+
     rightView.webContents.printToPDF({
-      printBackground: true
+      printBackground: true,
+      pageSize: 'A4'
     }).then(data => {
-      fs.writeFile(result.filePath, data, (error) => {
-        if (error) {
-          dialog.showMessageBox(win, {
-            type: 'error',
-            title: 'Unable to save file',
-            message: `Sorry, we were not able to save this plan to ${result.filePath} - is the file already open?`
-          })
-        } else {
-          shell.openPath(result.filePath)
-        }
+
+      let twoUp = true // TODO take this from preferences!
+
+      pdf = coherentpdf.fromMemory(data, '')
+      mergedPdf = coherentpdf.mergeSimple([pdf, pdf])
+      coherentpdf.twoUp(mergedPdf)
+      coherentpdf.rotate(mergedPdf, coherentpdf.all(mergedPdf), 90)
+      coherentpdf.toFile(twoUp ? mergedPdf : pdf, result.filePath, false, false)
+
+      shell.openPath(result.filePath)
+    }).catch((err) => {
+      dialog.showMessageBox(win, {
+        type: 'error',
+        title: 'Unable to save file',
+        message: `Sorry, we were not able to save this plan to ${result.filePath} - is the file already open?`
       })
+    }).finally(() => {
+      coherentpdf.deletePdf(mergedPdf)
+      coherentpdf.deletePdf(pdf)
     })
 
   })
