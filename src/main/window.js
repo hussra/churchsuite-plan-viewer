@@ -1,6 +1,6 @@
-import { Menu, BaseWindow, WebContentsView } from 'electron'
+import { app, nativeImage, Menu, BaseWindow, WebContentsView } from 'electron'
 import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './constants.js'
-import getIcon from './icon.js'
+import path from 'path'
 
 export var leftView, rightView, win
 
@@ -86,4 +86,10 @@ export const createMenu = () => {
 
     const menu = Menu.buildFromTemplate(menuTemplate)
     Menu.setApplicationMenu(menu)
+}
+
+
+export default function getIcon() {
+    const assetsPath = app.isPackaged ? path.join(process.resourcesPath, "app", "assets") : "assets";
+    return nativeImage.createFromPath(path.join(assetsPath, 'icon.png'))
 }
