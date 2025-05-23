@@ -108,10 +108,18 @@ export async function setPlan(planId) {  // TODO: Move this somewhere else
   let planData = await getPlan(planId)
 
   if (JSON.stringify(planData) === '{}') {
-    rightView.webContents.send('setPlan', "")
+    rightView.webContents.send('setPlan', {
+      show: false
+    })
   } else {
-    engine.renderFile('default', { v: 'Liquid', plan: planData }).then((rendered) => {
-      rightView.webContents.send('setPlan', rendered)
+    engine.renderFile('default', { plan: planData }).then((rendered) => {
+      var newPlan = {
+        show: true,
+        title: planData.plan.date + " " + planData.plan.time + " - " + planData.plan.name,
+        html: rendered
+      }
+
+      rightView.webContents.send('setPlan', newPlan)
     })
   }
 }

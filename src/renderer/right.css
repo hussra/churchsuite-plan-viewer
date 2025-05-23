@@ -1,7 +1,17 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif;
-  padding: 2rem;
+}
+
+@media screen {
+  body {
+    padding: 2rem;
+  }
+}
+
+#selectPlan {
+  margin-top: 2rem;
+  text-align: center;
 }
 
 table.plan {
