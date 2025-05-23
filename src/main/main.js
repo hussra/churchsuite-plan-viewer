@@ -1,4 +1,4 @@
-import { app, Menu, BaseWindow, WebContentsView } from 'electron'
+import { app, Menu, BaseWindow, WebContentsView, dialog } from 'electron'
 import * as path from 'node:path'
 import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './constants.js'
 import { addIpcHandlers } from './ipcHandlers'
@@ -16,6 +16,7 @@ if (require('electron-squirrel-startup')) {
 
 let settings = getSettings()
 let leftView, rightView
+let win
 
 let currentPlan = {
   show: false,
@@ -31,7 +32,7 @@ const engine = new Liquid({
 })
 
 const createWindow = () => {
-  const win = new BaseWindow({
+  win = new BaseWindow({
     width: WINDOW_WIDTH,
     height: WINDOW_HEIGHT,
     useContentSize: true,
@@ -146,17 +147,25 @@ export async function loadPlan(planId) {  // TODO: Move this somewhere else
 
 export async function exportPDF() { // TODO: Move this somewhere else
 
-  const pdfPath = path.join(app.getPath('downloads'), 'plan.pdf')
-  rightView.webContents.printToPDF({
-    printBackground: true
-  }).then(data => {
-    fs.writeFile(pdfPath, data, (error) => {
-      if (error) throw error
-      console.log(`Wrote PDF successfully to ${pdfPath}`)
+  dialog.showSaveDialog(win, {
+    defaultPath: path.join(app.getPath('downloads'), currentPlan.plan.date + '.pdf')
+  }).then((result) => {
+    if (result.cancelled) return
+
+    rightView.webContents.printToPDF({
+      printBackground: true
+    }).then(data => {
+      fs.writeFile(result.filePath, data, (error) => {
+        if (error) {
+          console.log(error)
+        } else {
+          console.log(`Wrote PDF successfully to ${result.filePath}`)
+        }
+      })
     })
-  }).catch(error => {
-    console.log(`Failed to write PDF to ${pdfPath}: `, error)
+
   })
+
 }
 
 
