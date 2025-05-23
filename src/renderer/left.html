@@ -38,12 +38,37 @@
     </div>
 
     <div class="mb-3">
-      <button type="button" class="btn btn-primary" id="print"><i class="bi bi-printer"></i> Print</button>
-      <button type="button" class="btn btn-secondary" id="exportPDF">
+      <button type="button" class="btn btn-primary" id="exportPDF">
         <i class="bi bi-file-earmark-pdf"></i>
-        Download PDF
+        Create PDF
       </button>
     </div>
+
+    <div class="mb-3">
+      <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#advanced"
+        aria-expanded="false" aria-controls="advanced">Advanced settings</button>
+    </div>
+
+    <div class="collapse" id="advanced">
+      <div class="form-group mb-3">
+        <label for="account">Account</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="account">
+          <span class="input-group-text">.churchsuite.com</span>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="client_secret">Client Secret</label>
+        <input type="text" class="form-control" id="client_secret">
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="client_id">Client ID</label>
+        <input type="text" class="form-control" id="client_id">
+      </div>
+    </div>
+
   </form>
 </body>
 
