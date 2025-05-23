@@ -4,7 +4,7 @@ import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './cons
 import { addIpcHandlers } from './ipcHandlers'
 import getIcon from './icon.js'
 import { getSettings, saveSettings, isConfigured } from './settings.js'
-import { getPlan } from './api.js'
+import { getPlanDetail, getPlanItems } from './api.js'
 import { Liquid } from 'liquidjs'
 import * as os from 'node:os'
 import * as fs from 'fs'
@@ -16,6 +16,15 @@ if (require('electron-squirrel-startup')) {
 
 let settings = getSettings()
 let leftView, rightView
+
+let currentPlan = {
+  show: false,
+  title: 'No plan selected',
+  plan: null,
+  items: [],
+  html: ''
+}
+
 const engine = new Liquid({
   root: path.resolve(__dirname, 'views/'),  // root for layouts/includes lookup
   extname: '.liquid'          // used for layouts/includes, defaults "")
@@ -104,28 +113,39 @@ const createMenu = () => {
 }
 
 
-export async function setPlan(planId) {  // TODO: Move this somewhere else
-  let planData = await getPlan(planId)
+export async function loadPlan(planId) {  // TODO: Move this somewhere else
 
-  if (JSON.stringify(planData) === '{}') {
-    rightView.webContents.send('setPlan', {
-      show: false
-    })
+  if (planId == '') {
+    currentPlan = {
+      show: false,
+      title: 'No plan selected',
+      plan: null,
+      items: [],
+      html: ''
+    }
+
   } else {
-    engine.renderFile('default', { plan: planData }).then((rendered) => {
-      var newPlan = {
-        show: true,
-        title: planData.plan.date + " " + planData.plan.time + " - " + planData.plan.name,
-        html: rendered
-      }
 
-      rightView.webContents.send('setPlan', newPlan)
-    })
+    let detail = await getPlanDetail(planId)
+    let items = await getPlanItems(planId)
+
+    currentPlan = {
+      show: true,
+      title: detail.data.date + " " + detail.data.time + " - " + detail.data.name,
+      plan: detail.data,
+      items: items.data,
+      html: null
+    }
+
+    currentPlan.html = await engine.renderFile('default', { plan: currentPlan })
   }
+
+  rightView.webContents.send('setPlan', currentPlan)
 }
 
 
 export async function exportPDF() { // TODO: Move this somewhere else
+
   const pdfPath = path.join(app.getPath('downloads'), 'plan.pdf')
   rightView.webContents.printToPDF({
     printBackground: true
