@@ -8,6 +8,7 @@ import { getPlanDetail, getPlanItems } from './api.js'
 import { Liquid } from 'liquidjs'
 import * as os from 'node:os'
 import * as fs from 'fs'
+import { shell } from 'electron'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -157,9 +158,14 @@ export async function exportPDF() { // TODO: Move this somewhere else
     }).then(data => {
       fs.writeFile(result.filePath, data, (error) => {
         if (error) {
-          console.log(error)
+          dialog.showMessageBox(win, {
+            type: 'error',
+            title: 'Unable to save file',
+            message: `Sorry, we were not able to save this plan to ${result.filePath} - is the file already open?`
+          })
         } else {
           console.log(`Wrote PDF successfully to ${result.filePath}`)
+          shell.openPath(result.filePath)
         }
       })
     })
