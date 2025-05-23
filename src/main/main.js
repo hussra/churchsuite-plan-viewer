@@ -1,24 +1,17 @@
-import { app, Menu, BaseWindow, WebContentsView, dialog } from 'electron'
+import { app, dialog } from 'electron'
 import * as path from 'node:path'
-import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './constants.js'
 import { addIpcHandlers } from './ipcHandlers'
-import getIcon from './icon.js'
-import { getSettings, saveSettings, isConfigured } from './settings.js'
 import { getPlanDetail, getPlanItems } from './api.js'
 import { Liquid } from 'liquidjs'
-import * as os from 'node:os'
 import * as fs from 'fs'
 import { shell } from 'electron'
 import coherentpdf from 'coherentpdf'
+import { createWindow, createMenu, leftView, rightView, win } from './window.js'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit()
 }
-
-let settings = getSettings()
-let leftView, rightView
-let win
 
 let currentPlan = {
   show: false,
@@ -32,89 +25,6 @@ const engine = new Liquid({
   root: path.resolve(__dirname, 'views/'),  // root for layouts/includes lookup
   extname: '.liquid'          // used for layouts/includes, defaults "")
 })
-
-const createWindow = () => {
-  win = new BaseWindow({
-    width: WINDOW_WIDTH,
-    height: WINDOW_HEIGHT,
-    useContentSize: true,
-    resizable: false, // TODO: Make resizable and remember size
-    backgroundColor: 'silver',
-    title: 'ChurchSuite Plan Viewer'
-  })
-  win.setIcon(getIcon())
-
-  leftView = new WebContentsView({
-    webPreferences: {
-      preload: LEFT_PANE_PRELOAD_WEBPACK_ENTRY,
-    }
-  })
-  leftView.webContents.loadURL(LEFT_PANE_WEBPACK_ENTRY)
-  win.contentView.addChildView(leftView)
-
-  rightView = new WebContentsView({
-    webPreferences: {
-      preload: RIGHT_PANE_PRELOAD_WEBPACK_ENTRY,
-    }
-  })
-  rightView.webContents.loadURL(RIGHT_PANE_WEBPACK_ENTRY)
-  win.contentView.addChildView(rightView)
-
-  leftView.setBounds({
-    x: 0,
-    y: 0,
-    width: LEFT_PANEL_WIDTH,
-    height: WINDOW_HEIGHT
-  })
-  rightView.setBounds({
-    x: LEFT_PANEL_WIDTH + BAR_WIDTH,
-    y: 0,
-    width: WINDOW_WIDTH - LEFT_PANEL_WIDTH - BAR_WIDTH,
-    height: WINDOW_HEIGHT
-  })
-}
-
-const createMenu = () => {
-
-  const isMac = process.platform === 'darwin'
-  const menuTemplate = [
-    {
-      label: 'File',
-      submenu: [
-        isMac ? { role: 'close' } : { role: 'quit' }
-      ]
-    },
-    {
-      label: 'Inspect',
-      submenu: [
-        {
-          label: 'Left',
-          click: async () => { leftView.webContents.openDevTools({ mode: 'detach' }) }
-        },
-        {
-          label: 'Right',
-          click: async () => { rightView.webContents.openDevTools({ mode: 'detach' }) }
-        }
-      ]
-    },
-    {
-      role: 'help',
-      submenu: [
-        {
-          label: 'About...',
-          click: async () => {
-            const { shell } = require('electron')
-            await shell.openExternal('https://electronjs.org')
-          }
-        }
-      ]
-    }
-  ]
-
-  const menu = Menu.buildFromTemplate(menuTemplate)
-  Menu.setApplicationMenu(menu)
-}
-
 
 export async function loadPlan(planId) {  // TODO: Move this somewhere else
 
@@ -162,7 +72,7 @@ export async function exportPDF() { // TODO: Move this somewhere else
       pageSize: 'A4'
     }).then(data => {
 
-      let twoUp = false // TODO take this from preferences!
+      let twoUp = true // TODO take this from preferences!
 
       if (twoUp) {
         pdf = coherentpdf.fromMemory(data, '')

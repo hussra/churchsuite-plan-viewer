@@ -5,7 +5,7 @@ let token
 
 async function getToken() {
 
-    if (token) return token
+    if (token) return token // TODO: What happens if token has expired?
 
     const settings = getSettings()
 
@@ -28,12 +28,15 @@ async function getToken() {
     }
 }
 
+
 async function getAuthHeaders() {
     return {
         'Authorization': 'Bearer ' + await getToken()
     }
 }
 
+
+// Get all plans for today and in the future
 export async function getPlans() {
     const headers = await getAuthHeaders()
 
@@ -49,6 +52,8 @@ export async function getPlans() {
     return body.json()
 }
 
+
+// Get the detail of a plan, by ID
 export async function getPlanDetail(planId) {
     const headers = await getAuthHeaders()
 
@@ -59,6 +64,8 @@ export async function getPlanDetail(planId) {
     return body.json()
 }
 
+
+// Get the items for a plan, by ID
 export async function getPlanItems(planId) {
     const headers = await getAuthHeaders()
 
