@@ -164,7 +164,6 @@ export async function exportPDF() { // TODO: Move this somewhere else
             message: `Sorry, we were not able to save this plan to ${result.filePath} - is the file already open?`
           })
         } else {
-          console.log(`Wrote PDF successfully to ${result.filePath}`)
           shell.openPath(result.filePath)
         }
       })
