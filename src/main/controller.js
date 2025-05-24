@@ -19,9 +19,10 @@ export class Controller extends EventEmitter {
         extname: '.liquid'
     })
 
-    #allPlans = []; // All available plans for selection
-    #selectedPlanId = 0; // Currently selected plan
-    #showPlanView = false; // Is currently selected plan available for viewing?
+    #allPlans = [];                          // All available plans for selection
+    #showPlanView = false;                   // Is currently selected plan available for viewing?
+
+    #selectedPlanId = 0;                     // Currently selected plan
     #selectedPlanTitle = 'No plan selected';
     #selectedPlanDetail = null;
     #selectedPlanItems = [];
@@ -44,6 +45,10 @@ export class Controller extends EventEmitter {
         }
     }
 
+    get allPlans() {
+        return this.#allPlans
+    }
+
     get selectedPlanId() {
         return this.#selectedPlanId
     }
@@ -58,10 +63,6 @@ export class Controller extends EventEmitter {
 
     get selectedPlanTitle() {
         return this.#selectedPlanTitle
-    }
-
-    get allPlans() {
-        return this.#allPlans
     }
 
     get selectedPlanHtml() {
