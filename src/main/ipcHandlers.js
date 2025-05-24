@@ -1,6 +1,5 @@
 import { ipcMain } from 'electron'
-import { getPlans } from './api'
-import { controller, exportPDF } from './main'
+import { controller } from './main'
 
 export async function addIpcHandlers() {
 
@@ -17,6 +16,6 @@ export async function addIpcHandlers() {
 
     // Called when "Export PDF" clicked in left pane
     ipcMain.handle('exportPDF', () => {
-        exportPDF()
+        controller.exportPDF()
     })
 }
