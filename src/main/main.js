@@ -15,58 +15,18 @@ if (require('electron-squirrel-startup')) {
 }
 
 export let controller = new Controller()
-controller.on('planChanged', (planId) => {
-  console.log('Event listener: plan is now ' + planId)
+
+controller.on('viewChanged', () => {
+  rightView.webContents.send('setPlan', {
+    show: controller.showPlan,
+    title: controller.title,
+    html: controller.html
+  })
 })
-
-let currentPlan = {
-  show: false,
-  title: 'No plan selected',
-  plan: null,
-  items: [],
-  html: ''
-}
-
-const liquidEngine = new Liquid({
-  root: path.resolve(__dirname, 'views/'),  // root for layouts/includes lookup
-  extname: '.liquid'          // used for layouts/includes, defaults "")
-})
-
-export async function loadPlan(planId) {  // TODO: Move this somewhere else
-
-  if (planId == '') {
-    currentPlan = {
-      show: false,
-      title: 'No plan selected',
-      plan: null,
-      items: [],
-      html: ''
-    }
-
-  } else {
-
-    let detail = await getPlanDetail(planId)
-    let items = await getPlanItems(planId)
-
-    currentPlan = {
-      show: true,
-      title: detail.data.date + " " + detail.data.time + " - " + detail.data.name,
-      plan: detail.data,
-      items: items.data,
-      html: null
-    }
-
-    currentPlan.html = await liquidEngine.renderFile('default', { plan: currentPlan })
-  }
-
-  rightView.webContents.send('setPlan', currentPlan)
-}
-
 
 export async function exportPDF() { // TODO: Move this somewhere else
-
   dialog.showSaveDialog(win, {
-    defaultPath: path.join(app.getPath('downloads'), currentPlan.plan.date + '.pdf')
+    defaultPath: path.join(app.getPath('downloads'), controller.plan.date + '.pdf')
   }).then((result) => {
     if (result.cancelled) return
 

@@ -33,7 +33,7 @@ export class Controller extends EventEmitter {
             this.#plan = null
             this.#items = []
             this.#html = ''
-            this.emit('planChanged', this.#planId)
+            this.emit('viewChanged', this.#planId)
         } else {
             this.#planId = planId
             this.loadPlan()
@@ -42,6 +42,18 @@ export class Controller extends EventEmitter {
 
     get planId() {
         return this.#planId
+    }
+
+    get plan() {
+        return this.#plan
+    }
+
+    get showPlan() {
+        return this.#showPlan
+    }
+
+    get title() {
+        return this.#title
     }
 
     get plans() {
@@ -78,7 +90,7 @@ export class Controller extends EventEmitter {
 
         this.#showPlan = true
 
-        this.emit('planChanged', this.#planId)
+        this.emit('viewChanged')
     }
 
 }
