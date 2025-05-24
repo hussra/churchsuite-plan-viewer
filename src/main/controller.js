@@ -19,59 +19,59 @@ export class Controller extends EventEmitter {
         extname: '.liquid'
     })
 
-    #plans = []; // All available plans for selection
-    #planId = 0; // Currently selected plan
-    #showPlan = false; // Is currently selected plan available for viewing?
-    #title = 'No plan selected';
-    #plan = null;
-    #items = [];
-    #html = '';
+    #allPlans = []; // All available plans for selection
+    #selectedPlanId = 0; // Currently selected plan
+    #showPlanView = false; // Is currently selected plan available for viewing?
+    #selectedPlanTitle = 'No plan selected';
+    #selectedPlanDetail = null;
+    #selectedPlanItems = [];
+    #selectedPlanHtml = '';
 
-    set selectedPlan(planId) {
-        this.#planId = planId
+    set selectedPlanId(planId) {
+        this.#selectedPlanId = planId
 
         if ((planId == '') || (planId == 0)) {
-            this.#planId = 0
-            this.#showPlan = false
-            this.#title = 'No plan selected'
-            this.#plan = null
-            this.#items = []
-            this.#html = ''
-            this.emit('viewChanged', this.#planId)
+            this.#selectedPlanId = 0
+            this.#showPlanView = false
+            this.#selectedPlanTitle = 'No plan selected'
+            this.#selectedPlanDetail = null
+            this.#selectedPlanItems = []
+            this.#selectedPlanHtml = ''
+            this.emit('viewChanged', this.#selectedPlanId)
         } else {
-            this.#planId = planId
+            this.#selectedPlanId = planId
             this.loadPlan()
         }
     }
 
-    get selectedPlan() {
-        return this.#planId
+    get selectedPlanId() {
+        return this.#selectedPlanId
     }
 
-    get plan() {
-        return this.#plan
+    get selectedPlanDetail() {
+        return this.#selectedPlanDetail
     }
 
-    get showPlan() {
-        return this.#showPlan
+    get showPlanView() {
+        return this.#showPlanView
     }
 
-    get title() {
-        return this.#title
+    get selectedPlanTitle() {
+        return this.#selectedPlanTitle
     }
 
-    get plans() {
-        return this.#plans
+    get allPlans() {
+        return this.#allPlans
     }
 
-    get html() {
-        return this.#html
+    get selectedPlanHtml() {
+        return this.#selectedPlanHtml
     }
 
     async loadPlans() {
         const planData = await getPlans()
 
-        this.#plans = planData.data.map((plan) => {
+        this.#allPlans = planData.data.map((plan) => {
             return {
                 id: plan.id,
                 date: plan.date
@@ -80,33 +80,35 @@ export class Controller extends EventEmitter {
     }
 
     async loadPlan() {
-        this.#plan = (await getPlanDetail(this.#planId)).data
-        this.#items = (await getPlanItems(this.#planId)).data
+        this.#selectedPlanDetail = (await getPlanDetail(this.#selectedPlanId)).data
+        this.#selectedPlanItems = (await getPlanItems(this.#selectedPlanId)).data
 
-        this.#title = this.#plan.date + " " + this.#plan.time + " - " + this.#plan.name
+        this.#selectedPlanTitle = this.#selectedPlanDetail.date + " " + this.#selectedPlanDetail.time + " - " + this.#selectedPlanDetail.name
 
-        this.#html = await this.#liquidEngine.renderFile('default', {
+        this.#selectedPlanHtml = await this.#liquidEngine.renderFile('default', {
             plan: {
-                plan: this.#plan,
-                items: this.#items
+                plan: this.#selectedPlanDetail,
+                items: this.#selectedPlanItems
             }
         })
 
-        this.#showPlan = true
+        this.#showPlanView = true
 
         this.emit('viewChanged')
     }
 
 
     async exportPDF() {
+        // TODO: Don't like this bit being here rather than in window.js
         dialog.showSaveDialog(win, {
-            defaultPath: path.join(app.getPath('downloads'), this.#plan.date + '.pdf')
+            defaultPath: path.join(app.getPath('downloads'), this.#selectedPlanDetail.date + '.pdf')
         }).then((result) => {
             if (result.cancelled) return
 
             let pdf
             let mergedPdf
 
+            // TODO: Don't like this bit being here rather than in window.js
             rightView.webContents.printToPDF({
                 printBackground: true,
                 pageSize: 'A4'
@@ -126,6 +128,7 @@ export class Controller extends EventEmitter {
 
                 shell.openPath(result.filePath)
             }).catch((err) => {
+                // TODO: Don't like this bit being here rather than in window.js
                 dialog.showMessageBox(win, {
                     type: 'error',
                     title: 'Unable to save file',

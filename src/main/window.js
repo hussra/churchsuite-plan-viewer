@@ -6,6 +6,7 @@ import { controller } from './main.js'
 export var leftView, rightView, win
 
 export const createWindow = () => {
+
     win = new BaseWindow({
         width: WINDOW_WIDTH,
         height: WINDOW_HEIGHT,
@@ -46,10 +47,11 @@ export const createWindow = () => {
     })
 
     controller.on('viewChanged', () => {
+        console.log('viewChanged, title is ' + controller.selectedPlanTitle)
         rightView.webContents.send('setPlan', {
-            show: controller.showPlan,
-            title: controller.title,
-            html: controller.html
+            show: controller.showPlanView,
+            title: controller.selectedPlanTitle,
+            html: controller.selectedPlanHtml
         })
     })
 }
@@ -97,7 +99,7 @@ export const createMenu = () => {
 }
 
 
-export default function getIcon() {
+function getIcon() {
     const assetsPath = app.isPackaged ? path.join(process.resourcesPath, "app", "assets") : "assets";
     return nativeImage.createFromPath(path.join(assetsPath, 'icon.png'))
 }
