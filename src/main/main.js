@@ -21,7 +21,7 @@ let currentPlan = {
   html: ''
 }
 
-const engine = new Liquid({
+const liquidEngine = new Liquid({
   root: path.resolve(__dirname, 'views/'),  // root for layouts/includes lookup
   extname: '.liquid'          // used for layouts/includes, defaults "")
 })
@@ -50,7 +50,7 @@ export async function loadPlan(planId) {  // TODO: Move this somewhere else
       html: null
     }
 
-    currentPlan.html = await engine.renderFile('default', { plan: currentPlan })
+    currentPlan.html = await liquidEngine.renderFile('default', { plan: currentPlan })
   }
 
   rightView.webContents.send('setPlan', currentPlan)
