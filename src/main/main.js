@@ -14,15 +14,9 @@ if (require('electron-squirrel-startup')) {
   app.quit()
 }
 
+
 export let controller = new Controller()
 
-controller.on('viewChanged', () => {
-  rightView.webContents.send('setPlan', {
-    show: controller.showPlan,
-    title: controller.title,
-    html: controller.html
-  })
-})
 
 export async function exportPDF() { // TODO: Move this somewhere else
   dialog.showSaveDialog(win, {

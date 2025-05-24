@@ -12,7 +12,7 @@ export async function addIpcHandlers() {
 
     // Called when plan selected in left pane
     ipcMain.handle('changePlan', (event, planId) => {
-        controller.planId = planId
+        controller.selectedPlan = planId
     })
 
     // Called when "Export PDF" clicked in left pane

@@ -22,9 +22,8 @@ export class Controller extends EventEmitter {
     #items = [];
     #html = '';
 
-    set planId(planId) {
+    set selectedPlan(planId) {
         this.#planId = planId
-        console.log('Setting current plan to ' + this.#planId)
 
         if ((planId == '') || (planId == 0)) {
             this.#planId = 0
@@ -40,7 +39,7 @@ export class Controller extends EventEmitter {
         }
     }
 
-    get planId() {
+    get selectedPlan() {
         return this.#planId
     }
 

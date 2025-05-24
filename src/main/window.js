@@ -1,9 +1,9 @@
 import { app, nativeImage, Menu, BaseWindow, WebContentsView } from 'electron'
 import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './constants.js'
 import path from 'path'
+import { controller } from './main.js'
 
 export var leftView, rightView, win
-
 
 export const createWindow = () => {
     win = new BaseWindow({
@@ -43,6 +43,14 @@ export const createWindow = () => {
         y: 0,
         width: WINDOW_WIDTH - LEFT_PANEL_WIDTH - BAR_WIDTH,
         height: WINDOW_HEIGHT
+    })
+
+    controller.on('viewChanged', () => {
+        rightView.webContents.send('setPlan', {
+            show: controller.showPlan,
+            title: controller.title,
+            html: controller.html
+        })
     })
 }
 
