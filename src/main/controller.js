@@ -1,7 +1,7 @@
 import { EventEmitter } from 'node:events'
 import * as path from 'node:path'
 import { Liquid } from 'liquidjs'
-import { getPlans } from './api'
+import { getPlans, getPlanDetail, getPlanItems } from './api'
 
 export class Controller extends EventEmitter {
 
@@ -26,18 +26,18 @@ export class Controller extends EventEmitter {
         this.#planId = planId
         console.log('Setting current plan to ' + this.#planId)
 
-        if (planId == '') {
+        if ((planId == '') || (planId == 0)) {
             this.#planId = 0
             this.#showPlan = false
             this.#title = 'No plan selected'
             this.#plan = null
             this.#items = []
             this.#html = ''
+            this.emit('planChanged', this.#planId)
         } else {
-
+            this.#planId = planId
+            this.loadPlan()
         }
-
-        this.emit('planChanged', this.#planId)
     }
 
     get planId() {
@@ -46,6 +46,10 @@ export class Controller extends EventEmitter {
 
     get plans() {
         return this.#plans
+    }
+
+    get html() {
+        return this.#html
     }
 
     async loadPlans() {
@@ -57,6 +61,24 @@ export class Controller extends EventEmitter {
                 date: plan.date
             }
         })
+    }
+
+    async loadPlan() {
+        this.#plan = (await getPlanDetail(this.#planId)).data
+        this.#items = (await getPlanItems(this.#planId)).data
+
+        this.#title = this.#plan.date + " " + this.#plan.time + " - " + this.#plan.name
+
+        this.#html = await this.#liquidEngine.renderFile('default', {
+            plan: {
+                plan: this.#plan,
+                items: this.#items
+            }
+        })
+
+        this.#showPlan = true
+
+        this.emit('planChanged', this.#planId)
     }
 
 }
