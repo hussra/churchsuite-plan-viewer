@@ -7,11 +7,17 @@ import * as fs from 'fs'
 import { shell } from 'electron'
 import coherentpdf from 'coherentpdf'
 import { createWindow, createMenu, leftView, rightView, win } from './window.js'
+import { Controller } from './controller.js'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit()
 }
+
+export let controller = new Controller()
+controller.on('planChanged', (planId) => {
+  console.log('Event listener: plan is now ' + planId)
+})
 
 let currentPlan = {
   show: false,
