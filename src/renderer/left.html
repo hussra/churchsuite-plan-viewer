@@ -44,28 +44,36 @@
       </button>
     </div>
 
-    <div class="mb-3">
-      <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#advanced"
-        aria-expanded="false" aria-controls="advanced">Advanced settings</button>
-    </div>
+    <div class="accordion mb-3" id="settingsAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#authenticationSettings" aria-controls="authenticationSettings">
+            Authentication settings
+          </button>
+        </h2>
+        <div id="authenticationSettings" class="accordion-collapse collapse" data-bs-parent="#settingsAccordion">
+          <div class="accordion-body">
+            <div class="form-group mb-3">
+              <label for="account">Account</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="account">
+                <span class="input-group-text">.churchsuite.com</span>
+              </div>
+            </div>
 
-    <div class="collapse" id="advanced">
-      <div class="form-group mb-3">
-        <label for="account">Account</label>
-        <div class="input-group">
-          <input type="text" class="form-control" id="account">
-          <span class="input-group-text">.churchsuite.com</span>
+            <div class="form-group mb-3">
+              <label for="client_secret">Client Secret</label>
+              <input type="text" class="form-control" id="client_secret">
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="client_id">Client ID</label>
+              <input type="text" class="form-control" id="client_id">
+            </div>
+
+          </div>
         </div>
-      </div>
-
-      <div class="form-group mb-3">
-        <label for="client_secret">Client Secret</label>
-        <input type="text" class="form-control" id="client_secret">
-      </div>
-
-      <div class="form-group mb-3">
-        <label for="client_id">Client ID</label>
-        <input type="text" class="form-control" id="client_id">
       </div>
     </div>
 
