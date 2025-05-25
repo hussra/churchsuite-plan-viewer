@@ -6,7 +6,7 @@ import { Liquid } from 'liquidjs'
 import coherentpdf from 'coherentpdf'
 import { getPlans, getPlanDetail, getPlanItems } from './api'
 import { win, rightView } from './window'
-
+import { store } from './settings'
 
 export class Controller extends EventEmitter {
 
@@ -38,6 +38,7 @@ export class Controller extends EventEmitter {
             this.#selectedPlanDetail = null
             this.#selectedPlanItems = []
             this.#selectedPlanHtml = ''
+
             this.emit('viewChanged', this.#selectedPlanId)
         } else {
             this.#selectedPlanId = planId
@@ -112,10 +113,10 @@ export class Controller extends EventEmitter {
             // TODO: Don't like this bit being here rather than in window.js
             rightView.webContents.printToPDF({
                 printBackground: true,
-                pageSize: 'A4'
+                pageSize: store.get('page_size')
             }).then(data => {
 
-                let twoUp = true // TODO take this from preferences!
+                let twoUp = store.get('two_up')
 
                 if (twoUp) {
                     pdf = coherentpdf.fromMemory(data, '')
