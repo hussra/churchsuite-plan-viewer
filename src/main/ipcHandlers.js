@@ -23,4 +23,8 @@ export async function addIpcHandlers() {
     ipcMain.handle('getFromStore', (event, key) => {
         return store.get(key)
     })
+
+    ipcMain.handle('setInStore', (event, key, value) => {
+        store.set(key, value)
+    })
 }

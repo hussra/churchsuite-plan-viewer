@@ -38,11 +38,23 @@ const loadSettings = async () => {
 
     const client_id = await window.electronAPI.getFromStore('client_id')
     document.getElementById('client_id').value = client_id
+
+    const two_up = await window.electronAPI.getFromStore('two_up')
+    document.getElementById('two_up').checked = two_up
+
+    const page_size = await window.electronAPI.getFromStore('page_size')
+    document.querySelector('#page_size option[value=' + page_size + ']').selected = true
 }
 
 const load = async () => {
     document.getElementById('plan').addEventListener('change', changePlan)
     document.getElementById('exportPDF').addEventListener('click', exportPDF)
+    document.getElementById('two_up').addEventListener('change', async () => {
+        await window.electronAPI.setInStore('two_up', document.getElementById('two_up').checked)
+    })
+    document.getElementById('page_size').addEventListener('change', async () => {
+        await window.electronAPI.setInStore('page_size', document.getElementById('page_size').value)
+    })
     await loadSettings()
     await populatePlans()
 }

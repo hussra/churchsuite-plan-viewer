@@ -6,6 +6,15 @@ const schema = {
     },
     client_id: {
         type: 'string'
+    },
+    page_size: {
+        type: 'string',
+        enum: ['a4', 'letter'],
+        default: 'a4'
+    },
+    two_up: {
+        type: 'boolean',
+        default: true
     }
 }
 
