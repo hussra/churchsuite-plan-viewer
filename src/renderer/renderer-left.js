@@ -54,6 +54,12 @@ const load = async () => {
     document.getElementById('page_size').addEventListener('change', async () => {
         await window.electronAPI.setInStore('page_size', document.getElementById('page_size').value)
     })
+    document.getElementById('client_secret').addEventListener('change', async () => {
+        await window.electronAPI.setInStore('client_secret', document.getElementById('client_secret').value)
+    })
+    document.getElementById('client_id').addEventListener('change', async () => {
+        await window.electronAPI.setInStore('client_id', document.getElementById('client_id').value)
+    })
     await loadSettings()
     await populatePlans()
 }

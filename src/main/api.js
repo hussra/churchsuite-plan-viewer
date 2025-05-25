@@ -1,13 +1,11 @@
 import { request } from "undici"
-import { getSettings } from "./settings"
+import { store } from "./settings"
 
 let token
 
 async function getToken() {
 
     if (token) return token // TODO: What happens if token has expired?
-
-    const settings = getSettings()
 
     const { statusCode, body } = await request(
         'https://login.churchsuite.com',
@@ -16,7 +14,7 @@ async function getToken() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + Buffer.from(settings.client_id + ":" + settings.client_secret).toString('base64'),
+                'Authorization': 'Basic ' + Buffer.from(store.get('client_id') + ":" + store.get('client_secret')).toString('base64'),
             },
             body: '{"grant_type": "client_credentials", "scope": "full_access"}',
         });
