@@ -47,7 +47,6 @@ export const createWindow = () => {
     })
 
     controller.on('viewChanged', () => {
-        console.log('viewChanged, title is ' + controller.selectedPlanTitle)
         rightView.webContents.send('setPlan', {
             show: controller.showPlanView,
             title: controller.selectedPlanTitle,

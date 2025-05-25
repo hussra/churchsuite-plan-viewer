@@ -42,7 +42,6 @@
     "coherentpdf": "^2.5.5",
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^10.0.1",
-    "jquery": "^3.7.1",
     "liquidjs": "^10.21.1",
     "undici": "^7.10.0"
   },
