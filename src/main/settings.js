@@ -1,9 +1,6 @@
 import Store from "electron-store"
 
 const schema = {
-    account: {
-        type: 'string'
-    },
     client_secret: {
         type: 'string'
     },
@@ -12,11 +9,10 @@ const schema = {
     }
 }
 
-const store = new Store( { schema } )
+export const store = new Store({ schema })
 
 export function getSettings() {
     return {
-        account: store.get('account'),
         client_secret: store.get('client_secret'),
         client_id: store.get('client_id')
     }

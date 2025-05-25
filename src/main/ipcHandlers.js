@@ -1,5 +1,6 @@
 import { ipcMain } from 'electron'
 import { controller } from './main'
+import { store } from './settings'
 
 export async function addIpcHandlers() {
 
@@ -17,5 +18,9 @@ export async function addIpcHandlers() {
     // Called when "Export PDF" clicked in left pane
     ipcMain.handle('exportPDF', () => {
         controller.exportPDF()
+    })
+
+    ipcMain.handle('getFromStore', (event, key) => {
+        return store.get(key)
     })
 }

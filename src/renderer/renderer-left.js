@@ -32,9 +32,18 @@ const changePlan = (event) => {
     window.electronAPI.changePlan(planId)
 }
 
+const loadSettings = async () => {
+    const client_secret = await window.electronAPI.getFromStore('client_secret')
+    document.getElementById('client_secret').value = client_secret
+
+    const client_id = await window.electronAPI.getFromStore('client_id')
+    document.getElementById('client_id').value = client_id
+}
+
 const load = async () => {
     document.getElementById('plan').addEventListener('change', changePlan)
     document.getElementById('exportPDF').addEventListener('click', exportPDF)
+    await loadSettings()
     await populatePlans()
 }
 
