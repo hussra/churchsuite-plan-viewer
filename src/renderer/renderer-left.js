@@ -45,12 +45,17 @@ const loadSettings = async () => {
     document.querySelector('#page_size option[value=' + page_size + ']').selected = true
 }
 
-window.electronAPI.onSetConfigured((configured) => {
+const showHideSettings = (configured) => {
     if (configured) {
         document.getElementById('mainControls').classList.remove('d-none')
     } else {
         document.getElementById('mainControls').classList.add('d-none')
+        document.getElementById('authenticationSettings').classList.add('show')
     }
+}
+
+window.electronAPI.onSetConfigured((configured) => {
+    showHideSettings(configured)
 })
 
 const load = async () => {
@@ -69,6 +74,9 @@ const load = async () => {
         await window.electronAPI.setInStore('client_id', document.getElementById('client_id').value)
     })
     await loadSettings()
+
+    showHideSettings(await window.electronAPI.isConfigured())
+
     await populatePlans()
 }
 

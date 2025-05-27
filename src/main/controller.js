@@ -36,7 +36,6 @@ export class Controller extends EventEmitter {
         this.#store.onDidAnyChange((newValue, oldValue) => {
             this.emit('configChanged', this.isConfigured())
         })
-
         this.#liquidEngine = new Liquid({
             root: path.resolve(__dirname, 'views/'),
             extname: '.liquid'
