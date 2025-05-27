@@ -46,7 +46,11 @@ const loadSettings = async () => {
 }
 
 window.electronAPI.onSetConfigured((configured) => {
-    console.log('Are we configured? ' + configured)
+    if (configured) {
+        document.getElementById('mainControls').classList.remove('d-none')
+    } else {
+        document.getElementById('mainControls').classList.add('d-none')
+    }
 })
 
 const load = async () => {

@@ -10,38 +10,40 @@
 <body>
   <h1>ChurchSuite Plan Viewer</h1>
   <form>
-    <div class="form-group mb-3">
-      <label for="plan">Select a plan</label>
-      <div class="input-group">
-        <select class="form-select" id="plan" aria-label="Select a plan">
-          <option value="">--Select plan--</option>
+    <div class="container" id="mainControls">
+      <div class="form-group mb-3">
+        <label for="plan">Select a plan</label>
+        <div class="input-group">
+          <select class="form-select" id="plan" aria-label="Select a plan">
+            <option value="">--Select plan--</option>
+          </select>
+          <button class="btn btn-outline-secondary" type="button" id="refreshButton">
+            <i class="bi bi-arrow-clockwise"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="page_size">Page size</label>
+        <select class="form-select" id="page_size" aria-label="Page size">
+          <option value="a4">A4</option>
+          <option value="letter">Letter</option>
         </select>
-        <button class="btn btn-outline-secondary" type="button" id="refreshButton">
-          <i class="bi bi-arrow-clockwise"></i>
+      </div>
+
+      <div class="form-group mb-3">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="two_up">
+          <label class="form-check-label" for="two_up">2 copies per sheet</label>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <button type="button" class="btn btn-primary" id="exportPDF">
+          <i class="bi bi-file-earmark-pdf"></i>
+          Create PDF
         </button>
       </div>
-    </div>
-
-    <div class="form-group mb-3">
-      <label for="page_size">Page size</label>
-      <select class="form-select" id="page_size" aria-label="Page size">
-        <option value="a4">A4</option>
-        <option value="letter">Letter</option>
-      </select>
-    </div>
-
-    <div class="form-group mb-3">
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" role="switch" id="two_up">
-        <label class="form-check-label" for="two_up">2 copies per sheet</label>
-      </div>
-    </div>
-
-    <div class="mb-3">
-      <button type="button" class="btn btn-primary" id="exportPDF">
-        <i class="bi bi-file-earmark-pdf"></i>
-        Create PDF
-      </button>
     </div>
 
     <div class="accordion mb-3" id="settingsAccordion">
