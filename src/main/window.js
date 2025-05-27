@@ -53,6 +53,10 @@ export const createWindow = () => {
             html: controller.selectedPlanHtml
         })
     })
+
+    controller.on('configChanged', (isConfigured) => {
+        leftView.webContents.send('setConfigured', isConfigured)
+    })
 }
 
 

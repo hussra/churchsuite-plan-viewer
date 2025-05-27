@@ -45,6 +45,10 @@ const loadSettings = async () => {
     document.querySelector('#page_size option[value=' + page_size + ']').selected = true
 }
 
+window.electronAPI.onSetConfigured((configured) => {
+    console.log('Are we configured? ' + configured)
+})
+
 const load = async () => {
     document.getElementById('plan').addEventListener('change', changePlan)
     document.getElementById('exportPDF').addEventListener('click', exportPDF)

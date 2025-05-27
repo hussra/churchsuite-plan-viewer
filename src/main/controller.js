@@ -31,14 +31,20 @@ export class Controller extends EventEmitter {
 
     constructor() {
         super()
+
+        this.#store = new Store({ schema })
+        this.#store.onDidAnyChange((newValue, oldValue) => {
+            this.emit('configChanged', this.isConfigured())
+        })
+
+        this.#liquidEngine = new Liquid({
+            root: path.resolve(__dirname, 'views/'),
+            extname: '.liquid'
+        })
     }
 
-    #store = new Store({ schema })
-
-    #liquidEngine = new Liquid({
-        root: path.resolve(__dirname, 'views/'),
-        extname: '.liquid'
-    })
+    #store
+    #liquidEngine
 
     #allPlans = [];                          // All available plans for selection
     #showPlanView = false;                   // Is currently selected plan available for viewing?
