@@ -1,5 +1,5 @@
 import { request } from "undici"
-import { store } from "./settings"
+import { controller } from "./main"
 
 let token
 
@@ -14,7 +14,7 @@ async function getToken() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + Buffer.from(store.get('client_id') + ":" + store.get('client_secret')).toString('base64'),
+                'Authorization': 'Basic ' + Buffer.from(controller.getSetting('client_id') + ":" + controller.getSetting('client_secret')).toString('base64'),
             },
             body: '{"grant_type": "client_credentials", "scope": "full_access"}',
         });

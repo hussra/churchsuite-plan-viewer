@@ -1,6 +1,5 @@
 import { ipcMain } from 'electron'
 import { controller } from './main'
-import { store } from './settings'
 
 export async function addIpcHandlers() {
 
@@ -21,10 +20,10 @@ export async function addIpcHandlers() {
     })
 
     ipcMain.handle('getFromStore', (event, key) => {
-        return store.get(key)
+        return controller.getSetting(key)
     })
 
     ipcMain.handle('setInStore', (event, key, value) => {
-        store.set(key, value)
+        controller.saveSetting(key, value)
     })
 }

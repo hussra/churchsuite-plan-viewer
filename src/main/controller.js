@@ -6,13 +6,34 @@ import { Liquid } from 'liquidjs'
 import coherentpdf from 'coherentpdf'
 import { getPlans, getPlanDetail, getPlanItems } from './api'
 import { win, rightView } from './window'
-import { store } from './settings'
+import Store from "electron-store"
+
+const schema = {
+    client_secret: {
+        type: 'string'
+    },
+    client_id: {
+        type: 'string'
+    },
+    page_size: {
+        type: 'string',
+        enum: ['a4', 'letter'],
+        default: 'a4'
+    },
+    two_up: {
+        type: 'boolean',
+        default: true
+    }
+}
+
 
 export class Controller extends EventEmitter {
 
     constructor() {
         super()
     }
+
+    #store = new Store({ schema })
 
     #liquidEngine = new Liquid({
         root: path.resolve(__dirname, 'views/'),
@@ -70,6 +91,18 @@ export class Controller extends EventEmitter {
         return this.#selectedPlanHtml
     }
 
+    getSetting(key) {
+        return this.#store.get(key)
+    }
+
+    saveSetting(key, value) {
+        this.#store.set(key, value)
+    }
+
+    isConfigured() {
+        return (this.#store.get('client_id') != '') && (this.#store.get('client_secret') != '')
+    }
+
     async loadPlans() {
         const planData = await getPlans()
 
@@ -113,10 +146,10 @@ export class Controller extends EventEmitter {
             // TODO: Don't like this bit being here rather than in window.js
             rightView.webContents.printToPDF({
                 printBackground: true,
-                pageSize: store.get('page_size')
+                pageSize: this.#store.get('page_size')
             }).then(data => {
 
-                let twoUp = store.get('two_up')
+                let twoUp = this.#store.get('two_up')
 
                 if (twoUp) {
                     pdf = coherentpdf.fromMemory(data, '')
