@@ -3,6 +3,25 @@
 
 <table class="plan">
   {% for item in plan.items %}
-    {% render 'item', item: item %}
+    {% if item.type_id == 22 %}
+      <tr class="heading">
+        <td colspan="2">{{item.name}}</td>
+      </tr>
+    {% else %}
+      <tr>
+        <td>
+          {% if item.type == 'song' %}
+            <strong>Song:</strong>
+          {% endif %}
+          {{item.name}}
+        </td>
+        <td>
+          {% for person in item.people -%}
+            {{person.first_name}}
+            {%- if forloop.last != true %}, {% endif %}
+          {% endfor %}
+        </td>
+      </tr>
+    {% endif %}
   {% endfor %}
 </table>

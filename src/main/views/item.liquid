@@ -1,7 +1,0 @@
-{% if item.type_id == 22 %}
-    {% render 'item-heading', item: item %}
-{% elsif item.type == 'song' %}
-    {% render 'item-song', item: item %}
-{% else %}
-    {% render 'item-default', item: item %}
-{% endif %}
