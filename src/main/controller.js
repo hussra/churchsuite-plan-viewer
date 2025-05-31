@@ -2,37 +2,20 @@ import { app, dialog, shell } from 'electron'
 import { EventEmitter } from 'node:events'
 import * as path from 'node:path'
 import * as fs from 'fs'
+import Store from "electron-store"
 import { Liquid } from 'liquidjs'
 import coherentpdf from 'coherentpdf'
+
 import { getPlans, getPlanDetail, getPlanItems } from './api'
 import { win, rightView } from './window'
-import Store from "electron-store"
-
-const schema = {
-    client_secret: {
-        type: 'string'
-    },
-    client_id: {
-        type: 'string'
-    },
-    page_size: {
-        type: 'string',
-        enum: ['a4', 'letter'],
-        default: 'a4'
-    },
-    two_up: {
-        type: 'boolean',
-        default: true
-    }
-}
-
+import { SETTINGS_SCHEMA } from './constants'
 
 export class Controller extends EventEmitter {
 
     constructor() {
         super()
 
-        this.#store = new Store({ schema })
+        this.#store = new Store({ schema: SETTINGS_SCHEMA })
         this.#store.onDidAnyChange((newValue, oldValue) => {
             this.emit('configChanged', this.isConfigured())
         })
