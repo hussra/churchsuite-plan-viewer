@@ -1,11 +1,12 @@
+import { EventEmitter } from 'node:events'
 import { request } from "undici"
 import { controller } from "./main"
 
-let token
+let authToken
 
-async function getToken() {
+async function getAuthToken() {
 
-    if (token) return token // TODO: What happens if token has expired?
+    if (authToken) return authToken // TODO: What happens if token has expired?
 
     const { statusCode, body } = await request(
         'https://login.churchsuite.com',
@@ -27,49 +28,35 @@ async function getToken() {
 }
 
 
-async function getAuthHeaders() {
-    return {
-        'Authorization': 'Bearer ' + await getToken()
-    }
+async function makeApiCall(url) {
+    const { statusCode, body } = await request(url, {
+        headers: {
+            'Authorization': 'Bearer ' + await getAuthToken()
+        }
+    })
+
+    return body.json()
 }
 
 
 // Get all plans for today and in the future
 export async function getPlans() {
-    const headers = await getAuthHeaders()
-
     let yourDate = new Date()
     const offset = yourDate.getTimezoneOffset();
     yourDate = new Date(yourDate.getTime() - (offset * 60 * 1000) - 86400000);
-    let yesterday = yourDate.toISOString().split('T')[0]
+    const yesterday = yourDate.toISOString().split('T')[0]
 
-    const { statusCode, body } = await request(`https://api.churchsuite.com/v2/planning/plans?starts_after=${yesterday}`, {
-        headers: headers
-    })
-
-    return body.json()
+    return makeApiCall(`https://api.churchsuite.com/v2/planning/plans?starts_after=${yesterday}`)
 }
 
 
 // Get the detail of a plan, by ID
 export async function getPlanDetail(planId) {
-    const headers = await getAuthHeaders()
-
-    const { statusCode, body } = await request(`https://api.churchsuite.com/v2/planning/plans/${planId}`, {
-        headers: headers
-    })
-
-    return body.json()
+    return makeApiCall(`https://api.churchsuite.com/v2/planning/plans/${planId}`)
 }
 
 
 // Get the items for a plan, by ID
 export async function getPlanItems(planId) {
-    const headers = await getAuthHeaders()
-
-    const { statusCode, body } = await request(`https://api.churchsuite.com/v2/planning/plan_items?plan_ids%5B%5D=${planId}`, {
-        headers: headers
-    })
-
-    return body.json()
+    return makeApiCall(`https://api.churchsuite.com/v2/planning/plan_items?plan_ids%5B%5D=${planId}`)
 }
