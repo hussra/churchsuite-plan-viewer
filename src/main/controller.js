@@ -94,12 +94,16 @@ export class Controller extends EventEmitter {
     async loadPlans() {
         const planData = await getPlans()
 
-        this.#allPlans = planData.data.map((plan) => {
-            return {
-                id: plan.id,
-                date: plan.date
-            }
-        })
+        if (planData.data) {
+            this.#allPlans = planData.data.map((plan) => {
+                return {
+                    id: plan.id,
+                    date: plan.date
+                }
+            })
+        } else {
+            this.#allPlans = []
+        }
     }
 
     async loadPlan() {
