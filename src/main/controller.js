@@ -2,11 +2,12 @@ import { app, dialog, shell } from 'electron'
 import { EventEmitter } from 'node:events'
 import * as path from 'node:path'
 import * as fs from 'fs'
-import Store from "electron-store"
+import Store from 'electron-store'
 import { Liquid } from 'liquidjs'
 import coherentpdf from 'coherentpdf'
+import { request } from "undici"
 
-import { getPlans, getPlanDetail, getPlanItems } from './api'
+//import { getPlans, getPlanDetail, getPlanItems } from './api'
 import { win, rightView } from './window'
 import { SETTINGS_SCHEMA } from './constants'
 
@@ -15,9 +16,11 @@ export class Controller extends EventEmitter {
     constructor() {
         super()
 
-        this.#store = new Store({ schema: SETTINGS_SCHEMA })
+        this.#store = new Store({
+            schema: SETTINGS_SCHEMA
+        })
         this.#store.onDidAnyChange((newValue, oldValue) => {
-            this.emit('configChanged', this.isConfigured())
+            this.configChanged()
         })
         this.#liquidEngine = new Liquid({
             root: path.resolve(__dirname, 'views/'),
@@ -27,6 +30,8 @@ export class Controller extends EventEmitter {
 
     #store
     #liquidEngine
+
+    #authToken
 
     #allPlans = [];                          // All available plans for selection
     #showPlanView = false;                   // Is currently selected plan available for viewing?
@@ -87,12 +92,16 @@ export class Controller extends EventEmitter {
         this.#store.set(key, value)
     }
 
+    configChanged() {
+        this.emit('configChanged', this.isConfigured())
+    }
+
     isConfigured() {
         return (this.#store.get('client_id') != '') && (this.#store.get('client_secret') != '')
     }
 
     async loadPlans() {
-        const planData = await getPlans()
+        const planData = await this.getPlans()
 
         if (planData.data) {
             this.#allPlans = planData.data.map((plan) => {
@@ -107,8 +116,8 @@ export class Controller extends EventEmitter {
     }
 
     async loadPlan() {
-        this.#selectedPlanDetail = (await getPlanDetail(this.#selectedPlanId)).data
-        this.#selectedPlanItems = (await getPlanItems(this.#selectedPlanId)).data
+        this.#selectedPlanDetail = (await this.getPlanDetail(this.#selectedPlanId)).data
+        this.#selectedPlanItems = (await this.getPlanItems(this.#selectedPlanId)).data
 
         this.#selectedPlanTitle = this.#selectedPlanDetail.date + " " + this.#selectedPlanDetail.time + " - " + this.#selectedPlanDetail.name
 
@@ -168,6 +177,64 @@ export class Controller extends EventEmitter {
 
         })
 
+    }
+
+
+    async getAuthToken() {
+
+        if (this.#authToken) return this.#authToken // TODO: What happens if token has expired?
+
+        const { statusCode, body } = await request(
+            'https://login.churchsuite.com',
+            {
+                path: '/oauth2/token',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic ' + Buffer.from(this.getSetting('client_id') + ":" + this.getSetting('client_secret')).toString('base64'),
+                },
+                body: '{"grant_type": "client_credentials", "scope": "full_access"}',
+            });
+
+        if (statusCode == 200) {
+            this.#authToken = (await body.json()).access_token
+            return this.#authToken
+        } else {
+            return null
+        }
+    }
+
+
+    async makeApiCall(url) {
+        const { statusCode, body } = await request(url, {
+            headers: {
+                'Authorization': 'Bearer ' + await this.getAuthToken()
+            }
+        })
+
+        return body.json()
+    }
+
+
+    async getPlans() {
+        let yourDate = new Date()
+        const offset = yourDate.getTimezoneOffset();
+        yourDate = new Date(yourDate.getTime() - (offset * 60 * 1000) - 86400000);
+        const yesterday = yourDate.toISOString().split('T')[0]
+
+        return this.makeApiCall(`https://api.churchsuite.com/v2/planning/plans?starts_after=${yesterday}`)
+    }
+
+
+    // Get the detail of a plan, by ID
+    async getPlanDetail(planId) {
+        return this.makeApiCall(`https://api.churchsuite.com/v2/planning/plans/${planId}`)
+    }
+
+
+    // Get the items for a plan, by ID
+    async getPlanItems(planId) {
+        return this.makeApiCall(`https://api.churchsuite.com/v2/planning/plan_items?plan_ids%5B%5D=${planId}`)
     }
 
 }
