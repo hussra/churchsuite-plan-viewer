@@ -7,7 +7,6 @@ import { Liquid } from 'liquidjs'
 import coherentpdf from 'coherentpdf'
 import { request } from "undici"
 
-//import { getPlans, getPlanDetail, getPlanItems } from './api'
 import { win, rightView } from './window'
 import { SETTINGS_SCHEMA } from './constants'
 
@@ -20,7 +19,7 @@ export class Controller extends EventEmitter {
             schema: SETTINGS_SCHEMA
         })
         this.#store.onDidAnyChange((newValue, oldValue) => {
-            this.configChanged()
+            this.#configChanged()
         })
         this.#liquidEngine = new Liquid({
             root: path.resolve(__dirname, 'views/'),
@@ -31,7 +30,8 @@ export class Controller extends EventEmitter {
     #store
     #liquidEngine
 
-    #authToken
+    #authToken = null
+    #connected = false
 
     #allPlans = [];                          // All available plans for selection
     #showPlanView = false;                   // Is currently selected plan available for viewing?
@@ -58,6 +58,15 @@ export class Controller extends EventEmitter {
             this.#selectedPlanId = planId
             this.loadPlan()
         }
+    }
+
+    get connected() {
+        return this.#connected
+    }
+
+    set connected(connected) {
+        this.#connected = connected
+        console.log('Connected? ' + this.#connected)
     }
 
     get allPlans() {
@@ -92,7 +101,12 @@ export class Controller extends EventEmitter {
         this.#store.set(key, value)
     }
 
-    configChanged() {
+    async #configChanged() {
+        // Force reauthentication
+        await this.#getAuthToken(true)
+        if (this.#authToken == null) {
+            console.log('Not authenticated')
+        }
         this.emit('configChanged', this.isConfigured())
     }
 
@@ -101,7 +115,7 @@ export class Controller extends EventEmitter {
     }
 
     async loadPlans() {
-        const planData = await this.getPlans()
+        const planData = await this.#getPlans()
 
         if (planData.data) {
             this.#allPlans = planData.data.map((plan) => {
@@ -116,8 +130,8 @@ export class Controller extends EventEmitter {
     }
 
     async loadPlan() {
-        this.#selectedPlanDetail = (await this.getPlanDetail(this.#selectedPlanId)).data
-        this.#selectedPlanItems = (await this.getPlanItems(this.#selectedPlanId)).data
+        this.#selectedPlanDetail = (await this.#getPlanDetail(this.#selectedPlanId)).data
+        this.#selectedPlanItems = (await this.#getPlanItems(this.#selectedPlanId)).data
 
         this.#selectedPlanTitle = this.#selectedPlanDetail.date + " " + this.#selectedPlanDetail.time + " - " + this.#selectedPlanDetail.name
 
@@ -180,9 +194,10 @@ export class Controller extends EventEmitter {
     }
 
 
-    async getAuthToken() {
+    // Get a ChurchSuite authentication token
+    async #getAuthToken(force = false) {
 
-        if (this.#authToken) return this.#authToken // TODO: What happens if token has expired?
+        if (this.#authToken && !force) return this.#authToken // TODO: What happens if token has expired?
 
         const { statusCode, body } = await request(
             'https://login.churchsuite.com',
@@ -198,43 +213,72 @@ export class Controller extends EventEmitter {
 
         if (statusCode == 200) {
             this.#authToken = (await body.json()).access_token
-            return this.#authToken
         } else {
-            return null
+            this.#authToken = null
         }
+
+        return this.#authToken
     }
 
 
-    async makeApiCall(url) {
-        const { statusCode, body } = await request(url, {
+    // Make an API call to ChurchSuite and return the body as a JSON object
+    async #makeApiCall(url) {
+        let authToken = await this.#getAuthToken()
+
+        if (authToken == null) {
+            // throw new Error('Unable to authenticate')
+            this.connected = false
+            return {}
+        }
+
+        let { statusCode, body } = await request(url, {
             headers: {
-                'Authorization': 'Bearer ' + await this.getAuthToken()
+                'Authorization': 'Bearer ' + authToken
             }
         })
 
+        if (statusCode != 200) {
+            // Retry once
+            authToken = await this.#getAuthToken(true)
+
+            let { statusCode, body } = await request(url, {
+                headers: {
+                    'Authorization': 'Bearer ' + authToken
+                }
+            })
+
+            if (statusCode != 200) {
+                //throw new Error('Unable to authenticate')
+                this.connected = false
+                return {}
+            }
+        }
+
+        this.connected = true
         return body.json()
     }
 
 
-    async getPlans() {
+    // Get future plans
+    async #getPlans() {
         let yourDate = new Date()
         const offset = yourDate.getTimezoneOffset();
         yourDate = new Date(yourDate.getTime() - (offset * 60 * 1000) - 86400000);
         const yesterday = yourDate.toISOString().split('T')[0]
 
-        return this.makeApiCall(`https://api.churchsuite.com/v2/planning/plans?starts_after=${yesterday}`)
+        return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/plans?starts_after=${yesterday}`)
     }
 
 
     // Get the detail of a plan, by ID
-    async getPlanDetail(planId) {
-        return this.makeApiCall(`https://api.churchsuite.com/v2/planning/plans/${planId}`)
+    async #getPlanDetail(planId) {
+        return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/plans/${planId}`)
     }
 
 
     // Get the items for a plan, by ID
-    async getPlanItems(planId) {
-        return this.makeApiCall(`https://api.churchsuite.com/v2/planning/plan_items?plan_ids%5B%5D=${planId}`)
+    async #getPlanItems(planId) {
+        return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/plan_items?plan_ids%5B%5D=${planId}`)
     }
 
 }
