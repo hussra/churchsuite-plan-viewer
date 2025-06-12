@@ -45,5 +45,5 @@
     "liquidjs": "^10.21.1",
     "undici": "^7.10.0"
   },
-  "packageManager": "yarn@4.9.1"
+  "packageManager": "yarn@4.9.2"
 }
