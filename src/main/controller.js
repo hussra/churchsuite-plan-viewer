@@ -207,7 +207,7 @@ export class Controller extends EventEmitter {
     // Get a ChurchSuite authentication token
     async #getAuthToken(force = false) {
 
-        if (this.#authToken && !force) return this.#authToken // TODO: What happens if token has expired?
+        if (this.#authToken && !force) return this.#authToken
 
         const { statusCode, body } = await request(
             'https://login.churchsuite.com',
