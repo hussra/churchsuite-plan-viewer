@@ -2,7 +2,7 @@ import { contextBridge, ipcRenderer } from 'electron'
 
 contextBridge.exposeInMainWorld('electronAPI', {
     // Messages from left renderer to main process
-    changePlan: (planId) => ipcRenderer.invoke('changePlan', planId),
+    selectPlan: (planId) => ipcRenderer.invoke('selectPlan', planId),
     exportPDF: () => ipcRenderer.invoke('exportPDF'),
     refresh: () => ipcRenderer.invoke('refresh'),
 

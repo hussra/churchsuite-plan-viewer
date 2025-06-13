@@ -13,7 +13,7 @@ export async function addIpcHandlers() {
     })
 
     // Called when plan selected in left pane
-    ipcMain.handle('changePlan', (event, planId) => {
+    ipcMain.handle('selectPlan', (event, planId) => {
         controller.selectedPlanId = planId
     })
 

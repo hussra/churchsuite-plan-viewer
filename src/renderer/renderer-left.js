@@ -4,6 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.min.css'
 
 const populatePlans = async (plans) => {
+
+    const planSelect = document.getElementById('plan')
+    const selectedPlan = planSelect.value
+
     // Remove all but '--Select plan--'
     for (const el of document.querySelectorAll('#plan option')) {
         if (el.value !== '') {
@@ -11,23 +15,26 @@ const populatePlans = async (plans) => {
         }
     }
 
-    const planSelect = document.getElementById('plan')
-
     for (let i in plans) {
         let option = document.createElement('option')
         option.innerHTML = plans[i].date
         option.setAttribute('value', plans[i].id)
         planSelect.append(option)
+        if (plans[i].id == selectedPlan) {
+            planSelect.value = selectedPlan
+        }
     }
+
+    planSelect.dispatchEvent(new Event('change'))
 }
 
 const exportPDF = () => {
     window.electronAPI.exportPDF()
 }
 
-const changePlan = (event) => {
+const selectPlan = (event) => {
     const planId = document.getElementById('plan').value
-    window.electronAPI.changePlan(planId)
+    window.electronAPI.selectPlan(planId)
 }
 
 const loadSettings = async () => {
@@ -68,8 +75,9 @@ window.electronAPI.onSetPlans((plans) => {
 
 const load = async () => {
     document.getElementById('refreshButton').addEventListener('click', refresh)
-    document.getElementById('plan').addEventListener('change', changePlan)
+    document.getElementById('plan').addEventListener('change', selectPlan)
     document.getElementById('exportPDF').addEventListener('click', exportPDF)
+
     document.getElementById('two_up').addEventListener('change', async () => {
         await window.electronAPI.setInStore('two_up', document.getElementById('two_up').checked)
     })
