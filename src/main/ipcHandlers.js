@@ -28,10 +28,12 @@ export async function addIpcHandlers() {
         controller.exportPDF()
     })
 
+    // Get a setting from the setting store
     ipcMain.handle('getFromStore', (event, key) => {
         return controller.getSetting(key)
     })
 
+    // Set a setting in the setting store
     ipcMain.handle('setInStore', (event, key, value) => {
         controller.saveSetting(key, value)
     })
