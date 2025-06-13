@@ -54,11 +54,16 @@ const showHideSettings = (configured) => {
     }
 }
 
+const refresh = () => {
+    window.electronAPI.refresh()
+}
+
 window.electronAPI.onSetConfigured((configured) => {
     showHideSettings(configured)
 })
 
 const load = async () => {
+    document.getElementById('refreshButton').addEventListener('click', refresh)
     document.getElementById('plan').addEventListener('change', changePlan)
     document.getElementById('exportPDF').addEventListener('click', exportPDF)
     document.getElementById('two_up').addEventListener('change', async () => {

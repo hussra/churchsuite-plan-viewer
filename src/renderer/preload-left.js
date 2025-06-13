@@ -8,6 +8,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getFromStore: (key) => ipcRenderer.invoke('getFromStore', key),
     setInStore: (key, value) => ipcRenderer.invoke('setInStore', key, value),
     isConfigured: () => ipcRenderer.invoke('isConfigured'),
+    refresh: () => ipcRenderer.invoke('refresh'),
 
     // Messages from main process to left renderer
     onSetConfigured: (callback) => ipcRenderer.on('setConfigured', (_event, value) => callback(value))

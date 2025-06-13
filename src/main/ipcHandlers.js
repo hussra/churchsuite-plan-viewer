@@ -3,6 +3,11 @@ import { controller } from './main'
 
 export async function addIpcHandlers() {
 
+    // Called when left pane asks for list of plans to be refreshed
+    ipcMain.handle('refresh', async () => {
+        controller.reload()
+    })
+
     // Called when left pane asks for current list of plans
     ipcMain.handle('getPlans', async () => {
         await controller.loadPlans()

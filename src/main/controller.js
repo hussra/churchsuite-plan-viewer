@@ -31,7 +31,7 @@ export class Controller extends EventEmitter {
     #liquidEngine
 
     #authToken = null
-    #connected = false
+    #isConnected = false
 
     #allPlans = [];                          // All available plans for selection
     #showPlanView = false;                   // Is currently selected plan available for viewing?
@@ -61,12 +61,19 @@ export class Controller extends EventEmitter {
     }
 
     get connected() {
-        return this.#connected
+        return this.#isConnected
     }
 
     set connected(connected) {
-        this.#connected = connected
-        console.log('Connected? ' + this.#connected)
+        const changed = (connected != this.#isConnected)
+        this.#isConnected = connected
+
+        if (changed) {
+            this.emit('configChanged', this.isConfigured() && this.connected)
+            if (connected) {
+                this.reload()
+            }
+        }
     }
 
     get allPlans() {
@@ -104,14 +111,15 @@ export class Controller extends EventEmitter {
     async #configChanged() {
         // Force reauthentication
         await this.#getAuthToken(true)
-        if (this.#authToken == null) {
-            console.log('Not authenticated')
-        }
-        this.emit('configChanged', this.isConfigured())
+        this.connected = (this.#authToken != null)
     }
 
     isConfigured() {
         return (this.#store.get('client_id') != '') && (this.#store.get('client_secret') != '')
+    }
+
+    async reload() {
+        console.log('Reload plan list and current plan')
     }
 
     async loadPlans() {
