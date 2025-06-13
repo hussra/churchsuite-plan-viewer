@@ -29,10 +29,10 @@
     "@electron/fuses": "^1.8.0",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
     "copy-webpack-plugin": "^13.0.0",
-    "css-loader": "^6.11.0",
-    "electron": "36.2.1",
+    "css-loader": "^7.1.2",
+    "electron": "^36.4.0",
     "node-loader": "^2.1.0",
-    "style-loader": "^3.3.4",
+    "style-loader": "^4.0.0",
     "webpack": "^5.99.9"
   },
   "dependencies": {
