@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     selectPlan: (planId) => ipcRenderer.invoke('selectPlan', planId),
     exportPDF: () => ipcRenderer.invoke('exportPDF'),
     refresh: () => ipcRenderer.invoke('refresh'),
+    leftRendererStartupComplete: () => ipcRenderer.invoke('leftRendererStartupComplete'),
 
     getFromStore: (key) => ipcRenderer.invoke('getFromStore', key),
     setInStore: (key, value) => ipcRenderer.invoke('setInStore', key, value),

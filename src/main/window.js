@@ -61,8 +61,6 @@ export const createWindow = () => {
     controller.on('plansChanged', (plans) => {
         leftView.webContents.send('setPlans', plans)
     })
-
-    controller.appStartupComplete()
 }
 
 

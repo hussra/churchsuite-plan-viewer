@@ -92,7 +92,8 @@ const load = async () => {
     })
 
     await loadSettings()
-    await populatePlans()
+
+    window.electronAPI.leftRendererStartupComplete()
 }
 
 load()

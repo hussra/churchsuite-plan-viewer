@@ -31,4 +31,9 @@ export async function addIpcHandlers() {
     ipcMain.handle('setInStore', (event, key, value) => {
         controller.saveSetting(key, value)
     })
+
+    // Called when left renderer startup is complete
+    ipcMain.handle('leftRendererStartupComplete', () => {
+        controller.appStartupComplete()
+    })
 }

@@ -119,7 +119,6 @@ export class Controller extends EventEmitter {
     }
 
     async reload() {
-        console.log('Reload plan list and current plan')
         this.loadPlans()
     }
 
@@ -293,7 +292,8 @@ export class Controller extends EventEmitter {
     }
 
     appStartupComplete() {
-        this.#configChanged()
+        // this.#configChanged()
+        this.emit('configChanged', this.isConfigured() && this.#isConnected)
         this.reload()
     }
 
