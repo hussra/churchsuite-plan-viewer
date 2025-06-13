@@ -11,5 +11,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     refresh: () => ipcRenderer.invoke('refresh'),
 
     // Messages from main process to left renderer
-    onSetConfigured: (callback) => ipcRenderer.on('setConfigured', (_event, value) => callback(value))
+    onSetConnected: (callback) => ipcRenderer.on('setConnected', (_event, value) => callback(value))
 })

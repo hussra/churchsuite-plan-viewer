@@ -54,8 +54,8 @@ export const createWindow = () => {
         })
     })
 
-    controller.on('configChanged', (isConfigured) => {
-        leftView.webContents.send('setConfigured', isConfigured)
+    controller.on('configChanged', (connected) => {
+        leftView.webContents.send('setConnected', connected)
     })
 }
 

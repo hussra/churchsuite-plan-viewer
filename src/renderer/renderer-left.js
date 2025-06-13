@@ -45,8 +45,8 @@ const loadSettings = async () => {
     document.querySelector('#page_size option[value=' + page_size + ']').selected = true
 }
 
-const showHideSettings = (configured) => {
-    if (configured) {
+const showHideSettings = (connected) => {
+    if (connected) {
         document.getElementById('mainControls').classList.remove('d-none')
     } else {
         document.getElementById('mainControls').classList.add('d-none')
@@ -58,8 +58,8 @@ const refresh = () => {
     window.electronAPI.refresh()
 }
 
-window.electronAPI.onSetConfigured((configured) => {
-    showHideSettings(configured)
+window.electronAPI.onSetConnected((connected) => {
+    showHideSettings(connected)
 })
 
 const load = async () => {
