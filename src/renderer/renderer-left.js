@@ -3,7 +3,7 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.min.css'
 
-const populatePlans = async () => {
+const populatePlans = async (plans) => {
     // Remove all but '--Select plan--'
     for (const el of document.querySelectorAll('#plan option')) {
         if (el.value !== '') {
@@ -11,7 +11,6 @@ const populatePlans = async () => {
         }
     }
 
-    const plans = await window.electronAPI.getPlans()
     const planSelect = document.getElementById('plan')
 
     for (let i in plans) {
@@ -48,6 +47,7 @@ const loadSettings = async () => {
 const showHideSettings = (connected) => {
     if (connected) {
         document.getElementById('mainControls').classList.remove('d-none')
+        document.getElementById('authenticationSettings').classList.remove('show')
     } else {
         document.getElementById('mainControls').classList.add('d-none')
         document.getElementById('authenticationSettings').classList.add('show')
@@ -60,6 +60,10 @@ const refresh = () => {
 
 window.electronAPI.onSetConnected((connected) => {
     showHideSettings(connected)
+})
+
+window.electronAPI.onSetPlans((plans) => {
+    populatePlans(plans)
 })
 
 const load = async () => {
@@ -78,10 +82,8 @@ const load = async () => {
     document.getElementById('client_id').addEventListener('change', async () => {
         await window.electronAPI.setInStore('client_id', document.getElementById('client_id').value)
     })
+
     await loadSettings()
-
-    showHideSettings(await window.electronAPI.isConfigured())
-
     await populatePlans()
 }
 

@@ -8,12 +8,6 @@ export async function addIpcHandlers() {
         controller.reload()
     })
 
-    // Called when left pane asks for current list of plans
-    ipcMain.handle('getPlans', async () => {
-        await controller.loadPlans()
-        return controller.allPlans
-    })
-
     ipcMain.handle('isConfigured', async () => {
         return controller.isConfigured()
     })

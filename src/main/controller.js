@@ -64,13 +64,13 @@ export class Controller extends EventEmitter {
         return this.#isConnected
     }
 
-    set connected(connected) {
-        const changed = (connected != this.#isConnected)
-        this.#isConnected = connected
+    set connected(isConnected) {
+        const changed = (isConnected != this.#isConnected)
+        this.#isConnected = isConnected
 
-        if (changed) {
-            this.emit('configChanged', this.isConfigured() && this.connected)
-            if (connected) {
+        if (changed || !isConnected) {
+            this.emit('configChanged', this.isConfigured() && isConnected)
+            if (isConnected) {
                 this.reload()
             }
         }
@@ -120,6 +120,7 @@ export class Controller extends EventEmitter {
 
     async reload() {
         console.log('Reload plan list and current plan')
+        this.loadPlans()
     }
 
     async loadPlans() {
@@ -135,6 +136,8 @@ export class Controller extends EventEmitter {
         } else {
             this.#allPlans = []
         }
+
+        this.emit('plansChanged', this.#allPlans)
     }
 
     async loadPlan() {
@@ -287,6 +290,11 @@ export class Controller extends EventEmitter {
     // Get the items for a plan, by ID
     async #getPlanItems(planId) {
         return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/plan_items?plan_ids%5B%5D=${planId}`)
+    }
+
+    appStartupComplete() {
+        this.#configChanged()
+        this.reload()
     }
 
 }

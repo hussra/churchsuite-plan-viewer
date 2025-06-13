@@ -57,6 +57,12 @@ export const createWindow = () => {
     controller.on('configChanged', (connected) => {
         leftView.webContents.send('setConnected', connected)
     })
+
+    controller.on('plansChanged', (plans) => {
+        leftView.webContents.send('setPlans', plans)
+    })
+
+    controller.appStartupComplete()
 }
 
 
