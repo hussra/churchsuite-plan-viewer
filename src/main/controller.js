@@ -271,12 +271,29 @@ export class Controller extends EventEmitter {
 
     // Get future plans
     async #getPlans() {
-        let yourDate = new Date()
-        const offset = yourDate.getTimezoneOffset();
-        yourDate = new Date(yourDate.getTime() - (offset * 60 * 1000) - 86400000);
-        const yesterday = yourDate.toISOString().split('T')[0]
+        let now = new Date()
+        const offset = now.getTimezoneOffset();
+        let todayDate = new Date(now.getTime() - (offset * 60 * 1000));
+        let yesterdayDate = new Date(now.getTime() - (offset * 60 * 1000) - 86400000);
+        const today = todayDate.toISOString().split('T')[0]
+        const yesterday = yesterdayDate.toISOString().split('T')[0]
 
-        return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/plans?starts_after=${yesterday}`)
+        let url = 'https://api.churchsuite.com/v2/planning/plans'
+
+        if (this.getSetting('past_plans')) {
+            url = url + `?starts_before=${today}`
+        } else {
+            url = url + `?starts_after=${yesterday}`
+        }
+
+        const limit = this.getSetting('plans_quantity')
+        url = url + `&per_page=${limit}`
+
+        if (this.getSetting('draft_plans')) {
+            url = url + '&status=draft'
+        }
+
+        return this.#makeApiCall(url)
     }
 
 
