@@ -18,5 +18,19 @@ export const SETTINGS_SCHEMA = {
     two_up: {
         type: 'boolean',
         default: true
+    },
+    past_plans: {
+        type: 'boolean',
+        default: false
+    },
+    draft_plans: {
+        type: 'boolean',
+        default: false
+    },
+    plans_quantity: {
+        type: 'number',
+        minimum: 1,
+        maximum: 250,
+        default: 10
     }
 }

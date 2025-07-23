@@ -44,6 +44,15 @@ const loadSettings = async () => {
     const client_id = await window.electronAPI.getFromStore('client_id')
     document.getElementById('client_id').value = client_id
 
+    const past_plans = await window.electronAPI.getFromStore('past_plans')
+    document.getElementById('past_plans').checked = past_plans
+
+    const draft_plans = await window.electronAPI.getFromStore('draft_plans')
+    document.getElementById('draft_plans').checked = draft_plans
+
+    const plans_quantity = await window.electronAPI.getFromStore('plans_quantity')
+    document.getElementById('plans_quantity').value = plans_quantity
+
     const two_up = await window.electronAPI.getFromStore('two_up')
     document.getElementById('two_up').checked = two_up
 
@@ -78,6 +87,15 @@ const load = async () => {
     document.getElementById('plan').addEventListener('change', selectPlan)
     document.getElementById('exportPDF').addEventListener('click', exportPDF)
 
+    document.getElementById('past_plans').addEventListener('change', async () => {
+        await window.electronAPI.setInStore('past_plans', document.getElementById('past_plans').checked)
+    })
+    document.getElementById('draft_plans').addEventListener('change', async () => {
+        await window.electronAPI.setInStore('draft_plans', document.getElementById('draft_plans').checked)
+    })
+    document.getElementById('plans_quantity').addEventListener('change', async () => {
+        await window.electronAPI.setInStore('plans_quantity', parseInt(document.getElementById('plans_quantity').value))
+    })
     document.getElementById('two_up').addEventListener('change', async () => {
         await window.electronAPI.setInStore('two_up', document.getElementById('two_up').checked)
     })
