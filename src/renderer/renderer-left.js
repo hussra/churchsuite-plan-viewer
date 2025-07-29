@@ -89,12 +89,15 @@ const load = async () => {
 
     document.getElementById('past_plans').addEventListener('change', async () => {
         await window.electronAPI.setInStore('past_plans', document.getElementById('past_plans').checked)
+        refresh()
     })
     document.getElementById('draft_plans').addEventListener('change', async () => {
         await window.electronAPI.setInStore('draft_plans', document.getElementById('draft_plans').checked)
+        refresh()
     })
     document.getElementById('plans_quantity').addEventListener('change', async () => {
         await window.electronAPI.setInStore('plans_quantity', parseInt(document.getElementById('plans_quantity').value))
+        refresh()
     })
     document.getElementById('two_up').addEventListener('change', async () => {
         await window.electronAPI.setInStore('two_up', document.getElementById('two_up').checked)
