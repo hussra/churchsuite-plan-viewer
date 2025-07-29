@@ -14,6 +14,15 @@
             <strong>Song:</strong>
           {% endif %}
           {{item.name}}
+          {%- for question in item.question_responses %}
+            {%- if question.response_type == 'bible'%}:
+              {% for value in question.value %}
+                {{value.book | bibleBook}} {{value.reference}}
+                {%- if forloop.last == false %},
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
         </td>
         <td>
           {% for person in item.people -%}

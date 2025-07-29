@@ -8,7 +8,7 @@ import coherentpdf from 'coherentpdf'
 import { request } from "undici"
 
 import { win, rightView } from './window'
-import { SETTINGS_SCHEMA } from './constants'
+import { SETTINGS_SCHEMA, BOOK_MAPPING } from './constants'
 
 export class Controller extends EventEmitter {
 
@@ -25,6 +25,7 @@ export class Controller extends EventEmitter {
             root: path.resolve(__dirname, 'views/'),
             extname: '.liquid'
         })
+        this.#liquidEngine.registerFilter('bibleBook', this.bibleBookName)
     }
 
     #store
@@ -312,6 +313,14 @@ export class Controller extends EventEmitter {
         // this.#configChanged()
         this.emit('configChanged', this.isConfigured() && this.#isConnected)
         this.reload()
+    }
+
+    bibleBookName(abbr) {
+        let name = BOOK_MAPPING[abbr]
+        if (name === undefined) {
+            return abbr
+        }
+        return name
     }
 
 }
