@@ -148,7 +148,7 @@ export class Controller extends EventEmitter {
 
         this.#selectedPlanHtml = await this.#liquidEngine.renderFile('default', {
             plan: {
-                plan: this.#selectedPlanDetail,
+                detail: this.#selectedPlanDetail,
                 items: this.#selectedPlanItems
             }
         })
