@@ -1,7 +1,7 @@
 {
   "name": "churchsuite-plan-viewer",
   "productName": "churchsuite-plan-viewer",
-  "version": "1.0.0",
+  "version": "1.0.1-dev",
   "description": "My Electron application description",
   "main": ".webpack/main",
   "scripts": {
@@ -18,22 +18,22 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@electron-forge/cli": "^7.8.1",
-    "@electron-forge/maker-deb": "^7.8.1",
-    "@electron-forge/maker-rpm": "^7.8.1",
-    "@electron-forge/maker-squirrel": "^7.8.1",
-    "@electron-forge/maker-zip": "^7.8.1",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.8.1",
-    "@electron-forge/plugin-fuses": "^7.8.1",
-    "@electron-forge/plugin-webpack": "^7.8.1",
+    "@electron-forge/cli": "^7.8.2",
+    "@electron-forge/maker-deb": "^7.8.2",
+    "@electron-forge/maker-rpm": "^7.8.2",
+    "@electron-forge/maker-squirrel": "^7.8.2",
+    "@electron-forge/maker-zip": "^7.8.2",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.8.2",
+    "@electron-forge/plugin-fuses": "^7.8.2",
+    "@electron-forge/plugin-webpack": "^7.8.2",
     "@electron/fuses": "^1.8.0",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
     "copy-webpack-plugin": "^13.0.0",
     "css-loader": "^7.1.2",
-    "electron": "^37.2.0",
+    "electron": "^37.2.4",
     "node-loader": "^2.1.0",
     "style-loader": "^4.0.0",
-    "webpack": "^5.99.9"
+    "webpack": "^5.101.0"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -43,7 +43,7 @@
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^10.1.0",
     "liquidjs": "^10.21.1",
-    "undici": "^7.11.0"
+    "undici": "^7.12.0"
   },
   "packageManager": "yarn@4.9.2"
 }
