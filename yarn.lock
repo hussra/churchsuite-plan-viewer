@@ -1782,13 +1782,13 @@ __metadata:
     coherentpdf: "npm:^2.5.5"
     copy-webpack-plugin: "npm:^13.0.0"
     css-loader: "npm:^7.1.2"
-    electron: "npm:^37.2.4"
+    electron: "npm:^37.2.5"
     electron-squirrel-startup: "npm:^1.0.1"
     electron-store: "npm:^10.1.0"
     liquidjs: "npm:^10.21.1"
     node-loader: "npm:^2.1.0"
     style-loader: "npm:^4.0.0"
-    undici: "npm:^7.12.0"
+    undici: "npm:^7.13.0"
     webpack: "npm:^5.101.0"
   languageName: unknown
   linkType: soft
@@ -2507,16 +2507,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^37.2.4":
-  version: 37.2.4
-  resolution: "electron@npm:37.2.4"
+"electron@npm:^37.2.5":
+  version: 37.2.5
+  resolution: "electron@npm:37.2.5"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^22.7.7"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10c0/1a579ac3ef1dde43673df9b95f343e67020f6e09f2cd4a978eab5953d392ea7afe5c171e7e713fe55501456767b788cbc175f7447e9b12d456ea9d35496f223b
+  checksum: 10c0/c93178dc4e25055a7f8b28afcd6fc3e9412906db5f03a64f2d2dd8453c5dee6eb34b2d6b3cd9bdf51853b7985db9869fc16a992187a4e16bf41458626c30efd0
   languageName: node
   linkType: hard
 
@@ -6468,10 +6468,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^7.12.0":
-  version: 7.12.0
-  resolution: "undici@npm:7.12.0"
-  checksum: 10c0/27aada7bd8d2588f146a2ba554f2f6b7593f9c2d14bf3797bbc7b74825d9bee38eb3ab61e2d0ee01bb827a9ac8017eb2991cb4f06d9ed9971c8a142d8306fbab
+"undici@npm:^7.13.0":
+  version: 7.13.0
+  resolution: "undici@npm:7.13.0"
+  checksum: 10c0/8865d40b141f073215a6763aad5d1b2f4bd4e252600e93e68055d6c5d23a8a0e5782669236b2ecfa4d415d1d969d9c4623ff1c0386d32fa60088a19ffa58c611
   languageName: node
   linkType: hard
 
