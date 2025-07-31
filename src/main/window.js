@@ -1,4 +1,4 @@
-import { app, nativeImage, Menu, BaseWindow, WebContentsView } from 'electron'
+import { app, nativeImage, Menu, BaseWindow, WebContentsView, dialog } from 'electron'
 import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './constants.js'
 import path from 'path'
 import { controller } from './main.js'
@@ -81,7 +81,11 @@ export const createMenu = () => {
                     label: 'About...',
                     click: async () => {
                         const { shell } = require('electron')
-                        await shell.openExternal('https://electronjs.org')
+                        //await shell.openExternal('https://github.com/hussra/churchsuite-plan-viewer')
+                        await dialog.showMessageBox(win, {
+                            title: app.getName(),
+                            message: `Version ${app.getVersion()}`
+                        })
                     }
                 }
             ]
