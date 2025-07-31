@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Hide Inspect menu except in develoment mode
 - Dependencies updated
 
 ## [v1.0.0] - 2025-07-29

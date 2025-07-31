@@ -67,24 +67,11 @@ export const createWindow = () => {
 export const createMenu = () => {
 
     const isMac = process.platform === 'darwin'
-    const menuTemplate = [
+    let menuTemplate = [
         {
             label: 'File',
             submenu: [
                 isMac ? { role: 'close' } : { role: 'quit' }
-            ]
-        },
-        {
-            label: 'Inspect',
-            submenu: [
-                {
-                    label: 'Left',
-                    click: async () => { leftView.webContents.openDevTools({ mode: 'detach' }) }
-                },
-                {
-                    label: 'Right',
-                    click: async () => { rightView.webContents.openDevTools({ mode: 'detach' }) }
-                }
             ]
         },
         {
@@ -100,6 +87,22 @@ export const createMenu = () => {
             ]
         }
     ]
+
+    if (!app.isPackaged) {
+        menuTemplate.splice(1, 0, {
+            label: 'Inspect',
+            submenu: [
+                {
+                    label: 'Left',
+                    click: async () => { leftView.webContents.openDevTools({ mode: 'detach' }) }
+                },
+                {
+                    label: 'Right',
+                    click: async () => { rightView.webContents.openDevTools({ mode: 'detach' }) }
+                }
+            ]
+        })
+    }
 
     const menu = Menu.buildFromTemplate(menuTemplate)
     Menu.setApplicationMenu(menu)
