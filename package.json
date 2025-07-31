@@ -1,8 +1,8 @@
 {
   "name": "churchsuite-plan-viewer",
-  "productName": "churchsuite-plan-viewer",
+  "productName": "Churchsuite Plan Viewer",
   "version": "1.0.1-dev",
-  "description": "My Electron application description",
+  "description": "A simple app to allow viewing and printing of ChurchSuite service plans",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
