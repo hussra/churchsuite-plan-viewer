@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Proper first-time initialisation of settings
+- Cosmetic tweaks to program name and icon
 - Hide Inspect menu except in develoment mode
 - Dependencies updated
 
