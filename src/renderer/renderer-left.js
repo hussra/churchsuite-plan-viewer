@@ -15,6 +15,7 @@ const populatePlans = async (plans) => {
         }
     }
 
+    let haveSelected = false
     for (let i in plans) {
         let option = document.createElement('option')
         option.innerHTML = plans[i].date
@@ -22,7 +23,11 @@ const populatePlans = async (plans) => {
         planSelect.append(option)
         if (plans[i].id == selectedPlan) {
             planSelect.value = selectedPlan
+            haveSelected = true
         }
+    }
+    if ((!haveSelected) && (plans.length > 0)) {
+        planSelect.value = plans[0].id
     }
 
     planSelect.dispatchEvent(new Event('change'))
