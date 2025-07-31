@@ -5,10 +5,12 @@ export const BAR_WIDTH = 2
 
 export const SETTINGS_SCHEMA = {
     client_secret: {
-        type: 'string'
+        type: 'string',
+        default: ''
     },
     client_id: {
-        type: 'string'
+        type: 'string',
+        default: ''
     },
     page_size: {
         type: 'string',
