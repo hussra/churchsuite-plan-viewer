@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app, nativeImage, Menu, BaseWindow, WebContentsView, dialog, BrowserWindow } from 'electron'
+import { app, nativeImage, Menu, BaseWindow, WebContentsView, shell, BrowserWindow } from 'electron'
 import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './constants.js'
 import path from 'path'
 import { controller } from './main.js'
@@ -96,11 +96,25 @@ export const createMenu = () => {
                 {
                     label: 'About...',
                     click: async () => {
-                        const { shell } = require('electron')
-                        //await shell.openExternal('https://github.com/hussra/churchsuite-plan-viewer')
-                        await dialog.showMessageBox(win, {
+                        const about = new BrowserWindow({
+                            parent: win,
                             title: app.getName(),
-                            message: `Version ${app.getVersion()}`
+                            modal: true,
+                            show: false,
+                            webPreferences: {
+                                preload: ABOUT_PANE_PRELOAD_WEBPACK_ENTRY,
+                            }
+                        })
+
+                        about.menuBarVisible = false
+                        about.webContents.setWindowOpenHandler(({ url }) => {
+                            // Open urls with target="_blank" in a browser
+                            shell.openExternal(url);
+                            return { action: 'deny' };
+                        });
+                        about.loadURL(ABOUT_PANE_WEBPACK_ENTRY)
+                        about.once('ready-to-show', () => {
+                            about.show()
                         })
                     }
                 }

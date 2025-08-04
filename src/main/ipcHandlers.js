@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ipcMain } from 'electron'
+import { app, ipcMain } from 'electron'
 import { controller } from './main'
 
 export async function addIpcHandlers() {
@@ -51,5 +51,9 @@ export async function addIpcHandlers() {
     // Called when left renderer startup is complete
     ipcMain.handle('leftRendererStartupComplete', () => {
         controller.appStartupComplete()
+    })
+
+    ipcMain.handle('getVersion', () => {
+        return app.getVersion()
     })
 }

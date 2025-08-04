@@ -74,6 +74,14 @@ module.exports = {
                 js: './src/renderer/preload-right.js',
               },
             },
+            {
+              html: './src/renderer/about.html',
+              js: './src/renderer/renderer-about.js',
+              name: 'about_pane',
+              preload: {
+                js: './src/renderer/preload-about.js',
+              },
+            }
           ],
         },
       },
