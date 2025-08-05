@@ -25,16 +25,27 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
 <body>
     <h1 class="text-center">ChurchSuite Plan Viewer</h1>
 
-    <img class="mx-auto d-block" src="icon-100.png" />
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <p>Version <span id="versionNumber"></span></p>
+                <p>Copyright © 2025 Richard Huss<br />
+                    This program comes with ABSOLUTELY NO WARRANTY.<br />
+                    This is free software, and you are welcome to redistribute it under certain conditions; see
+                    <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank">the license</a>
+                    for details.
+                </p>
+            </div>
+            <div class="col-2 text-end">
+                <img class="" src="icon-100.png" />
+            </div>
+        </div>
+    </div>
 
-    <p>Version <span id="versionNumber"></span></p>
-
-    <p>Copyright © 2025 Richard Huss</p>
-    <p>This program comes with ABSOLUTELY NO WARRANTY.</p>
-    <p>This is free software, and you are welcome to redistribute it under certain conditions; see
-        <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank">the license</a>
-        for details.
-    </p>
+    <object data="dep-licenses.txt" type="text/plain" class="border border-secondary mb-3"
+        style="height: 250px; width: 100%;">
+        <a href="dep-licenses.txt">No Support?</a>
+    </object>
 
     <div class="d-grid col-6 mx-auto">
         <button id="closeButton" type="button" class="btn btn-primary">Close</button>
