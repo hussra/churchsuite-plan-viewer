@@ -30,6 +30,9 @@
           {% if item.type == 'song' %}
             <strong>Song:</strong>
           {% endif %}
+          {% if item.type_id == 19 %}
+            <strong>Video:</strong>
+          {% endif %}
           {{item.name}}
           {%- for question in item.question_responses %}
             {%- if question.response_type == 'bible'%}:
