@@ -16,7 +16,7 @@
 
 import { app } from 'electron'
 import { addIpcHandlers } from './ipcHandlers'
-import { createWindow, createMenu } from './window.js'
+import { createWindow, resizePanes } from './window.js'
 import { Controller } from './controller.js'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -35,7 +35,11 @@ export let controller = new Controller()
 app.whenReady().then(() => {
   addIpcHandlers()
   createWindow()
-  createMenu()
+
+  // Hacky, but ensures bottom scrollbar button appears.
+  // Somehow win.getContentSize() doesn't include menu bar height
+  // at first, but does a little later.
+  setTimeout(resizePanes, 100)
 
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.

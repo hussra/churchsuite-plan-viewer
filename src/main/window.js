@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app, nativeImage, Menu, BaseWindow, WebContentsView, shell, BrowserWindow } from 'electron'
+import { app, nativeImage, Menu, BaseWindow, WebContentsView, screen, shell, BrowserWindow } from 'electron'
 import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './constants.js'
 import path from 'path'
 import { controller } from './main.js'
@@ -23,15 +23,16 @@ export var leftView, rightView, win
 
 export const createWindow = () => {
 
+    const defaultWindowSize = getDefaultWindowSize()
     win = new BaseWindow({
-        width: WINDOW_WIDTH,
-        height: WINDOW_HEIGHT,
-        useContentSize: true,
-        resizable: false, // TODO: Make resizable and remember size
+        width: defaultWindowSize.width,
+        height: defaultWindowSize.height,
         backgroundColor: 'silver',
         title: 'ChurchSuite Plan Viewer'
     })
+
     win.setIcon(getIcon())
+    win.setMenu(createMenu())
 
     leftView = new WebContentsView({
         webPreferences: {
@@ -49,18 +50,11 @@ export const createWindow = () => {
     rightView.webContents.loadURL(RIGHT_PANE_WEBPACK_ENTRY)
     win.contentView.addChildView(rightView)
 
-    leftView.setBounds({
-        x: 0,
-        y: 0,
-        width: LEFT_PANEL_WIDTH,
-        height: WINDOW_HEIGHT
-    })
-    rightView.setBounds({
-        x: LEFT_PANEL_WIDTH + BAR_WIDTH,
-        y: 0,
-        width: WINDOW_WIDTH - LEFT_PANEL_WIDTH - BAR_WIDTH,
-        height: WINDOW_HEIGHT
-    })
+    resizePanes()
+
+    win.on('resized', resizePanes)
+    win.on('maximize', resizePanes)
+    win.on('unmaximize', resizePanes)
 
     controller.on('viewChanged', () => {
         rightView.webContents.send('setPlan', {
@@ -80,7 +74,37 @@ export const createWindow = () => {
 }
 
 
-export const createMenu = () => {
+export const resizePanes = () => {
+    const [newWidth, newHeight] = win.getContentSize()
+
+    leftView.setBounds({
+        x: 0,
+        y: 0,
+        width: LEFT_PANEL_WIDTH,
+        height: newHeight
+    })
+
+    rightView.setBounds({
+        x: LEFT_PANEL_WIDTH + BAR_WIDTH,
+        y: 0,
+        width: newWidth - LEFT_PANEL_WIDTH - BAR_WIDTH,
+        height: newHeight
+    })
+}
+
+
+const getDefaultWindowSize = () => {
+    const primaryDisplay = screen.getPrimaryDisplay()
+    const { width: displayWidth, height: displayHeight } = primaryDisplay.workAreaSize
+
+    return {
+        width: Math.min(WINDOW_WIDTH, displayWidth),
+        height: Math.min(WINDOW_HEIGHT, displayHeight)
+    }
+}
+
+
+const createMenu = () => {
 
     const isMac = process.platform === 'darwin'
     let menuTemplate = [
@@ -138,8 +162,7 @@ export const createMenu = () => {
         })
     }
 
-    const menu = Menu.buildFromTemplate(menuTemplate)
-    Menu.setApplicationMenu(menu)
+    return Menu.buildFromTemplate(menuTemplate)
 }
 
 
