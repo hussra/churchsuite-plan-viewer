@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatically select first plan in drop-down
 - Implement About dialog including dependency licences
 - Highlight video items in plan
+- Make main window resizeable
 
 ### Changed
 
