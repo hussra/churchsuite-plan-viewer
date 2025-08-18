@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app, dialog, shell } from 'electron'
+import { app, dialog, shell, safeStorage } from 'electron'
 import { EventEmitter } from 'node:events'
 import * as path from 'node:path'
 import * as fs from 'fs'
@@ -118,11 +118,26 @@ export class Controller extends EventEmitter {
     }
 
     getSetting(key) {
-        return this.#store.get(key)
+        if ((key == 'client_secret') || (key == 'client_id')) {
+            const value = this.#store.get(key)
+            if (value.startsWith('base64:')) {
+                return safeStorage.decryptString(Buffer.from(value.substring(7), 'base64'))
+            } else {
+                // Encrypt value and store that
+                this.#store.set(key, 'base64:' + safeStorage.encryptString(value).toString('base64'))
+                return value
+            }
+        } else {
+            return this.#store.get(key)
+        }
     }
 
     saveSetting(key, value) {
-        this.#store.set(key, value)
+        if ((key == 'client_secret') || (key == 'client_id')) {
+            this.#store.set(key, 'base64:' + safeStorage.encryptString(value).toString('base64'))
+        } else {
+            this.#store.set(key, value)            
+        }
     }
 
     async #configChanged() {
