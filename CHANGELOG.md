@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implement About dialog including dependency licences
 - Highlight video items in plan
 - Make main window resizeable
+- Encrypt API key in config file
 
 ### Changed
 
