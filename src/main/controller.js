@@ -22,6 +22,8 @@ import Store from 'electron-store'
 import { Liquid } from 'liquidjs'
 import coherentpdf from 'coherentpdf'
 import { request } from "undici"
+import { JSDOM } from 'jsdom';
+import DOMPurify from 'dompurify';
 
 import { win, rightView } from './window'
 import { SETTINGS_SCHEMA, BOOK_MAPPING } from './constants'
@@ -177,12 +179,16 @@ export class Controller extends EventEmitter {
 
         this.#selectedPlanTitle = this.#selectedPlanDetail.date + " " + this.#selectedPlanDetail.time + " - " + this.#selectedPlanDetail.name
 
-        this.#selectedPlanHtml = await this.#liquidEngine.renderFile('default', {
+        const rawHtml = await this.#liquidEngine.renderFile('default', {
             plan: {
                 detail: this.#selectedPlanDetail,
                 items: this.#selectedPlanItems
             }
         })
+
+        const window = new JSDOM('').window;
+        const purify = DOMPurify(window);
+        this.#selectedPlanHtml = purify.sanitize(rawHtml);
 
         this.#showPlanView = true
 
