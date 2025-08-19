@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Highlight video items in plan
 - Make main window resizeable
 - Encrypt API key in config file
+- Multiple, selectable, templates
 
 ### Changed
 
