@@ -49,6 +49,36 @@ const populatePlans = async (plans) => {
     planSelect.dispatchEvent(new Event('change'))
 }
 
+const populateTemplates = async (templates) => {
+
+    const templateSelect = document.getElementById('template')
+    const selectedTemplate = templateSelect.value
+
+    // Remove all but '--Select plan--'
+    for (const el of document.querySelectorAll('#template option')) {
+        if (el.value !== '') {
+            el.remove()
+        }
+    }
+
+    let haveSelected = false
+    for (let i in templates) {
+        let option = document.createElement('option')
+        option.innerHTML = templates[i].name
+        option.setAttribute('value', templates[i].id)
+        templateSelect.append(option)
+        if (templates[i].id == selectedTemplate) {
+            templateSelect.value = selectedTemplate
+            haveSelected = true
+        }
+    }
+    if ((!haveSelected) && (templates.length > 0)) {
+        templateSelect.value = await window.electronAPI.getFromStore('template')
+    }
+
+    templateSelect.dispatchEvent(new Event('change'))
+}
+
 const exportPDF = () => {
     window.electronAPI.exportPDF()
 }
@@ -56,6 +86,11 @@ const exportPDF = () => {
 const selectPlan = (event) => {
     const planId = document.getElementById('plan').value
     window.electronAPI.selectPlan(planId)
+}
+
+const selectTemplate = (event) => {
+    const templateId = document.getElementById('template').value
+    window.electronAPI.selectTemplate(templateId)
 }
 
 const loadSettings = async () => {
@@ -103,9 +138,14 @@ window.electronAPI.onSetPlans((plans) => {
     populatePlans(plans)
 })
 
+window.electronAPI.onSetTemplates((templates) => {
+    populateTemplates(templates)
+})
+
 const load = async () => {
     document.getElementById('refreshButton').addEventListener('click', refresh)
     document.getElementById('plan').addEventListener('change', selectPlan)
+    document.getElementById('template').addEventListener('change', selectTemplate)
     document.getElementById('exportPDF').addEventListener('click', exportPDF)
 
     document.getElementById('past_plans').addEventListener('change', async () => {

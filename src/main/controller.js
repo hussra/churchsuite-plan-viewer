@@ -41,7 +41,8 @@ export class Controller extends EventEmitter {
         })
         this.#liquidEngine = new Liquid({
             root: path.resolve(__dirname, 'views/'),
-            extname: '.liquid'
+            extname: '.liquid',
+            jsTruthy: true
         })
         this.#liquidEngine.registerFilter('bibleBook', this.bibleBookName)
     }
@@ -61,22 +62,24 @@ export class Controller extends EventEmitter {
     #selectedPlanItems = [];
     #selectedPlanHtml = '';
 
+    #allTemplates = []
+    #selectedTemplate = ''
+
+    set selectedTemplateId(templateId) {
+        this.#selectedTemplate = templateId
+        this.saveSetting('template', templateId)
+
+        this.#planIdOrTemplateIdChanged()
+    }
+
+    get selectedTemplateId() {
+        return this.#selectedTemplate
+    }
+
     set selectedPlanId(planId) {
         this.#selectedPlanId = planId
 
-        if ((planId == '') || (planId == 0)) {
-            this.#selectedPlanId = 0
-            this.#showPlanView = false
-            this.#selectedPlanTitle = 'No plan selected'
-            this.#selectedPlanDetail = null
-            this.#selectedPlanItems = []
-            this.#selectedPlanHtml = ''
-
-            this.emit('viewChanged', this.#selectedPlanId)
-        } else {
-            this.#selectedPlanId = planId
-            this.loadPlan()
-        }
+        this.#planIdOrTemplateIdChanged()
     }
 
     get connected() {
@@ -97,6 +100,10 @@ export class Controller extends EventEmitter {
 
     get allPlans() {
         return this.#allPlans
+    }
+
+    get allTemplates() {
+        return this.#allTemplates
     }
 
     get selectedPlanId() {
@@ -142,6 +149,24 @@ export class Controller extends EventEmitter {
         }
     }
 
+    #planIdOrTemplateIdChanged() {
+        if ((this.#selectedTemplate == null) ||
+            (this.#selectedTemplate == '') ||
+            (this.#selectedPlanId == '') ||
+            (this.#selectedPlanId == 0)) {
+
+            this.#showPlanView = false
+            this.#selectedPlanTitle = 'No plan or template selected'
+            this.#selectedPlanDetail = null
+            this.#selectedPlanItems = []
+            this.#selectedPlanHtml = ''
+
+            this.emit('viewChanged', this.#selectedPlanId)
+        } else {
+            this.loadPlan()
+        }
+    }
+
     async #configChanged() {
         // Force reauthentication
         await this.#getAuthToken(true)
@@ -154,6 +179,23 @@ export class Controller extends EventEmitter {
 
     async reload() {
         this.loadPlans()
+        this.loadTemplates()
+    }
+
+    async loadTemplates() {
+        // TODO: Get this from the filesystem
+        // TODO: Get these editable and loadable from settings
+        this.#allTemplates = [
+            {
+                id: 'default',
+                name: 'Default'
+            },
+            {
+                id: 'full',
+                name: 'Full'
+            }
+        ]
+        this.emit('templatesChanged')
     }
 
     async loadPlans() {
@@ -170,7 +212,7 @@ export class Controller extends EventEmitter {
             this.#allPlans = []
         }
 
-        this.emit('plansChanged', this.#allPlans)
+        this.emit('plansChanged')
     }
 
     async loadPlan() {
@@ -179,12 +221,22 @@ export class Controller extends EventEmitter {
 
         this.#selectedPlanTitle = this.#selectedPlanDetail.date + " " + this.#selectedPlanDetail.time + " - " + this.#selectedPlanDetail.name
 
-        const rawHtml = await this.#liquidEngine.renderFile('default', {
-            plan: {
-                detail: this.#selectedPlanDetail,
-                items: this.#selectedPlanItems
+        const rawHtml = await this.#liquidEngine.renderFile(
+            await this.getSetting('template'),
+            {
+                plan: {
+                    detail: this.#selectedPlanDetail,
+                    items: this.#selectedPlanItems
+                }
             }
-        })
+        )
+
+        // console.log(JSON.stringify({
+        //     plan: {
+        //         detail: this.#selectedPlanDetail,
+        //         items: this.#selectedPlanItems
+        //     }
+        // }))
 
         const window = new JSDOM('').window;
         const purify = DOMPurify(window);

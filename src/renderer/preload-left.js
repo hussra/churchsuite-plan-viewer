@@ -19,6 +19,7 @@ import { contextBridge, ipcRenderer } from 'electron'
 contextBridge.exposeInMainWorld('electronAPI', {
     // Messages from left renderer to main process
     selectPlan: (planId) => ipcRenderer.invoke('selectPlan', planId),
+    selectTemplate: (templateId) => ipcRenderer.invoke('selectTemplate', templateId),
     exportPDF: () => ipcRenderer.invoke('exportPDF'),
     refresh: () => ipcRenderer.invoke('refresh'),
     leftRendererStartupComplete: () => ipcRenderer.invoke('leftRendererStartupComplete'),
@@ -28,5 +29,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
     // Messages from main process to left renderer
     onSetConnected: (callback) => ipcRenderer.on('setConnected', (_event, value) => callback(value)),
-    onSetPlans: (callback) => ipcRenderer.on('setPlans', (_event, value) => callback(value))
+    onSetPlans: (callback) => ipcRenderer.on('setPlans', (_event, value) => callback(value)),
+    onSetTemplates: (callback) => ipcRenderer.on('setTemplates', (_event, value) => callback(value))
 })

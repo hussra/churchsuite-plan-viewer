@@ -33,6 +33,10 @@ export async function addIpcHandlers() {
         controller.selectedPlanId = planId
     })
 
+    ipcMain.handle('selectTemplate', (event, templateId) => {
+        controller.selectedTemplateId = templateId
+    })
+
     // Called when "Export PDF" clicked in left pane
     ipcMain.handle('exportPDF', () => {
         controller.exportPDF()
@@ -56,4 +60,5 @@ export async function addIpcHandlers() {
     ipcMain.handle('getVersion', () => {
         return app.getVersion()
     })
+
 }

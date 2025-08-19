@@ -68,8 +68,12 @@ export const createWindow = () => {
         leftView.webContents.send('setConnected', connected)
     })
 
-    controller.on('plansChanged', (plans) => {
-        leftView.webContents.send('setPlans', plans)
+    controller.on('plansChanged', () => {
+        leftView.webContents.send('setPlans', controller.allPlans)
+    })
+
+    controller.on('templatesChanged', () => {
+        leftView.webContents.send('setTemplates', controller.allTemplates)
     })
 }
 

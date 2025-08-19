@@ -50,6 +50,10 @@ export const SETTINGS_SCHEMA = {
         minimum: 1,
         maximum: 250,
         default: 10
+    },
+    template: {
+        type: 'string',
+        default: 'default'
     }
 }
 
