@@ -255,7 +255,7 @@ export class Controller extends EventEmitter {
         dialog.showSaveDialog(win, {
             defaultPath: path.join(app.getPath('downloads'), this.#selectedPlanDetail.date + '.pdf')
         }).then((result) => {
-            if (result.cancelled) return
+            if (result.canceled) return
 
             let pdf
             let mergedPdf
