@@ -28,6 +28,7 @@ import { HtmlRenderer, Parser } from 'commonmark'
 
 import { win, rightView } from './window'
 import { SETTINGS_SCHEMA, BOOK_MAPPING } from './constants'
+import { TemplateStore } from './templates'
 
 export class Controller extends EventEmitter {
 
@@ -40,6 +41,7 @@ export class Controller extends EventEmitter {
         this.#store.onDidAnyChange((newValue, oldValue) => {
             this.#configChanged()
         })
+
         this.#liquidEngine = new Liquid({
             root: path.resolve(__dirname, 'views/'),
             extname: '.liquid',
@@ -47,6 +49,8 @@ export class Controller extends EventEmitter {
         })
         this.#liquidEngine.registerFilter('bibleBook', this.#bibleBookFilter)
         this.#liquidEngine.registerFilter('markdown', this.#markdownFilter)
+
+        this.#templateStore = new TemplateStore(this)
     }
 
     #store
@@ -64,7 +68,7 @@ export class Controller extends EventEmitter {
     #selectedPlanItems = [];
     #selectedPlanHtml = '';
 
-    #allTemplates = []
+    #templateStore
     #selectedTemplate = ''
 
     set selectedTemplateId(templateId) {
@@ -105,7 +109,7 @@ export class Controller extends EventEmitter {
     }
 
     get allTemplates() {
-        return this.#allTemplates
+        return this.#templateStore.allTemplates
     }
 
     get selectedPlanId() {
@@ -181,22 +185,7 @@ export class Controller extends EventEmitter {
 
     async reload() {
         this.loadPlans()
-        this.loadTemplates()
-    }
-
-    async loadTemplates() {
-        // TODO: Get this from the filesystem
-        // TODO: Get these editable and loadable from settings
-        this.#allTemplates = [
-            {
-                id: 'default',
-                name: 'Default'
-            },
-            {
-                id: 'full',
-                name: 'Full'
-            }
-        ]
+        
         this.emit('templatesChanged')
     }
 
@@ -252,8 +241,14 @@ export class Controller extends EventEmitter {
 
     async exportPDF() {
         // TODO: Don't like this bit being here rather than in window.js
+        const template = this.#templateStore.getTemplateById(this.getSetting('template'))
+        const defaultFilename = path.join(
+            app.getPath('downloads'),
+            this.#selectedPlanDetail.date + template.filenameSuffix + '.pdf'
+        )
+
         dialog.showSaveDialog(win, {
-            defaultPath: path.join(app.getPath('downloads'), this.#selectedPlanDetail.date + '.pdf')
+            defaultPath: defaultFilename
         }).then((result) => {
             if (result.canceled) return
 
