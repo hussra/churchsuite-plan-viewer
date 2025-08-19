@@ -52,7 +52,7 @@
     {% if item.type_id == 20 %}
         {%- for question in item.question_responses %}
             {% if question.id == 9 %}
-                <p>{{question.value}}</p>
+                <p>{{question.value | markdown}}</p>
             {% endif %}
         {% endfor %}
     {% endif %}

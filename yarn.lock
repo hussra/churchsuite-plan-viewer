@@ -1846,6 +1846,7 @@ __metadata:
     bootstrap: "npm:^5.3.7"
     bootstrap-icons: "npm:^1.13.1"
     coherentpdf: "npm:^2.5.5"
+    commonmark: "npm:^0.31.2"
     copy-webpack-plugin: "npm:^13.0.0"
     css-loader: "npm:^7.1.2"
     dompurify: "npm:^3.2.6"
@@ -2031,6 +2032,19 @@ __metadata:
   version: 9.5.0
   resolution: "commander@npm:9.5.0"
   checksum: 10c0/5f7784fbda2aaec39e89eb46f06a999e00224b3763dc65976e05929ec486e174fe9aac2655f03ba6a5e83875bd173be5283dc19309b7c65954701c02025b3c1d
+  languageName: node
+  linkType: hard
+
+"commonmark@npm:^0.31.2":
+  version: 0.31.2
+  resolution: "commonmark@npm:0.31.2"
+  dependencies:
+    entities: "npm:~3.0.1"
+    mdurl: "npm:~1.0.1"
+    minimist: "npm:~1.2.8"
+  bin:
+    commonmark: bin/commonmark
+  checksum: 10c0/3328c9a4ef59986baca17ca4c4839134c259900e73ff4257a5c7c519c1de56498056851f912641c1fa4396b2cb3a52322ec71cb88d5d36089825f8c388ce07f7
   languageName: node
   linkType: hard
 
@@ -2719,6 +2733,13 @@ __metadata:
   version: 6.0.1
   resolution: "entities@npm:6.0.1"
   checksum: 10c0/ed836ddac5acb34341094eb495185d527bd70e8632b6c0d59548cbfa23defdbae70b96f9a405c82904efa421230b5b3fd2283752447d737beffd3f3e6ee74414
+  languageName: node
+  linkType: hard
+
+"entities@npm:~3.0.1":
+  version: 3.0.1
+  resolution: "entities@npm:3.0.1"
+  checksum: 10c0/2d93f48fd86de0b0ed8ee34456aa47b4e74a916a5e663cfcc7048302e2c7e932002926daf5a00ad6d5691e3c90673a15d413704d86d7e1b9532f9bc00d975590
   languageName: node
   linkType: hard
 
@@ -4493,6 +4514,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mdurl@npm:~1.0.1":
+  version: 1.0.1
+  resolution: "mdurl@npm:1.0.1"
+  checksum: 10c0/ea8534341eb002aaa532a722daef6074cd8ca66202e10a2b4cda46722c1ebdb1da92197ac300bc953d3ef1bf41cd6561ef2cc69d82d5d0237dae00d4a61a4eee
+  languageName: node
+  linkType: hard
+
 "media-typer@npm:0.3.0":
   version: 0.3.0
   resolution: "media-typer@npm:0.3.0"
@@ -4652,7 +4680,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimist@npm:^1.2.5, minimist@npm:^1.2.6, minimist@npm:^1.2.8":
+"minimist@npm:^1.2.5, minimist@npm:^1.2.6, minimist@npm:^1.2.8, minimist@npm:~1.2.8":
   version: 1.2.8
   resolution: "minimist@npm:1.2.8"
   checksum: 10c0/19d3fcdca050087b84c2029841a093691a91259a47def2f18222f41e7645a0b7c44ef4b40e88a1e58a40c84d2ef0ee6047c55594d298146d0eb3f6b737c20ce6

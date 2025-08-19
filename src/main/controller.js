@@ -22,8 +22,9 @@ import Store from 'electron-store'
 import { Liquid } from 'liquidjs'
 import coherentpdf from 'coherentpdf'
 import { request } from "undici"
-import { JSDOM } from 'jsdom';
-import DOMPurify from 'dompurify';
+import { JSDOM } from 'jsdom'
+import DOMPurify from 'dompurify'
+import { HtmlRenderer, Parser } from 'commonmark'
 
 import { win, rightView } from './window'
 import { SETTINGS_SCHEMA, BOOK_MAPPING } from './constants'
@@ -44,7 +45,8 @@ export class Controller extends EventEmitter {
             extname: '.liquid',
             jsTruthy: true
         })
-        this.#liquidEngine.registerFilter('bibleBook', this.bibleBookName)
+        this.#liquidEngine.registerFilter('bibleBook', this.#bibleBookFilter)
+        this.#liquidEngine.registerFilter('markdown', this.#markdownFilter)
     }
 
     #store
@@ -404,12 +406,19 @@ export class Controller extends EventEmitter {
         this.reload()
     }
 
-    bibleBookName(abbr) {
+    #bibleBookFilter(abbr) {
         let name = BOOK_MAPPING[abbr]
         if (name === undefined) {
             return abbr
         }
         return name
+    }
+
+    #markdownFilter(md) {
+        const reader = new Parser({smart: true})
+        const writer = new HtmlRenderer({softbreak: "<br />"})
+        const parsed = reader.parse(md)
+        return writer.render(parsed)
     }
 
 }
