@@ -16,18 +16,18 @@
   this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif;
+h4 {
+    text-align: center;
+    background-color: green;
+    color: white !important;
+    padding: 2px;
 }
 
-@media screen {
-  body {
-    padding: 2rem;
-  }
+p.people {
+    float: right;
+    margin-bottom: 0;
 }
 
-#selectPlan {
-  margin-top: 2rem;
-  text-align: center;
+div.liturgy p {
+    page-break-inside: avoid;
 }

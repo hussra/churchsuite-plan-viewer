@@ -20,6 +20,7 @@ import path from 'path'
 import { controller } from './main.js'
 
 export var leftView, rightView, win
+var css = ''
 
 export const createWindow = () => {
 
@@ -56,12 +57,17 @@ export const createWindow = () => {
     win.on('maximize', resizePanes)
     win.on('unmaximize', resizePanes)
 
-    controller.on('viewChanged', () => {
+    controller.on('viewChanged', async () => {
         rightView.webContents.send('setPlan', {
             show: controller.showPlanView,
             title: controller.selectedPlanTitle,
             html: controller.selectedPlanHtml
         })
+
+        if (css != '') {
+            rightView.webContents.removeInsertedCSS(css)
+        }
+        css = await rightView.webContents.insertCSS(controller.selectedPlanCss)
     })
 
     controller.on('configChanged', (connected) => {

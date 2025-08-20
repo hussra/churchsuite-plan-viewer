@@ -20,10 +20,10 @@
 
 {% for item in plan.items %}
   {% if item.type_id == 22 %}
-    <h4 style="text-align: center;">{{item.name}}</h4>
+    <h4>{{item.name}}</h4>
   {% else %}
 
-    <p style="float: right; margin-bottom: 0;">
+    <p class="people">
       {% for person in item.people -%}
         {{person.first_name}}
         {%- if forloop.last == false %}, {% endif %}
@@ -52,7 +52,7 @@
     {% if item.type_id == 20 %}
         {%- for question in item.question_responses %}
             {% if question.id == 9 %}
-                <p>{{question.value | markdown}}</p>
+                <div class="liturgy">{{question.value | markdown}}</div>
             {% endif %}
         {% endfor %}
     {% endif %}

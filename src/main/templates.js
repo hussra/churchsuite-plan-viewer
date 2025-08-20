@@ -14,6 +14,9 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import * as path from 'node:path'
+import * as fs from 'fs'
+
 export class TemplateStore {
     
     constructor(controller) {
@@ -43,5 +46,12 @@ export class TemplateStore {
 
     getTemplateById(id) {
         return this.#templates.find((element) => (element.id == id))
+    }
+
+    getCSSById(id) {
+        let template = this.getTemplateById(id)
+        let cssFile = path.resolve(__dirname, 'views/', template.id + '.css')
+        let fileContent = fs.readFileSync(cssFile, "UTF-8")
+        return fileContent
     }
 }

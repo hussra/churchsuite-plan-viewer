@@ -67,6 +67,7 @@ export class Controller extends EventEmitter {
     #selectedPlanDetail = null;
     #selectedPlanItems = [];
     #selectedPlanHtml = '';
+    #selectedPlanCss = '';
 
     #templateStore
     #selectedTemplate = ''
@@ -132,6 +133,10 @@ export class Controller extends EventEmitter {
         return this.#selectedPlanHtml
     }
 
+    get selectedPlanCss() {
+        return this.#selectedPlanCss
+    }
+
     getSetting(key) {
         if ((key == 'client_secret') || (key == 'client_id')) {
             const value = this.#store.get(key)
@@ -166,6 +171,7 @@ export class Controller extends EventEmitter {
             this.#selectedPlanDetail = null
             this.#selectedPlanItems = []
             this.#selectedPlanHtml = ''
+            this.#selectedPlanCss = ''
 
             this.emit('viewChanged', this.#selectedPlanId)
         } else {
@@ -229,9 +235,10 @@ export class Controller extends EventEmitter {
         //     }
         // }))
 
-        const window = new JSDOM('').window;
-        const purify = DOMPurify(window);
-        this.#selectedPlanHtml = purify.sanitize(rawHtml);
+        const window = new JSDOM('').window
+        const purify = DOMPurify(window)
+        this.#selectedPlanHtml = purify.sanitize(rawHtml)
+        this.#selectedPlanCss = this.#templateStore.getCSSById(this.getSetting('template'))
 
         this.#showPlanView = true
 

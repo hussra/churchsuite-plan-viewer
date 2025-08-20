@@ -16,18 +16,21 @@
   this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif;
+table.plan {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-@media screen {
-  body {
-    padding: 2rem;
-  }
+table.plan td,
+table.plan th {
+  border: 1px solid grey;
+  font-size: 1.2rem;
 }
 
-#selectPlan {
-  margin-top: 2rem;
+table.plan tr.heading {
+  background-color: green;
+  color: white;
   text-align: center;
+  font-weight: bold;
+  font-size: 1.4rem;
 }
