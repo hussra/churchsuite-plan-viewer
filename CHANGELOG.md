@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Make main window resizeable
 - Encrypt API key in config file
 - Multiple, selectable, templates, each with their own CSS
+- When printing a multi-page document two-up, print two of the same page on each sheet
 
 ### Changed
 
