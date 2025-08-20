@@ -1847,10 +1847,10 @@ __metadata:
     bootstrap-icons: "npm:^1.13.1"
     coherentpdf: "npm:^2.5.5"
     commonmark: "npm:^0.31.2"
-    copy-webpack-plugin: "npm:^13.0.0"
+    copy-webpack-plugin: "npm:^13.0.1"
     css-loader: "npm:^7.1.2"
     dompurify: "npm:^3.2.6"
-    electron: "npm:^37.2.6"
+    electron: "npm:^37.3.1"
     electron-squirrel-startup: "npm:^1.0.1"
     electron-store: "npm:^10.1.0"
     html-loader: "npm:^5.1.0"
@@ -1858,8 +1858,8 @@ __metadata:
     liquidjs: "npm:^10.21.1"
     node-loader: "npm:^2.1.0"
     style-loader: "npm:^4.0.0"
-    undici: "npm:^7.13.0"
-    webpack: "npm:^5.101.0"
+    undici: "npm:^7.14.0"
+    webpack: "npm:^5.101.3"
   languageName: unknown
   linkType: soft
 
@@ -2140,9 +2140,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"copy-webpack-plugin@npm:^13.0.0":
-  version: 13.0.0
-  resolution: "copy-webpack-plugin@npm:13.0.0"
+"copy-webpack-plugin@npm:^13.0.1":
+  version: 13.0.1
+  resolution: "copy-webpack-plugin@npm:13.0.1"
   dependencies:
     glob-parent: "npm:^6.0.1"
     normalize-path: "npm:^3.0.0"
@@ -2151,7 +2151,7 @@ __metadata:
     tinyglobby: "npm:^0.2.12"
   peerDependencies:
     webpack: ^5.1.0
-  checksum: 10c0/955037f77c6beb249b690710c35bacceb03b61bb5b7c5fc59ac7dff122c706eb794ef601bc3d9bbdb1350bda3e2615e0b43bf33f1ce2ca14ed934d9a89f43637
+  checksum: 10c0/14299770d2b37833306b2b115312a100b456fb48d0c8f3d2ad3af893cf4da8cd34855481e20e7914c0471a5e74a93b4e5517b122341c49a1d7d7ea4863d48222
   languageName: node
   linkType: hard
 
@@ -2629,16 +2629,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^37.2.6":
-  version: 37.2.6
-  resolution: "electron@npm:37.2.6"
+"electron@npm:^37.3.1":
+  version: 37.3.1
+  resolution: "electron@npm:37.3.1"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^22.7.7"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10c0/d0653bbaf6b449260d65d51aa12717ad8acaffce337d32e9892aea5cb70e1dc70f0da54393548595dd3a57cce1dbf699e3fa5d9155427f4151ada572f4430778
+  checksum: 10c0/1b171804646f229768c29413629b70b968c4c06686913b69e8615da09c58d63a95817021c31ed3c3bdbba0ad360ad4469773b9dda2662884d7df2866559f95f1
   languageName: node
   linkType: hard
 
@@ -2705,13 +2705,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^5.17.2":
-  version: 5.18.2
-  resolution: "enhanced-resolve@npm:5.18.2"
+"enhanced-resolve@npm:^5.17.3":
+  version: 5.18.3
+  resolution: "enhanced-resolve@npm:5.18.3"
   dependencies:
     graceful-fs: "npm:^4.2.4"
     tapable: "npm:^2.2.0"
-  checksum: 10c0/2a45105daded694304b0298d1c0351a981842249a9867513d55e41321a4ccf37dfd35b0c1e9ceae290eab73654b09aa7a910d618ea6f9441e97c52bc424a2372
+  checksum: 10c0/d413c23c2d494e4c1c9c9ac7d60b812083dc6d446699ed495e69c920988af0a3c66bf3f8d0e7a45cb1686c2d4c1df9f4e7352d973f5b56fe63d8d711dd0ccc54
   languageName: node
   linkType: hard
 
@@ -6792,10 +6792,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^7.13.0":
-  version: 7.13.0
-  resolution: "undici@npm:7.13.0"
-  checksum: 10c0/8865d40b141f073215a6763aad5d1b2f4bd4e252600e93e68055d6c5d23a8a0e5782669236b2ecfa4d415d1d969d9c4623ff1c0386d32fa60088a19ffa58c611
+"undici@npm:^7.14.0":
+  version: 7.14.0
+  resolution: "undici@npm:7.14.0"
+  checksum: 10c0/4beab6a5bfb89add9e90195aee6bc993708afbabad33bff7da791b5334a6e26a591c29938822d2fb8f69ae0ad8d580d64e03247b11157af9f820d5bd9f8f16e7
   languageName: node
   linkType: hard
 
@@ -7065,9 +7065,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.101.0":
-  version: 5.101.0
-  resolution: "webpack@npm:5.101.0"
+"webpack@npm:^5.101.3":
+  version: 5.101.3
+  resolution: "webpack@npm:5.101.3"
   dependencies:
     "@types/eslint-scope": "npm:^3.7.7"
     "@types/estree": "npm:^1.0.8"
@@ -7079,7 +7079,7 @@ __metadata:
     acorn-import-phases: "npm:^1.0.3"
     browserslist: "npm:^4.24.0"
     chrome-trace-event: "npm:^1.0.2"
-    enhanced-resolve: "npm:^5.17.2"
+    enhanced-resolve: "npm:^5.17.3"
     es-module-lexer: "npm:^1.2.1"
     eslint-scope: "npm:5.1.1"
     events: "npm:^3.2.0"
@@ -7099,7 +7099,7 @@ __metadata:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: 10c0/0fb5f70032ac53cfc2e667c97c6ceb903d280cebd03dd7f7ca794d8ab75d4f692483313efb90c616c2e4e266cf580a54df84cbaee43db36d7d42e450bf1569fd
+  checksum: 10c0/3c204d4f1df0ef2774ae043f62e4db56c11b7a0594e82fbb1fbbaf69893570f3bf08a8b5d2d5a0302ce6346132bf3eb9dbde81e4fab3d68307b2e506d606f064
   languageName: node
   linkType: hard
 
