@@ -251,7 +251,7 @@ export class Controller extends EventEmitter {
         const template = this.#templateStore.getTemplateById(this.getSetting('template'))
         const defaultFilename = path.join(
             app.getPath('downloads'),
-            this.#selectedPlanDetail.date + template.filenameSuffix + '.pdf'
+            this.#selectedPlanDetail.date + template.filenameSuffix + (this.getSetting('two_up') ? '-2up' : '') + '.pdf'
         )
 
         dialog.showSaveDialog(win, {
@@ -271,12 +271,26 @@ export class Controller extends EventEmitter {
                 let twoUp = this.#store.get('two_up')
 
                 if (twoUp) {
+                    // Load the PDF file
                     pdf = coherentpdf.fromMemory(data, '')
-                    mergedPdf = coherentpdf.mergeSimple([pdf, pdf])
+
+                    // Duplicate each page - 1, 1, 2, 2, etc.
+                    let allPages = coherentpdf.all(pdf)
+                    let doubledPages = []
+                    allPages.forEach(function (item) {
+                        doubledPages.push(item)
+                        doubledPages.push(item)
+                    });
+                    mergedPdf = coherentpdf.mergeSame([pdf], false, false, [doubledPages])
+
+                    // Two-up and rotate
                     coherentpdf.twoUp(mergedPdf)
                     coherentpdf.rotate(mergedPdf, coherentpdf.all(mergedPdf), 90)
-                    coherentpdf.toFile(twoUp ? mergedPdf : pdf, result.filePath, false, false)
+
+                    // Save to file
+                    coherentpdf.toFile(mergedPdf, result.filePath, false, false)
                 } else {
+                    // 1-up - just save it!
                     fs.writeFileSync(result.filePath, data)
                 }
 
