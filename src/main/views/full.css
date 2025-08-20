@@ -32,4 +32,10 @@
 
 #planContents div.liturgy p {
     page-break-inside: avoid;
+    margin-left: 1.5rem;
+}
+
+#planContents p.comment {
+    margin-left: 1.5rem;
+    font-style: italic;
 }
