@@ -275,13 +275,10 @@ export class Controller extends EventEmitter {
                     pdf = coherentpdf.fromMemory(data, '')
 
                     // Duplicate each page - 1, 1, 2, 2, etc.
-                    let allPages = coherentpdf.all(pdf)
-                    let doubledPages = []
-                    allPages.forEach(function (item) {
-                        doubledPages.push(item)
-                        doubledPages.push(item)
-                    });
-                    mergedPdf = coherentpdf.mergeSame([pdf], false, false, [doubledPages])
+                    mergedPdf = coherentpdf.mergeSame(
+                        [pdf], false, false,
+                        [coherentpdf.all(pdf).flatMap(i => [i,i])]
+                    )
 
                     // Two-up and rotate
                     coherentpdf.twoUp(mergedPdf)
