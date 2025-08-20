@@ -16,18 +16,18 @@
   this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-table.plan {
+#planContents table.plan {
   width: 100%;
   border-collapse: collapse;
 }
 
-table.plan td,
-table.plan th {
+#planContents table.plan td,
+#planContents table.plan th {
   border: 1px solid grey;
   font-size: 1.2rem;
 }
 
-table.plan tr.heading {
+#planContents table.plan tr.heading {
   background-color: green;
   color: white;
   text-align: center;

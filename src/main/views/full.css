@@ -16,18 +16,20 @@
   this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-h4 {
+#planContents h4 {
     text-align: center;
     background-color: green;
     color: white !important;
-    padding: 2px;
+    padding: 3px;
+    margin-top: 16px;
+    margin-bottom: 9px;
 }
 
-p.people {
+#planContents p.people {
     float: right;
     margin-bottom: 0;
 }
 
-div.liturgy p {
+#planContents div.liturgy p {
     page-break-inside: avoid;
 }
