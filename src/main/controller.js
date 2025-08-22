@@ -43,7 +43,7 @@ export class Controller extends EventEmitter {
         })
 
         this.#liquidEngine = new Liquid({
-            root: path.resolve(__dirname, '../../views/'),
+            root: app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", "views") : "views",
             extname: '.liquid',
             jsTruthy: true
         })

@@ -14,17 +14,17 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { app } from 'electron'
 import * as path from 'node:path'
 import * as fs from 'fs'
-import { css } from 'webpack';
-import { json } from 'node:stream/consumers';
 
 export class TemplateStore {
     
     constructor(controller) {
         this.#controller = controller
 
-        const viewDir = path.resolve(__dirname, '../../views/')
+        const viewDir = app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", "views") : "views"
+
         let files = fs.readdirSync(viewDir, { withFileTypes: true })
         
         // Find .liquid files in this directory
