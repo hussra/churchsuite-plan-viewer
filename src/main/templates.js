@@ -24,7 +24,7 @@ export class TemplateStore {
     constructor(controller) {
         this.#controller = controller
 
-        const viewDir = path.resolve(__dirname, 'views/')
+        const viewDir = path.resolve(__dirname, '../../views/')
         let files = fs.readdirSync(viewDir, { withFileTypes: true })
         
         // Find .liquid files in this directory
@@ -33,7 +33,7 @@ export class TemplateStore {
             let basename = path.basename(file.name, '.liquid')
 
                 const cssFile = path.resolve(viewDir, basename + '.css')
-                const jsonFile = path.resolve(viewDir, basename + '.json')
+                const jsonFile = path.resolve(viewDir, basename + '.tpl')
                 try {
                     fs.accessSync(cssFile, fs.constants.R_OK)
                     fs.accessSync(jsonFile, fs.constants.R_OK)
