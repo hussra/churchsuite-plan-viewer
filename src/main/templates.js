@@ -16,29 +16,47 @@
 
 import * as path from 'node:path'
 import * as fs from 'fs'
+import { css } from 'webpack';
+import { json } from 'node:stream/consumers';
 
 export class TemplateStore {
     
     constructor(controller) {
         this.#controller = controller
+
+        const viewDir = path.resolve(__dirname, 'views/')
+        let files = fs.readdirSync(viewDir, { withFileTypes: true })
+        
+        // Find .liquid files in this directory
+        files.forEach(file => {
+            if (file.isFile() && (path.extname(file.name) === '.liquid')) {
+            let basename = path.basename(file.name, '.liquid')
+
+                const cssFile = path.resolve(viewDir, basename + '.css')
+                const jsonFile = path.resolve(viewDir, basename + '.json')
+                try {
+                    fs.accessSync(cssFile, fs.constants.R_OK)
+                    fs.accessSync(jsonFile, fs.constants.R_OK)
+
+                    const jsonData = JSON.parse(fs.readFileSync(jsonFile))
+
+                    this.#templates.push({
+                        id: basename,
+                        name: (jsonData.name ? jsonData.name : basename),
+                        filenameSuffix: (jsonData.filenameSuffix ? jsonData.filenameSuffix : ''),
+                        editable: false,
+                    })
+                } catch (err) {
+                }
+            }
+        })
+
     }
 
     #controller
 
-    // TODO: Get this from the filesystem
     // TODO: Get these editable and loadable from settings
-    #templates = [
-        {
-            id: 'default',
-            name: 'Elmdon Summary',
-            filenameSuffix: ''
-        },
-        {
-            id: 'full',
-            name: 'Elmdon Full Details',
-            filenameSuffix: '-full'
-        }
-    ]
+    #templates = []
 
     get allTemplates() {
         return this.#templates
