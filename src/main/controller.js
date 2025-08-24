@@ -24,7 +24,7 @@ import { request } from "undici"
 
 import { win, rightView } from './window'
 import { SETTINGS_SCHEMA } from './constants'
-import { TemplateEngine } from './templates'
+import { TemplateEngine } from './template-engine'
 
 export class Controller extends EventEmitter {
 
