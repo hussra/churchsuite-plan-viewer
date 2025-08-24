@@ -19,15 +19,11 @@ import { EventEmitter } from 'node:events'
 import * as path from 'node:path'
 import * as fs from 'fs'
 import Store from 'electron-store'
-import { Liquid } from 'liquidjs'
 import coherentpdf from 'coherentpdf'
 import { request } from "undici"
-import { JSDOM } from 'jsdom'
-import DOMPurify from 'dompurify'
-import { HtmlRenderer, Parser } from 'commonmark'
 
 import { win, rightView } from './window'
-import { SETTINGS_SCHEMA, BOOK_MAPPING } from './constants'
+import { SETTINGS_SCHEMA } from './constants'
 import { TemplateEngine } from './templates'
 
 export class Controller extends EventEmitter {
@@ -42,19 +38,10 @@ export class Controller extends EventEmitter {
             this.#configChanged()
         })
 
-        this.#liquidEngine = new Liquid({
-            root: app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", "views") : "views",
-            extname: '.liquid',
-            jsTruthy: true
-        })
-        this.#liquidEngine.registerFilter('bibleBook', this.#bibleBookFilter)
-        this.#liquidEngine.registerFilter('markdown', this.#markdownFilter)
-
         this.#templateEngine = new TemplateEngine(this)
     }
 
     #store
-    #liquidEngine
 
     #authToken = null
     #isConnected = false
@@ -218,30 +205,17 @@ export class Controller extends EventEmitter {
 
         this.#selectedPlanTitle = this.#selectedPlanDetail.date + " " + this.#selectedPlanDetail.time + " - " + this.#selectedPlanDetail.name
 
-        const rawHtml = await this.#liquidEngine.renderFile(
-            await this.getSetting('template'),
-            {
-                plan: {
-                    detail: this.#selectedPlanDetail,
-                    items: this.#selectedPlanItems
-                }
+        const template = this.getSetting('template')
+
+        this.#selectedPlanHtml = await this.#templateEngine.renderPlan(template, {
+            plan: {
+                detail: this.#selectedPlanDetail,
+                items: this.#selectedPlanItems
             }
-        )
-
-        // console.log(JSON.stringify({
-        //     plan: {
-        //         detail: this.#selectedPlanDetail,
-        //         items: this.#selectedPlanItems
-        //     }
-        // }))
-
-        const window = new JSDOM('').window
-        const purify = DOMPurify(window)
-        this.#selectedPlanHtml = purify.sanitize(rawHtml)
-        this.#selectedPlanCss = this.#templateEngine.getCSSById(this.getSetting('template'))
+        })
+        this.#selectedPlanCss = this.#templateEngine.getCSSById(template)
 
         this.#showPlanView = true
-
         this.emit('viewChanged')
     }
 
@@ -417,21 +391,6 @@ export class Controller extends EventEmitter {
         // this.#configChanged()
         this.emit('configChanged', this.isConfigured() && this.#isConnected)
         this.reload()
-    }
-
-    #bibleBookFilter(abbr) {
-        let name = BOOK_MAPPING[abbr]
-        if (name === undefined) {
-            return abbr
-        }
-        return name
-    }
-
-    #markdownFilter(md) {
-        const reader = new Parser({ smart: true })
-        const writer = new HtmlRenderer({ softbreak: "<br />" })
-        const parsed = reader.parse(md)
-        return writer.render(parsed)
     }
 
 }
