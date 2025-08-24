@@ -22,7 +22,6 @@ window.electronAPI.onSetPlan((planDetail) => {
     if (planDetail.show) {
         document.getElementById('selectPlan').classList.add('d-none')
         document.getElementById('planContents').innerHTML = planDetail.html
-        window.document.title = planDetail.title
         window.scrollTo({
             top: 0,
             left: 0,

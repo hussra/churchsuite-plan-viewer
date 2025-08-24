@@ -50,9 +50,8 @@ export class Controller extends EventEmitter {
     #showPlanView = false;                   // Is currently selected plan available for viewing?
 
     #selectedPlanId = 0;                     // Currently selected plan
-    #selectedPlanTitle = 'No plan selected';
-    #selectedPlanDetail = null;
-    #selectedPlanItems = [];
+
+    #selectedPlan
     #selectedPlanHtml = '';
     #selectedPlanCss = '';
 
@@ -104,16 +103,8 @@ export class Controller extends EventEmitter {
         return this.#selectedPlanId
     }
 
-    get selectedPlanDetail() {
-        return this.#selectedPlanDetail
-    }
-
     get showPlanView() {
         return this.#showPlanView
-    }
-
-    get selectedPlanTitle() {
-        return this.#selectedPlanTitle
     }
 
     get selectedPlanHtml() {
@@ -154,9 +145,6 @@ export class Controller extends EventEmitter {
             (this.#selectedPlanId == 0)) {
 
             this.#showPlanView = false
-            this.#selectedPlanTitle = 'No plan or template selected'
-            this.#selectedPlanDetail = null
-            this.#selectedPlanItems = []
             this.#selectedPlanHtml = ''
             this.#selectedPlanCss = ''
 
@@ -200,19 +188,16 @@ export class Controller extends EventEmitter {
     }
 
     async loadPlan() {
-        this.#selectedPlanDetail = (await this.#getPlanDetail(this.#selectedPlanId)).data
-        this.#selectedPlanItems = (await this.#getPlanItems(this.#selectedPlanId)).data
-
-        this.#selectedPlanTitle = this.#selectedPlanDetail.date + " " + this.#selectedPlanDetail.time + " - " + this.#selectedPlanDetail.name
+        this.#selectedPlan = {
+            plan: {
+                detail: (await this.#getPlanDetail(this.#selectedPlanId)).data,
+                items: (await this.#getPlanItems(this.#selectedPlanId)).data
+            }
+        }
 
         const template = this.getSetting('template')
 
-        this.#selectedPlanHtml = await this.#templateEngine.renderPlan(template, {
-            plan: {
-                detail: this.#selectedPlanDetail,
-                items: this.#selectedPlanItems
-            }
-        })
+        this.#selectedPlanHtml = await this.#templateEngine.renderPlan(template, this.#selectedPlan)
         this.#selectedPlanCss = this.#templateEngine.getCSSById(template)
 
         this.#showPlanView = true
@@ -225,7 +210,7 @@ export class Controller extends EventEmitter {
         const template = this.#templateEngine.getTemplateById(this.getSetting('template'))
         const defaultFilename = path.join(
             app.getPath('downloads'),
-            this.#selectedPlanDetail.date + template.filenameSuffix + (this.getSetting('two_up') ? '-2up' : '') + '.pdf'
+            this.#selectedPlan.plan.detail.date + template.filenameSuffix + (this.getSetting('two_up') ? '-2up' : '') + '.pdf'
         )
 
         dialog.showSaveDialog(win, {

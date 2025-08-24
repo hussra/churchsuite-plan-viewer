@@ -60,7 +60,6 @@ export const createWindow = () => {
     controller.on('viewChanged', async () => {
         rightView.webContents.send('setPlan', {
             show: controller.showPlanView,
-            title: controller.selectedPlanTitle,
             html: controller.selectedPlanHtml
         })
 
