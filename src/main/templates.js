@@ -18,8 +18,8 @@ import { app } from 'electron'
 import * as path from 'node:path'
 import * as fs from 'fs'
 
-export class TemplateStore {
-    
+export class TemplateEngine {
+
     constructor(controller) {
         this.#controller = controller
 

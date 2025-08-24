@@ -28,7 +28,7 @@ import { HtmlRenderer, Parser } from 'commonmark'
 
 import { win, rightView } from './window'
 import { SETTINGS_SCHEMA, BOOK_MAPPING } from './constants'
-import { TemplateStore } from './templates'
+import { TemplateEngine } from './templates'
 
 export class Controller extends EventEmitter {
 
@@ -50,7 +50,7 @@ export class Controller extends EventEmitter {
         this.#liquidEngine.registerFilter('bibleBook', this.#bibleBookFilter)
         this.#liquidEngine.registerFilter('markdown', this.#markdownFilter)
 
-        this.#templateStore = new TemplateStore(this)
+        this.#templateEngine = new TemplateEngine(this)
     }
 
     #store
@@ -69,7 +69,7 @@ export class Controller extends EventEmitter {
     #selectedPlanHtml = '';
     #selectedPlanCss = '';
 
-    #templateStore
+    #templateEngine
     #selectedTemplate = ''
 
     set selectedTemplateId(templateId) {
@@ -110,7 +110,7 @@ export class Controller extends EventEmitter {
     }
 
     get allTemplates() {
-        return this.#templateStore.allTemplates
+        return this.#templateEngine.allTemplates
     }
 
     get selectedPlanId() {
@@ -156,7 +156,7 @@ export class Controller extends EventEmitter {
         if ((key == 'client_secret') || (key == 'client_id')) {
             this.#store.set(key, 'base64:' + safeStorage.encryptString(value).toString('base64'))
         } else {
-            this.#store.set(key, value)            
+            this.#store.set(key, value)
         }
     }
 
@@ -191,7 +191,7 @@ export class Controller extends EventEmitter {
 
     async reload() {
         this.loadPlans()
-        
+
         this.emit('templatesChanged')
     }
 
@@ -238,7 +238,7 @@ export class Controller extends EventEmitter {
         const window = new JSDOM('').window
         const purify = DOMPurify(window)
         this.#selectedPlanHtml = purify.sanitize(rawHtml)
-        this.#selectedPlanCss = this.#templateStore.getCSSById(this.getSetting('template'))
+        this.#selectedPlanCss = this.#templateEngine.getCSSById(this.getSetting('template'))
 
         this.#showPlanView = true
 
@@ -248,7 +248,7 @@ export class Controller extends EventEmitter {
 
     async exportPDF() {
         // TODO: Don't like this bit being here rather than in window.js
-        const template = this.#templateStore.getTemplateById(this.getSetting('template'))
+        const template = this.#templateEngine.getTemplateById(this.getSetting('template'))
         const defaultFilename = path.join(
             app.getPath('downloads'),
             this.#selectedPlanDetail.date + template.filenameSuffix + (this.getSetting('two_up') ? '-2up' : '') + '.pdf'
@@ -277,7 +277,7 @@ export class Controller extends EventEmitter {
                     // Duplicate each page - 1, 1, 2, 2, etc.
                     mergedPdf = coherentpdf.mergeSame(
                         [pdf], false, false,
-                        [coherentpdf.all(pdf).flatMap(i => [i,i])]
+                        [coherentpdf.all(pdf).flatMap(i => [i, i])]
                     )
 
                     // Two-up and rotate
@@ -428,8 +428,8 @@ export class Controller extends EventEmitter {
     }
 
     #markdownFilter(md) {
-        const reader = new Parser({smart: true})
-        const writer = new HtmlRenderer({softbreak: "<br />"})
+        const reader = new Parser({ smart: true })
+        const writer = new HtmlRenderer({ softbreak: "<br />" })
         const parsed = reader.parse(md)
         return writer.render(parsed)
     }
