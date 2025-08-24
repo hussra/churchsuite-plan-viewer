@@ -14,168 +14,239 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app, nativeImage, Menu, BaseWindow, WebContentsView, screen, shell, BrowserWindow } from 'electron'
+import { app, dialog, nativeImage, Menu, BaseWindow, WebContentsView, screen, shell, BrowserWindow } from 'electron'
 import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './constants.js'
 import path from 'path'
-import { controller } from './main.js'
+import coherentpdf from 'coherentpdf'
 
-export var leftView, rightView, win
-var css = ''
+export class MainWindow {
 
-export const createWindow = () => {
+    constructor(controller) {
+        this.#controller = controller
 
-    const defaultWindowSize = getDefaultWindowSize()
-    win = new BaseWindow({
-        width: defaultWindowSize.width,
-        height: defaultWindowSize.height,
-        backgroundColor: 'silver',
-        title: 'ChurchSuite Plan Viewer'
-    })
-
-    win.setIcon(getIcon())
-    win.setMenu(createMenu())
-
-    leftView = new WebContentsView({
-        webPreferences: {
-            preload: LEFT_PANE_PRELOAD_WEBPACK_ENTRY,
-        }
-    })
-    leftView.webContents.loadURL(LEFT_PANE_WEBPACK_ENTRY)
-    win.contentView.addChildView(leftView)
-
-    rightView = new WebContentsView({
-        webPreferences: {
-            preload: RIGHT_PANE_PRELOAD_WEBPACK_ENTRY,
-        }
-    })
-    rightView.webContents.loadURL(RIGHT_PANE_WEBPACK_ENTRY)
-    win.contentView.addChildView(rightView)
-
-    resizePanes()
-
-    win.on('resized', resizePanes)
-    win.on('maximize', resizePanes)
-    win.on('unmaximize', resizePanes)
-
-    controller.on('viewChanged', async () => {
-        rightView.webContents.send('setPlan', {
-            show: controller.showPlanView,
-            html: controller.selectedPlanHtml
+        const defaultWindowSize = this.#getDefaultWindowSize()
+        this.#win = new BaseWindow({
+            width: defaultWindowSize.width,
+            height: defaultWindowSize.height,
+            backgroundColor: 'silver',
+            title: 'ChurchSuite Plan Viewer'
         })
 
-        if (css != '') {
-            rightView.webContents.removeInsertedCSS(css)
-        }
-        css = await rightView.webContents.insertCSS(controller.selectedPlanCss)
-    })
+        this.#win.setIcon(this.#getIcon())
+        this.#win.setMenu(this.#createMenu())
 
-    controller.on('configChanged', (connected) => {
-        leftView.webContents.send('setConnected', connected)
-    })
+        this.#leftView = new WebContentsView({
+            webPreferences: {
+                preload: LEFT_PANE_PRELOAD_WEBPACK_ENTRY,
+            }
+        })
+        this.#leftView.webContents.loadURL(LEFT_PANE_WEBPACK_ENTRY)
+        this.#win.contentView.addChildView(this.#leftView)
 
-    controller.on('plansChanged', () => {
-        leftView.webContents.send('setPlans', controller.allPlans)
-    })
+        this.#rightView = new WebContentsView({
+            webPreferences: {
+                preload: RIGHT_PANE_PRELOAD_WEBPACK_ENTRY,
+            }
+        })
+        this.#rightView.webContents.loadURL(RIGHT_PANE_WEBPACK_ENTRY)
+        this.#win.contentView.addChildView(this.#rightView)
 
-    controller.on('templatesChanged', () => {
-        leftView.webContents.send('setTemplates', controller.allTemplates)
-    })
-}
+        this.#win.on('resized', () => { this.resizePanes() })
+        this.#win.on('maximize', () => { this.resizePanes() })
+        this.#win.on('unmaximize', () => { this.resizePanes() })
 
+        this.#controller.on('viewChanged', async () => {
+            this.#rightView.webContents.send('setPlan', {
+                show: this.#controller.showPlanView,
+                html: this.#controller.selectedPlanHtml
+            })
 
-export const resizePanes = () => {
-    const [newWidth, newHeight] = win.getContentSize()
+            if (this.#css != '') {
+                this.#rightView.webContents.removeInsertedCSS(this.#css)
+            }
+            this.#css = await this.#rightView.webContents.insertCSS(this.#controller.selectedPlanCss)
+            this.resizePanes()
+        })
 
-    leftView.setBounds({
-        x: 0,
-        y: 0,
-        width: LEFT_PANEL_WIDTH,
-        height: newHeight
-    })
+        this.#controller.on('configChanged', (connected) => {
+            this.#leftView.webContents.send('setConnected', connected)
+        })
 
-    rightView.setBounds({
-        x: LEFT_PANEL_WIDTH + BAR_WIDTH,
-        y: 0,
-        width: newWidth - LEFT_PANEL_WIDTH - BAR_WIDTH,
-        height: newHeight
-    })
-}
+        this.#controller.on('plansChanged', () => {
+            this.#leftView.webContents.send('setPlans', this.#controller.allPlans)
+        })
 
+        this.#controller.on('templatesChanged', () => {
+            this.#leftView.webContents.send('setTemplates', this.#controller.allTemplates)
+        })
 
-const getDefaultWindowSize = () => {
-    const primaryDisplay = screen.getPrimaryDisplay()
-    const { width: displayWidth, height: displayHeight } = primaryDisplay.workAreaSize
-
-    return {
-        width: Math.min(WINDOW_WIDTH, displayWidth),
-        height: Math.min(WINDOW_HEIGHT, displayHeight)
+        // Hacky, but ensures bottom scrollbar button appears.
+        // Somehow win.getContentSize() doesn't include menu bar height
+        // at first, but does a little later.
+        setTimeout(() => { this.resizePanes() }, 100)
     }
-}
 
 
-const createMenu = () => {
+    #controller
+    #leftView
+    #rightView
+    #win
+    #css = ''
 
-    const isMac = process.platform === 'darwin'
-    let menuTemplate = [
-        {
-            label: 'File',
-            submenu: [
-                isMac ? { role: 'close' } : { role: 'quit' }
-            ]
-        },
-        {
-            role: 'help',
-            submenu: [
-                {
-                    label: 'About...',
-                    click: async () => {
-                        const about = new BrowserWindow({
-                            parent: win,
-                            title: app.getName(),
-                            modal: true,
-                            show: false,
-                            webPreferences: {
-                                preload: ABOUT_PANE_PRELOAD_WEBPACK_ENTRY,
-                            }
-                        })
 
-                        about.menuBarVisible = false
-                        about.webContents.setWindowOpenHandler(({ url }) => {
-                            // Open urls with target="_blank" in a browser
-                            shell.openExternal(url);
-                            return { action: 'deny' };
-                        });
-                        about.loadURL(ABOUT_PANE_WEBPACK_ENTRY)
-                        about.once('ready-to-show', () => {
-                            about.show()
-                        })
+    resizePanes() {
+        const [width, height] = this.#win.getContentSize()
+
+        this.#leftView.setBounds({
+            x: 0,
+            y: 0,
+            width: LEFT_PANEL_WIDTH,
+            height: height
+        })
+
+        this.#rightView.setBounds({
+            x: LEFT_PANEL_WIDTH + BAR_WIDTH,
+            y: 0,
+            width: width - LEFT_PANEL_WIDTH - BAR_WIDTH,
+            height: height
+        })
+    }
+
+
+    #getDefaultWindowSize() {
+        const primaryDisplay = screen.getPrimaryDisplay()
+        const { width: displayWidth, height: displayHeight } = primaryDisplay.workAreaSize
+
+        return {
+            width: Math.min(WINDOW_WIDTH, displayWidth),
+            height: Math.min(WINDOW_HEIGHT, displayHeight)
+        }
+    }
+
+
+    #createMenu() {
+
+        const isMac = process.platform === 'darwin'
+        let menuTemplate = [
+            {
+                label: 'File',
+                submenu: [
+                    isMac ? { role: 'close' } : { role: 'quit' }
+                ]
+            },
+            {
+                role: 'help',
+                submenu: [
+                    {
+                        label: 'About...',
+                        click: async () => {
+                            const about = new BrowserWindow({
+                                parent: this.#win,
+                                title: app.getName(),
+                                modal: true,
+                                show: false,
+                                webPreferences: {
+                                    preload: ABOUT_PANE_PRELOAD_WEBPACK_ENTRY,
+                                }
+                            })
+
+                            about.menuBarVisible = false
+                            about.webContents.setWindowOpenHandler(({ url }) => {
+                                // Open urls with target="_blank" in a browser
+                                shell.openExternal(url);
+                                return { action: 'deny' };
+                            });
+                            about.loadURL(ABOUT_PANE_WEBPACK_ENTRY)
+                            about.once('ready-to-show', () => {
+                                about.show()
+                            })
+                        }
                     }
-                }
-            ]
-        }
-    ]
+                ]
+            }
+        ]
 
-    if (!app.isPackaged) {
-        menuTemplate.splice(1, 0, {
-            label: 'Inspect',
-            submenu: [
-                {
-                    label: 'Left',
-                    click: async () => { leftView.webContents.openDevTools({ mode: 'detach' }) }
-                },
-                {
-                    label: 'Right',
-                    click: async () => { rightView.webContents.openDevTools({ mode: 'detach' }) }
+        if (!app.isPackaged) {
+            menuTemplate.splice(1, 0, {
+                label: 'Inspect',
+                submenu: [
+                    {
+                        label: 'Left',
+                        click: async () => { this.#leftView.webContents.openDevTools({ mode: 'detach' }) }
+                    },
+                    {
+                        label: 'Right',
+                        click: async () => { this.#rightView.webContents.openDevTools({ mode: 'detach' }) }
+                    }
+                ]
+            })
+        }
+
+        return Menu.buildFromTemplate(menuTemplate)
+    }
+
+
+    #getIcon() {
+        const assetsPath = app.isPackaged ? path.join(process.resourcesPath, "app", "assets") : "assets";
+        return nativeImage.createFromPath(path.join(assetsPath, 'icon.ico'))
+    }
+
+
+    async exportPDF() {
+        const template = this.#controller.template
+        const twoUp = this.#controller.getSetting('two_up')
+
+        const defaultFilename = path.join(
+            app.getPath('downloads'),
+            this.#controller.selectedPlan.plan.detail.date + template.filenameSuffix + (twoUp ? '-2up' : '') + '.pdf'
+        )
+
+        dialog.showSaveDialog(this.#win, {
+            defaultPath: defaultFilename
+        }).then((result) => {
+            if (result.canceled) return
+
+            let pdf
+            let mergedPdf
+
+            this.#rightView.webContents.printToPDF({
+                printBackground: true,
+                pageSize: this.#controller.getSetting('page_size')
+            }).then(data => {
+
+                if (twoUp) {
+                    // Load the PDF file
+                    pdf = coherentpdf.fromMemory(data, '')
+
+                    // Duplicate each page - 1, 1, 2, 2, etc.
+                    mergedPdf = coherentpdf.mergeSame(
+                        [pdf], false, false,
+                        [coherentpdf.all(pdf).flatMap(i => [i, i])]
+                    )
+
+                    // Two-up and rotate
+                    coherentpdf.twoUp(mergedPdf)
+                    coherentpdf.rotate(mergedPdf, coherentpdf.all(mergedPdf), 90)
+
+                    // Save to file
+                    coherentpdf.toFile(mergedPdf, result.filePath, false, false)
+                } else {
+                    // 1-up - just save it!
+                    fs.writeFileSync(result.filePath, data)
                 }
-            ]
+
+                shell.openPath(result.filePath)
+            }).catch((err) => {
+                dialog.showMessageBox(this.#win, {
+                    type: 'error',
+                    title: 'Unable to save file',
+                    message: `Sorry, we were not able to save this plan to ${result.filePath} - is the file already open?`
+                })
+            }).finally(() => {
+                coherentpdf.deletePdf(mergedPdf)
+                coherentpdf.deletePdf(pdf)
+            })
         })
     }
 
-    return Menu.buildFromTemplate(menuTemplate)
-}
-
-
-function getIcon() {
-    const assetsPath = app.isPackaged ? path.join(process.resourcesPath, "app", "assets") : "assets";
-    return nativeImage.createFromPath(path.join(assetsPath, 'icon.ico'))
 }

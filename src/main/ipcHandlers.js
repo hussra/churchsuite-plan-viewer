@@ -15,7 +15,7 @@
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { app, ipcMain } from 'electron'
-import { controller } from './main'
+import { controller, mainWindow } from './main'
 
 export async function addIpcHandlers() {
 
@@ -39,7 +39,7 @@ export async function addIpcHandlers() {
 
     // Called when "Export PDF" clicked in left pane
     ipcMain.handle('exportPDF', () => {
-        controller.exportPDF()
+        mainWindow.exportPDF()
     })
 
     // Get a setting from the setting store
