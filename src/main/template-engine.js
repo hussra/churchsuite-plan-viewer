@@ -14,13 +14,14 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app } from 'electron'
 import * as path from 'node:path'
 import * as fs from 'fs'
-import { Liquid } from 'liquidjs'
-import { JSDOM } from 'jsdom'
-import DOMPurify from 'dompurify'
+import { app } from 'electron'
 import { HtmlRenderer, Parser } from 'commonmark'
+import DOMPurify from 'dompurify'
+import { JSDOM } from 'jsdom'
+import { Liquid } from 'liquidjs'
+
 import { BOOK_MAPPING } from './constants'
 
 export class TemplateEngine {

@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app, dialog, shell, safeStorage } from 'electron'
 import { EventEmitter } from 'node:events'
+import { safeStorage } from 'electron'
 import Store from 'electron-store'
 import { request } from "undici"
 

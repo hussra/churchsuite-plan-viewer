@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app, dialog, nativeImage, Menu, BaseWindow, WebContentsView, screen, shell, BrowserWindow } from 'electron'
-import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './constants.js'
 import path from 'path'
+import { app, BaseWindow, BrowserWindow, dialog, Menu, nativeImage, screen, shell, WebContentsView } from 'electron'
 import coherentpdf from 'coherentpdf'
+
+import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './constants'
 
 export class MainWindow {
 
