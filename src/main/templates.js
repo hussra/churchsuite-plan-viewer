@@ -23,17 +23,17 @@ export class TemplateEngine {
     constructor(controller) {
         this.#controller = controller
 
+        // Directory containing pre-defined plan templates
         const viewDir = app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", "views") : "views"
 
+        // Find .liquid files in this directory which also have corresponding .css and .json files
         let files = fs.readdirSync(viewDir, { withFileTypes: true })
-        
-        // Find .liquid files in this directory
         files.forEach(file => {
             if (file.isFile() && (path.extname(file.name) === '.liquid')) {
-            let basename = path.basename(file.name, '.liquid')
+                let basename = path.basename(file.name, '.liquid')
 
                 const cssFile = path.resolve(viewDir, basename + '.css')
-                const jsonFile = path.resolve(viewDir, basename + '.tpl')
+                const jsonFile = path.resolve(viewDir, basename + '.json')
                 try {
                     fs.accessSync(cssFile, fs.constants.R_OK)
                     fs.accessSync(jsonFile, fs.constants.R_OK)
