@@ -22,7 +22,7 @@ import Store from 'electron-store'
 import coherentpdf from 'coherentpdf'
 import { request } from "undici"
 
-import { win, rightView } from './window'
+import { win, rightView } from './window-main'
 import { SETTINGS_SCHEMA } from './constants'
 import { TemplateEngine } from './template-engine'
 
@@ -206,7 +206,7 @@ export class Controller extends EventEmitter {
 
 
     async exportPDF() {
-        // TODO: Don't like this bit being here rather than in window.js
+        // TODO: Don't like this bit being here rather than in window-main.js
         const template = this.#templateEngine.getTemplateById(this.getSetting('template'))
         const defaultFilename = path.join(
             app.getPath('downloads'),
@@ -221,7 +221,7 @@ export class Controller extends EventEmitter {
             let pdf
             let mergedPdf
 
-            // TODO: Don't like this bit being here rather than in window.js
+            // TODO: Don't like this bit being here rather than in window-main.js
             rightView.webContents.printToPDF({
                 printBackground: true,
                 pageSize: this.#store.get('page_size')
@@ -252,7 +252,7 @@ export class Controller extends EventEmitter {
 
                 shell.openPath(result.filePath)
             }).catch((err) => {
-                // TODO: Don't like this bit being here rather than in window.js
+                // TODO: Don't like this bit being here rather than in window-main.js
                 dialog.showMessageBox(win, {
                     type: 'error',
                     title: 'Unable to save file',

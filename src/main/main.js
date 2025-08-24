@@ -16,8 +16,8 @@
 
 import { app } from 'electron'
 import { addIpcHandlers } from './ipcHandlers'
-import { createWindow, resizePanes } from './window.js'
-import { Controller } from './controller.js'
+import { createWindow, resizePanes } from './window-main'
+import { Controller } from './controller'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
