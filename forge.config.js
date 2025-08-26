@@ -77,9 +77,17 @@ module.exports = {
             {
               html: './src/renderer/about.html',
               js: './src/renderer/renderer-about.js',
-              name: 'about_pane',
+              name: 'about',
               preload: {
                 js: './src/renderer/preload-about.js',
+              },
+            },
+            {
+              html: './src/renderer/editor.html',
+              js: './src/renderer/renderer-editor.js',
+              name: 'editor',
+              preload: {
+                js: './src/renderer/preload-editor.js',
               },
             }
           ],

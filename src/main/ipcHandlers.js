@@ -16,6 +16,7 @@
 
 import { app, ipcMain } from 'electron'
 
+import { EditorWindow } from './window-editor'
 import { controller, mainWindow } from './main'
 
 export async function addIpcHandlers() {
@@ -23,6 +24,20 @@ export async function addIpcHandlers() {
     // Called when left pane asks for list of plans to be refreshed
     ipcMain.handle('refresh', async () => {
         controller.reload()
+    })
+
+    ipcMain.handle('editTemplates', () => {
+        if (!globalThis.editorWindow) {
+            // First time an editor window has been created
+            globalThis.editorWindow = new EditorWindow()
+            return
+        } else {
+            if (globalThis.editorWindow.isDestroyed()) {
+                globalThis.editorWindow = new EditorWindow()
+            } else {
+                globalThis.editorWindow.bringToFront()
+            }
+        }
     })
 
     ipcMain.handle('isConfigured', async () => {

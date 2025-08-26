@@ -57,6 +57,12 @@ export class MainWindow {
         this.#win.on('maximize', () => { this.resizePanes() })
         this.#win.on('unmaximize', () => { this.resizePanes() })
 
+        this.#win.on('close', () => {
+            if (globalThis.editorWindow && !globalThis.editorWindow.isDestroyed()) {
+                globalThis.editorWindow.hide()
+            }
+        })
+
         this.#controller.on('viewChanged', async () => {
             this.#rightView.webContents.send('setPlan', {
                 show: this.#controller.showPlanView,
@@ -148,7 +154,7 @@ export class MainWindow {
                                 modal: true,
                                 show: false,
                                 webPreferences: {
-                                    preload: ABOUT_PANE_PRELOAD_WEBPACK_ENTRY,
+                                    preload: ABOUT_PRELOAD_WEBPACK_ENTRY,
                                 }
                             })
 
@@ -158,7 +164,7 @@ export class MainWindow {
                                 shell.openExternal(url);
                                 return { action: 'deny' };
                             });
-                            about.loadURL(ABOUT_PANE_WEBPACK_ENTRY)
+                            about.loadURL(ABOUT_WEBPACK_ENTRY)
                             about.once('ready-to-show', () => {
                                 about.show()
                             })
