@@ -25,6 +25,11 @@
     margin-bottom: 9px;
 }
 
+#planContents h4,
+#planContents h5 {
+    page-break-after: avoid;
+}
+
 #planContents p.people {
     float: right;
     margin-bottom: 0;
