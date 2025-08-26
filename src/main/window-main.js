@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import * as fs from 'fs'
 import path from 'path'
 import { app, BaseWindow, BrowserWindow, dialog, Menu, nativeImage, screen, shell, WebContentsView } from 'electron'
 import coherentpdf from 'coherentpdf'
