@@ -40,6 +40,10 @@ export async function addIpcHandlers() {
         }
     })
 
+    ipcMain.handle('getTemplates', () => {
+        return controller.templateEngine.allTemplates
+    })
+
     ipcMain.handle('isConfigured', async () => {
         return controller.isConfigured()
     })

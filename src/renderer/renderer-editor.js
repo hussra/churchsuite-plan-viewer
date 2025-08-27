@@ -19,4 +19,37 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.min.css'
 
-// TODO
+const populateTemplates = (templates) => {
+
+    const templateSelect = document.getElementById('template')
+    const selectedTemplate = templateSelect.value
+
+    // Remove all but '--Select plan--'
+    for (const el of document.querySelectorAll('#template option')) {
+        if (el.value !== '') {
+            el.remove()
+        }
+    }
+
+    let haveSelected = false
+    for (let i in templates) {
+        let option = document.createElement('option')
+        option.innerHTML = templates[i].name + (!(templates[i].editable) ? ' (read-only)' : '')
+        option.setAttribute('value', templates[i].id)
+        templateSelect.append(option)
+        if (templates[i].id == selectedTemplate) {
+            templateSelect.value = selectedTemplate
+            haveSelected = true
+        }
+    }
+
+    templateSelect.dispatchEvent(new Event('change'))
+}
+
+const load = async () => {
+    let templates = await window.electronAPI.getTemplates()
+    alert(JSON.stringify(templates))
+    populateTemplates(templates)
+}
+
+load()

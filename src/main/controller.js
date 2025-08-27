@@ -95,6 +95,10 @@ export class Controller extends EventEmitter {
         return this.#allPlans
     }
 
+    get templateEngine() {
+        return this.#templateEngine
+    }
+
     get allTemplates() {
         return this.#templateEngine.allTemplates
     }

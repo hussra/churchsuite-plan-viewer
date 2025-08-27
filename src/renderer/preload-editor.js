@@ -9,5 +9,5 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
 contextBridge.exposeInMainWorld('electronAPI', {
-    // TODO
+    getTemplates: () => ipcRenderer.invoke('getTemplates')
 })

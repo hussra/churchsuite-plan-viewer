@@ -24,6 +24,22 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <body>
     <h1>Template Editor</h1>
+
+    <form>
+        <div class="container" id="mainControls">
+            <div class="form-group mb-3">
+                <label for="plan">Select template to edit</label>
+                <div class="input-group">
+                    <select class="form-select" id="template" aria-label="Select a template">
+                        <option value="">--Select template--</option>
+                    </select>
+                    <button class="btn btn-outline-secondary" type="button" id="editButton" title="Edit Templates">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
 </body>
 
 </html>
