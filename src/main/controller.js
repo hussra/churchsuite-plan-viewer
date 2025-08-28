@@ -181,15 +181,22 @@ export class Controller extends EventEmitter {
     async loadPlans() {
         const planData = await this.#getPlans()
 
+        let allPlans = []
         if (planData.data) {
-            this.#allPlans = planData.data.map((plan) => {
+            allPlans = planData.data.map((plan) => {
                 return {
                     id: plan.id,
-                    date: plan.date
+                    date: plan.date,
+                    timestamp: Date.parse(plan.date + " " + plan.time)
                 }
             })
+        }
+
+        // For past plans, sort in reverse date order (most recent first)
+        if (this.getSetting('past_plans')) {
+            this.#allPlans = allPlans.sort(({ timestamp: a }, { timestamp: b }) => b - a)
         } else {
-            this.#allPlans = []
+            this.#allPlans = allPlans
         }
 
         this.emit('plansChanged')
