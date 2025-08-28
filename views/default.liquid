@@ -15,8 +15,10 @@
   this program.  If not, see <http://www.gnu.org/licenses/>.
 {% endcomment %}
 
-<h2>{{plan.detail.name}}</h2>
-<h3>{{plan.detail.date}} {{plan.detail.time}}</h3>
+<h2>
+  {{plan.detail.name}}<br />
+  {{plan.detail.date_time | date: "%A %e %b %Y, %l.%M%P"}}
+</h2>
 
 <table class="plan">
   {% for item in plan.items %}

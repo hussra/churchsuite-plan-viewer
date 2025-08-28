@@ -203,12 +203,19 @@ export class Controller extends EventEmitter {
     }
 
     async loadPlan() {
+        const detail = (await this.#getPlanDetail(this.#selectedPlanId)).data
+
         this.#selectedPlan = {
             plan: {
-                detail: (await this.#getPlanDetail(this.#selectedPlanId)).data,
+                detail: {
+                    ...detail,
+                    date_time: new Date(Date.parse(detail.date + " " + detail.time))
+                },
                 items: (await this.#getPlanItems(this.#selectedPlanId)).data
             }
         }
+
+        console.log(this.#selectedPlan)
 
         const template = this.getSetting('template')
 

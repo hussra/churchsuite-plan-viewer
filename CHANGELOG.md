@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Proper first-time initialisation of settings
 - Cosmetic tweaks to program name and icon
 - Hide Inspect menu except in develoment mode
+- When showing past plans, sort in reverse date order (most recent first)
 - Dependencies updated
 
 ## [v1.0.0] - 2025-07-29
