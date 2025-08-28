@@ -215,8 +215,6 @@ export class Controller extends EventEmitter {
             }
         }
 
-        console.log(this.#selectedPlan)
-
         const template = this.getSetting('template')
 
         this.#selectedPlanHtml = await this.#templateEngine.renderPlan(template, this.#selectedPlan)
