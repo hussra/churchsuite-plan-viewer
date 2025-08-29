@@ -59,35 +59,35 @@ module.exports = {
           config: './webpack.renderer.config.js',
           entryPoints: [
             {
-              html: './src/renderer/left.html',
-              js: './src/renderer/renderer-left.js',
+              html: './src/renderer/left/left.html',
+              js: './src/renderer/left/renderer-left.js',
               name: 'left_pane',
               preload: {
-                js: './src/renderer/preload-left.js',
+                js: './src/renderer/left/preload-left.js',
               },
             },
             {
-              html: './src/renderer/right.html',
-              js: './src/renderer/renderer-right.js',
+              html: './src/renderer/right/right.html',
+              js: './src/renderer/right/renderer-right.js',
               name: 'right_pane',
               preload: {
-                js: './src/renderer/preload-right.js',
+                js: './src/renderer/right/preload-right.js',
               },
             },
             {
-              html: './src/renderer/about.html',
-              js: './src/renderer/renderer-about.js',
+              html: './src/renderer/about/about.html',
+              js: './src/renderer/about/renderer-about.js',
               name: 'about',
               preload: {
-                js: './src/renderer/preload-about.js',
+                js: './src/renderer/about/preload-about.js',
               },
             },
             {
-              html: './src/renderer/editor.html',
-              js: './src/renderer/renderer-editor.js',
+              html: './src/renderer/editor/editor.html',
+              js: './src/renderer/editor/renderer-editor.js',
               name: 'editor',
               preload: {
-                js: './src/renderer/preload-editor.js',
+                js: './src/renderer/editor/preload-editor.js',
               },
             }
           ],
