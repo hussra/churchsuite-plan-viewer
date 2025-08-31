@@ -88,6 +88,8 @@ export class MainWindow {
             this.#leftView.webContents.send('setTemplates', this.#controller.allTemplates)
         })
 
+        this.#win.show()
+
         // Hacky, but ensures bottom scrollbar button appears.
         // Somehow win.getContentSize() doesn't include menu bar height
         // at first, but does a little later.
