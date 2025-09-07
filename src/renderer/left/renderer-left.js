@@ -113,6 +113,9 @@ const loadSettings = async () => {
     const plans_quantity = await window.electronAPI.getFromStore('plans_quantity')
     document.getElementById('plans_quantity').value = plans_quantity
 
+    const name_style = await window.electronAPI.getFromStore('name_style')
+    document.getElementById('name_style').value = name_style
+
     const two_up = await window.electronAPI.getFromStore('two_up')
     document.getElementById('two_up').checked = two_up
 
@@ -163,6 +166,10 @@ const load = async () => {
     })
     document.getElementById('plans_quantity').addEventListener('change', async () => {
         await window.electronAPI.setInStore('plans_quantity', parseInt(document.getElementById('plans_quantity').value))
+        refresh()
+    })
+    document.getElementById('name_style').addEventListener('change', async () => {
+        await window.electronAPI.setInStore('name_style', document.getElementById('name_style').value)
         refresh()
     })
     document.getElementById('two_up').addEventListener('change', async () => {

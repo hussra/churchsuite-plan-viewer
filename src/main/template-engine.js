@@ -64,8 +64,9 @@ export class TemplateEngine {
             extname: '.liquid',
             jsTruthy: true
         })
-        this.#liquidEngine.registerFilter('bibleBook', this.#bibleBookFilter)
-        this.#liquidEngine.registerFilter('markdown', this.#markdownFilter)
+        this.#liquidEngine.registerFilter('bibleBook', this.#bibleBookFilter.bind(this))
+        this.#liquidEngine.registerFilter('markdown', this.#markdownFilter.bind(this))
+        this.#liquidEngine.registerFilter('personName', this.#personNameFilter.bind(this))
 
     }
 
@@ -114,5 +115,16 @@ export class TemplateEngine {
         const writer = new HtmlRenderer({ softbreak: "<br />" })
         const parsed = reader.parse(md)
         return writer.render(parsed)
+    }
+
+    #personNameFilter(person) {
+        switch(this.#controller.getSetting('name_style')) {
+            case 'first':
+                return person.first_name
+            case 'first_initial':
+                return person.first_name + ' ' + person.last_name.charAt(0)
+            case 'first_last':
+                return person.first_name + ' ' + person.last_name
+        }
     }
 }

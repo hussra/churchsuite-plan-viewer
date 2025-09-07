@@ -54,7 +54,12 @@ export const SETTINGS_SCHEMA = {
     template: {
         type: 'string',
         default: 'default'
-    }
+    },
+    name_style: {
+        type: 'string',
+        enum: ['first', 'first_initial', 'first_last'],
+        default: 'first'
+    },
 }
 
 export const BOOK_MAPPING = {
