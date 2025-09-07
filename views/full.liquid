@@ -27,7 +27,7 @@
 
     <p class="people">
       {% for person in item.people -%}
-        {{person.first_name}}
+        {{person | personName}}
         {%- if forloop.last == false %}, {% endif %}
       {% endfor %}
     </p>
