@@ -52,6 +52,14 @@ export class MainWindow {
         })
         this.#rightView.webContents.loadURL(RIGHT_PANE_WEBPACK_ENTRY)
         this.#win.contentView.addChildView(this.#rightView)
+        
+        const contextMenu = Menu.buildFromTemplate([
+            { role: 'selectAll' },
+            { role: 'copy' }
+        ])
+        this.#rightView.webContents.on('context-menu', (e, params) => {
+            contextMenu.popup()
+        })
 
         this.#win.on('resized', () => { this.resizePanes() })
         this.#win.on('maximize', () => { this.resizePanes() })
