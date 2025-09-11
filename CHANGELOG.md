@@ -16,7 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Encrypt API key in config file
 - Multiple, selectable, templates, each with their own CSS
 - When printing a multi-page document two-up, print two of the same page on each sheet
+- In "Full" template, render markdown in liturgy and prayer items
 - Option to change how names are shown against plan items - first name, first name and initial, or full name
+- Context menu in plan view with Select All and Copy options
 
 ### Changed
 
@@ -24,6 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Cosmetic tweaks to program name and icon
 - Hide Inspect menu except in develoment mode
 - When showing past plans, sort in reverse date order (most recent first)
+- Improved date formatting
+- Much refactoring in preparation for template editor
 - Dependencies updated
 
 ## [v1.0.0] - 2025-07-29
