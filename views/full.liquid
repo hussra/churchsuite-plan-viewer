@@ -53,9 +53,11 @@
 
     {% if item.type_id == 20 or item.type_id == 21 %}
         {%- for question in item.question_responses %}
-            {% if question.id == 9 or question.id == 10 %}
-                <div class="liturgy">{{question.value | markdown}}</div>
+          {% if question.id == 9 or question.id == 10 %}
+            {% if question.value %}
+              <div class="liturgy">{{question.value | markdown}}</div>
             {% endif %}
+          {% endif %}
         {% endfor %}
     {% endif %}
 

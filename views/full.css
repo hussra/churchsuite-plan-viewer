@@ -25,8 +25,14 @@
     margin-bottom: 9px;
 }
 
-#planContents h3,
-#planContents h4 {
+#planContents h4 + #planContents div.liturgy,
+#planContents p.comment,
+#planContents h3 + #planContents h4,
+#planContents p.people + #planContents h4 {
+    page-break-before: avoid;
+}
+
+#planContents h3 {
     page-break-after: avoid;
 }
 
