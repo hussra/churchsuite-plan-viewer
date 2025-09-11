@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Encrypt API key in config file
 - Multiple, selectable, templates, each with their own CSS
 - When printing a multi-page document two-up, print two of the same page on each sheet
+- Option to change how names are shown against plan items - first name, first name and initial, or full name
 
 ### Changed
 

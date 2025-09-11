@@ -48,8 +48,13 @@ const populateTemplates = (templates) => {
 
 const load = async () => {
     let templates = await window.electronAPI.getTemplates()
-    alert(JSON.stringify(templates))
+    //alert(JSON.stringify(templates))
     populateTemplates(templates)
+
+    document.getElementById('template').addEventListener('change', async (event) => {
+        const templateId = event.target.value
+        alert('Selected template ' + templateId)
+    })
 }
 
 load()
