@@ -26,7 +26,7 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
   <h1>ChurchSuite Plan Viewer</h1>
   <form>
     <div class="container d-none" id="mainControls">
-      <div class="form-group mb-3">
+      <div class="form-group mb-2">
         <label for="plan">Select a plan</label>
         <div class="input-group">
           <select class="form-select" id="plan" aria-label="Select a plan">
@@ -38,26 +38,26 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
       </div>
 
-      <div class="form-group mb-3">
+      <div class="form-group mb-2">
         <div class="form-check form-switch">
           <input class="form-check-input" type="checkbox" role="switch" id="past_plans">
           <label class="form-check-label" for="past_plans">Show past plans</label>
         </div>
       </div>
 
-      <div class="form-group mb-3">
+      <div class="form-group mb-2">
         <div class="form-check form-switch">
           <input class="form-check-input" type="checkbox" role="switch" id="draft_plans">
           <label class="form-check-label" for="draft_plans">Show draft plans</label>
         </div>
       </div>
 
-      <div class="form-group mb-3">
+      <div class="form-group mb-2">
         <label class="form-label" for="plans_quantity">Number of plans to show</label>
         <input type="number" min="1" max="250" class="form-control" id="plans_quantity" />
       </div>
 
-      <div class="form-group mb-3">
+      <div class="form-group mb-2">
         <label for="plan">Select a template</label>
         <div class="input-group">
           <select class="form-select" id="template" aria-label="Select a template">
@@ -69,8 +69,8 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
       </div>
 
-      <div class="form-group mb-3">
-        <label for="name_style">Show names as</label>
+      <div class="form-group mb-2">
+        <label for="name_style">Default name style<br /><em>(Some templates may over-ride)</em></label>
         <div class="input-group">
           <select class="form-select" id="name_style" aria-label="Show names as">
             <option value="first">Fred</option>
@@ -80,7 +80,7 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
       </div>
 
-      <div class="form-group mb-3">
+      <div class="form-group mb-2">
         <label for="page_size">Page size</label>
         <select class="form-select" id="page_size" aria-label="Page size">
           <option value="a4">A4</option>
@@ -88,14 +88,14 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
         </select>
       </div>
 
-      <div class="form-group mb-3">
+      <div class="form-group mb-2">
         <div class="form-check form-switch">
           <input class="form-check-input" type="checkbox" role="switch" id="two_up">
           <label class="form-check-label" for="two_up">2 copies per sheet</label>
         </div>
       </div>
 
-      <div class="mb-3">
+      <div class="mb-2">
         <button type="button" class="btn btn-primary" id="exportPDF">
           <i class="bi bi-file-earmark-pdf"></i>
           Create PDF
@@ -103,7 +103,7 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
       </div>
     </div>
 
-    <div class="accordion mb-3" id="settingsAccordion">
+    <div class="accordion mb-2" id="settingsAccordion">
       <div class="accordion-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -113,16 +113,16 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
         </h2>
         <div id="authenticationSettings" class="accordion-collapse collapse" data-bs-parent="#settingsAccordion">
           <div class="accordion-body">
-            <div class="mb-3 alert alert-info">
+            <div class="mb-2 alert alert-info">
               First you will need to set up API v2 access for your user - see the
               <a href="https://support.churchsuite.com/article/454-developer-api#manage">ChurchSuite documentation</a>
               for help on how to do this.
             </div>
-            <div class="form-group mb-3">
+            <div class="form-group mb-2">
               <label for="client_id">Client Identifier</label>
               <input type="password" class="form-control" id="client_id">
             </div>
-            <div class="form-group mb-3">
+            <div class="form-group mb-2">
               <label for="client_secret">Client Secret</label>
               <input type="password" class="form-control" id="client_secret">
             </div>

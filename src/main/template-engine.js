@@ -64,8 +64,8 @@ export class TemplateEngine {
             extname: '.liquid',
             jsTruthy: true
         })
-        this.#liquidEngine.registerFilter('bibleBook', this.#bibleBookFilter.bind(this))
-        this.#liquidEngine.registerFilter('markdown', this.#markdownFilter.bind(this))
+        this.#liquidEngine.registerFilter('bibleBook', this.#bibleBookFilter)
+        this.#liquidEngine.registerFilter('markdown', this.#markdownFilter)
         this.#liquidEngine.registerFilter('personName', this.#personNameFilter.bind(this))
 
     }
@@ -117,8 +117,10 @@ export class TemplateEngine {
         return writer.render(parsed)
     }
 
-    #personNameFilter(person) {
-        switch(this.#controller.getSetting('name_style')) {
+    #personNameFilter(person, style = this.#controller.getSetting('name_style')) {
+        //switch(this.#controller.getSetting('name_style')) {
+        console.log(style)
+        switch(style) {
             case 'first':
                 return person.first_name
             case 'first_initial':
