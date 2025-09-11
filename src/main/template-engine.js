@@ -67,7 +67,6 @@ export class TemplateEngine {
         this.#liquidEngine.registerFilter('bibleBook', this.#bibleBookFilter)
         this.#liquidEngine.registerFilter('markdown', this.#markdownFilter)
         this.#liquidEngine.registerFilter('personName', this.#personNameFilter.bind(this))
-
     }
 
     #controller
@@ -118,8 +117,6 @@ export class TemplateEngine {
     }
 
     #personNameFilter(person, style = this.#controller.getSetting('name_style')) {
-        //switch(this.#controller.getSetting('name_style')) {
-        console.log(style)
         switch(style) {
             case 'first':
                 return person.first_name
