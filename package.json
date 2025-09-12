@@ -18,26 +18,26 @@
   },
   "license": "GPL-3.0",
   "devDependencies": {
-    "@electron-forge/cli": "^7.8.3",
-    "@electron-forge/maker-deb": "^7.8.3",
-    "@electron-forge/maker-rpm": "^7.8.3",
-    "@electron-forge/maker-squirrel": "^7.8.3",
-    "@electron-forge/maker-zip": "^7.8.3",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.8.3",
-    "@electron-forge/plugin-fuses": "^7.8.3",
-    "@electron-forge/plugin-webpack": "^7.8.3",
-    "@electron/fuses": "^1.8.0",
+    "@electron-forge/cli": "^7.9.0",
+    "@electron-forge/maker-deb": "^7.9.0",
+    "@electron-forge/maker-rpm": "^7.9.0",
+    "@electron-forge/maker-squirrel": "^7.9.0",
+    "@electron-forge/maker-zip": "^7.9.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.9.0",
+    "@electron-forge/plugin-fuses": "^7.9.0",
+    "@electron-forge/plugin-webpack": "^7.9.0",
+    "@electron/fuses": "^2.0.0",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
-    "copy-webpack-plugin": "^13.0.0",
+    "copy-webpack-plugin": "^13.0.1",
     "css-loader": "^7.1.2",
-    "electron": "^37.2.6",
+    "electron": "^38.1.0",
     "node-loader": "^2.1.0",
     "style-loader": "^4.0.0",
-    "webpack": "^5.101.0"
+    "webpack": "^5.101.3"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "bootstrap": "^5.3.7",
+    "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "coherentpdf": "^2.5.5",
     "commonmark": "^0.31.2",
@@ -47,7 +47,7 @@
     "html-loader": "^5.1.0",
     "jsdom": "^26.1.0",
     "liquidjs": "^10.21.1",
-    "undici": "^7.13.0"
+    "undici": "^7.16.0"
   },
   "packageManager": "yarn@4.9.2"
 }
