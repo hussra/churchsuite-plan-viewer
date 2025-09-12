@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, Menu } from 'electron'
 
 export class EditorWindow {
 
@@ -33,6 +33,19 @@ export class EditorWindow {
         this.#win.menuBarVisible = false
 
         this.#win.loadURL(EDITOR_WEBPACK_ENTRY)
+
+        // Context menu
+        if (!app.isPackaged) {
+            const aboutContextMenu = Menu.buildFromTemplate([
+                {
+                    label: 'Inspect',
+                    click: async () => { this.#win.webContents.openDevTools({ mode: 'detach' }) }
+                }
+            ])
+            this.#win.webContents.on('context-menu', (e, params) => {
+                aboutContextMenu.popup()
+            })
+        }
 
         this.#win.on('ready-to-show', () => {
             this.#win.show()

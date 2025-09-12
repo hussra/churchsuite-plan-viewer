@@ -37,6 +37,7 @@ export class MainWindow {
         this.#win.setIcon(this.#getIcon())
         this.#win.setMenu(this.#createMenu())
 
+        // Left view
         this.#leftView = new WebContentsView({
             webPreferences: {
                 preload: LEFT_PANE_PRELOAD_WEBPACK_ENTRY,
@@ -45,6 +46,20 @@ export class MainWindow {
         this.#leftView.webContents.loadURL(LEFT_PANE_WEBPACK_ENTRY)
         this.#win.contentView.addChildView(this.#leftView)
 
+        // Left context menu
+        if (!app.isPackaged) {
+            const leftContextMenu = Menu.buildFromTemplate([
+                {
+                   label: 'Inspect',
+                    click: async () => { this.#leftView.webContents.openDevTools({ mode: 'detach' }) }
+                }
+            ])
+            this.#leftView.webContents.on('context-menu', (e, params) => {
+                leftContextMenu.popup()
+            })
+        }
+
+        // Right view
         this.#rightView = new WebContentsView({
             webPreferences: {
                 preload: RIGHT_PANE_PRELOAD_WEBPACK_ENTRY,
@@ -53,12 +68,20 @@ export class MainWindow {
         this.#rightView.webContents.loadURL(RIGHT_PANE_WEBPACK_ENTRY)
         this.#win.contentView.addChildView(this.#rightView)
         
-        const contextMenu = Menu.buildFromTemplate([
+        // Right context menu
+        const rightContextMenuTemplate = [
             { role: 'selectAll' },
             { role: 'copy' }
-        ])
+        ]
+        if (!app.isPackaged) {
+            rightContextMenuTemplate.push({
+                label: 'Inspect',
+                click: async () => { this.#rightView.webContents.openDevTools({ mode: 'detach' }) }
+            })
+        }
+        const rightContextMenu = Menu.buildFromTemplate(rightContextMenuTemplate)
         this.#rightView.webContents.on('context-menu', (e, params) => {
-            contextMenu.popup()
+            rightContextMenu.popup()
         })
 
         this.#win.on('resized', () => { this.resizePanes() })
@@ -183,22 +206,6 @@ export class MainWindow {
                 ]
             }
         ]
-
-        if (!app.isPackaged) {
-            menuTemplate.splice(1, 0, {
-                label: 'Inspect',
-                submenu: [
-                    {
-                        label: 'Left',
-                        click: async () => { this.#leftView.webContents.openDevTools({ mode: 'detach' }) }
-                    },
-                    {
-                        label: 'Right',
-                        click: async () => { this.#rightView.webContents.openDevTools({ mode: 'detach' }) }
-                    }
-                ]
-            })
-        }
 
         return Menu.buildFromTemplate(menuTemplate)
     }
