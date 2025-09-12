@@ -25,31 +25,33 @@
     <h3>{{item.name}}</h3>
   {% else %}
 
-    <p class="people">
-      {% for person in item.people -%}
-        {{person | personName}}
-        {%- if forloop.last == false %}, {% endif %}
-      {% endfor %}
-    </p>
+    <div class="item">
+      <p class="people">
+        {% for person in item.people -%}
+          {{person | personName}}
+          {%- if forloop.last == false %}, {% endif %}
+        {% endfor %}
+      </p>
 
-    <h4>
-      {% if item.type == 'song' %}
-        Song:
-      {% endif %}
-      {% if item.type_id == 19 %}
-        Video:
-      {% endif %}
-      {{item.name}}
-      {%- for question in item.question_responses %}
-        {%- if question.response_type == 'bible'%}:
-          {% for value in question.value %}
-            {{value.book | bibleBook}} {{value.reference}}
-            {%- if forloop.last == false %},
-            {% endif %}
-          {% endfor %}
+      <h4>
+        {% if item.type == 'song' %}
+          Song:
         {% endif %}
-      {% endfor %}
-    </h4>
+        {% if item.type_id == 19 %}
+          Video:
+        {% endif %}
+        {{item.name}}
+        {%- for question in item.question_responses %}
+          {%- if question.response_type == 'bible'%}:
+            {% for value in question.value %}
+              {{value.book | bibleBook}} {{value.reference}}
+              {%- if forloop.last == false %},
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </h4>
+    </div>
 
     {% if item.type_id == 20 or item.type_id == 21 %}
         {%- for question in item.question_responses %}

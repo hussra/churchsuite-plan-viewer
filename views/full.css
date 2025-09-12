@@ -27,9 +27,12 @@
 
 #planContents h4 + #planContents div.liturgy,
 #planContents p.comment,
-#planContents h3 + #planContents h4,
-#planContents p.people + #planContents h4 {
+#planContents h3 + #planContents h4 {
     page-break-before: avoid;
+}
+
+#planContents div.item {
+    page-break-inside: avoid;
 }
 
 #planContents h3 {
