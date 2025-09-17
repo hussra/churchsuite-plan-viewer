@@ -42,6 +42,8 @@ export class Controller extends EventEmitter {
     #authToken = null
     #isConnected = false
 
+    #defaultBrand = null
+
     #allPlans = [];                          // All available plans for selection
     #showPlanView = false;                   // Is currently selected plan available for viewing?
 
@@ -204,6 +206,8 @@ export class Controller extends EventEmitter {
 
     async loadPlan() {
         const detail = (await this.#getPlanDetail(this.#selectedPlanId)).data
+        const items = (await this.#getPlanItems(this.#selectedPlanId)).data
+        const brand = (await this.getDefaultBrand()).data
 
         this.#selectedPlan = {
             plan: {
@@ -211,7 +215,8 @@ export class Controller extends EventEmitter {
                     ...detail,
                     date_time: new Date(Date.parse(detail.date + " " + detail.time))
                 },
-                items: (await this.#getPlanItems(this.#selectedPlanId)).data
+                items: items,
+                brand: brand
             }
         }
 
@@ -257,7 +262,6 @@ export class Controller extends EventEmitter {
         let authToken = await this.#getAuthToken()
 
         if (authToken == null) {
-            // throw new Error('Unable to authenticate')
             this.connected = false
             return {}
         }
@@ -279,7 +283,6 @@ export class Controller extends EventEmitter {
             })
 
             if (statusCode != 200) {
-                //throw new Error('Unable to authenticate')
                 this.connected = false
                 return {}
             }
@@ -327,6 +330,33 @@ export class Controller extends EventEmitter {
     // Get the items for a plan, by ID
     async #getPlanItems(planId) {
         return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/plan_items?plan_ids%5B%5D=${planId}`)
+    }
+
+
+    // Get the default brand for our account, and add a data.logo.data_url property
+    async getDefaultBrand() {
+        if (this.#defaultBrand == null) {
+            this.#defaultBrand = await this.#makeApiCall('https://api.churchsuite.com/v2/account/brands/default')   
+        }
+
+        if (this.#defaultBrand && this.#defaultBrand.data && this.#defaultBrand.data.logo && this.#defaultBrand.data.logo.url) {
+            // Convert logo URL to data URL
+            this.#defaultBrand.data.logo.data_url = await this.#getImageAsDataUrl(this.#defaultBrand.data.logo.url)
+        }
+
+        return this.#defaultBrand
+    }
+
+    async #getImageAsDataUrl(url) {
+        let { statusCode, headers, body } = await request(url)
+
+        if (statusCode != 200) {
+            return ""
+        }
+
+        let bytes = await body.bytes()
+
+        return 'data:' + headers['content-type'] + ';base64,' + bytes.toBase64()
     }
 
     appStartupComplete() {

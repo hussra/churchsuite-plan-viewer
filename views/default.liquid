@@ -15,10 +15,7 @@
   this program.  If not, see <http://www.gnu.org/licenses/>.
 {% endcomment %}
 
-<h2>
-  {{plan.detail.name}}<br />
-  {{plan.detail.date_time | date: "%A %e %b %Y, %l.%M%P"}}
-</h2>
+{% include 'header.liquid' %}
 
 <table class="plan">
   {% for item in plan.items %}

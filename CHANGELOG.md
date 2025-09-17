@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - In "Full" template, render markdown in liturgy and prayer items
 - Option to change how names are shown against plan items - first name, first name and initial, or full name
 - Context menu in plan view with Select All and Copy options
+- Show default brand logo in plan header
 
 ### Changed
 

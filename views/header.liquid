@@ -1,0 +1,30 @@
+{% comment %}
+  ChurchSuite Plan Viewer
+  Copyright (C) 2025 Richard Huss
+
+  This program is free software: you can redistribute it and/or modify it under
+  the terms of the GNU General Public License as published by the Free Software
+  Foundation, either version 3 of the License, or (at your option) any later
+  version.
+
+  This program is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of  MERCHANTABILITY or FITNESS FOR
+  A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License along with
+  this program.  If not, see <http://www.gnu.org/licenses/>.
+{% endcomment %}
+
+<div class="container-fluid g-0">
+  <div class="row">
+    <div class="col-8">
+      <h2>
+        {{plan.detail.name}}<br />
+        {{plan.detail.date_time | date: "%A %e %b %Y, %l.%M%P"}}
+      </h2>
+    </div>
+    <div class="col-4">
+      <img id="logo" src="{{plan.brand.logo.data_url}}" style="max-width: 100%;" />
+    </div>
+  </div>
+</div>
