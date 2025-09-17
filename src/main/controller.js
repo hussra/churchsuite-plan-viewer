@@ -222,8 +222,8 @@ export class Controller extends EventEmitter {
 
         const template = this.getSetting('template')
 
-        this.#selectedPlanHtml = await this.#templateEngine.renderPlan(template, this.#selectedPlan)
-        this.#selectedPlanCss = this.#templateEngine.getCSSById(template)
+        this.#selectedPlanHtml = await this.#templateEngine.renderPlanHTML(template, this.#selectedPlan)
+        this.#selectedPlanCss = this.#templateEngine.renderPlanCSS(template, this.#selectedPlan)
 
         this.#showPlanView = true
         this.emit('viewChanged')

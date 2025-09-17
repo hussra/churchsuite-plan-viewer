@@ -83,14 +83,20 @@ export class TemplateEngine {
         return this.#templates.find((element) => (element.id == id))
     }
 
-    getCSSById(id) {
+    renderPlanCSS(id, plan) {
         let template = this.getTemplateById(id)
         let cssFile = path.resolve(__dirname, 'views/', template.id + '.css')
         let fileContent = fs.readFileSync(cssFile, "UTF-8")
-        return fileContent
+
+        let primaryColor = plan.plan.brand.color
+        let topCSS = `:root {
+            --primary-color: ${primaryColor};
+        }\n\n`
+
+        return topCSS + fileContent
     }
 
-    async renderPlan(id, plan) {
+    async renderPlanHTML(id, plan) {
         const rawHtml = await this.#liquidEngine.renderFile(
             id,
             plan
