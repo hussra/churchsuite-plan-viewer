@@ -29,7 +29,7 @@
 
 #planContents table.plan tr.heading {
   background-color: var(--primary-color);
-  color: white;
+  color: white; /* TODO: Once Chromium supports it, use color-contrast() */
   text-align: center;
   font-weight: bold;
   font-size: 1.4rem;

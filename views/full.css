@@ -19,7 +19,7 @@
 #planContents h3 {
     text-align: center;
     background-color: var(--primary-color);
-    color: white !important;
+    color: white; /* TODO: Once Chromium supports it, use color-contrast() */
     padding: 3px;
     margin-top: 16px;
     margin-bottom: 9px;
