@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Option to change how names are shown against plan items - first name, first name and initial, or full name
 - Context menu in plan view with Select All and Copy options
 - Show default brand logo in plan header
+- Use default brand color in headings
 
 ### Changed
 
