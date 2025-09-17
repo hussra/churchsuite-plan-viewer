@@ -26,18 +26,56 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
     <h1>Template Editor</h1>
 
     <form>
-        <div class="container" id="mainControls">
-            <div class="form-group mb-3">
-                <label for="plan">Select template to edit</label>
-                <div class="input-group">
-                    <select class="form-select" id="template" aria-label="Select a template">
-                        <option value="">--Select template--</option>
-                    </select>
-                    <button class="btn btn-outline-secondary" type="button" id="editButton" title="Edit Templates">
-                        <i class="bi bi-pencil"></i>
-                    </button>
+        <div class="container-fluid" id="mainControls">
+            <div class="row align-items-start">
+                <div class="col mb-3">
+                    <label for="plan" class="form-label">Select template to edit</label>
+                    <div class="input-group">
+                        <select class="form-select" id="template" aria-label="Select a template">
+                            <option value="">--Select template--</option>
+                        </select>
+                        <button class="btn btn-outline-secondary" type="button" id="duplicateButton" title="Duplicate Template">
+                            <i class="bi bi-copy"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col mb-3">
+                    <label for="name" class="form-label">Template Name</label>
+                    <input type="text" class="form-control" id="name">
+                </div>
+
+                <div class="col mb-3">
+                    <label for="filenameSuffix" class="form-label">Filename Suffix</label>
+                    <input type="text" class="form-control" id="filenameSuffix">
+                    <div class="form-text">
+                        When exporting to PDF, the default filename will be the current date, followed by this suffix.
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <div class="container-fluid" id="templateEditing">
+            <div class="row align-items-start">
+                <div class="col mb-3">
+                    <label for="liquid" class="form-label">Liquid</label>
+                    <textarea class="form-control" id="liquid" rows="25"></textarea>
+                </div>
+                <div class="col mb-3">
+                    <label for="css" class="form-label">CSS</label>
+                    <textarea class="form-control" id="css" rows="25"></textarea>
+                </div>
+                <div class="col mb-3">
+                    JSON data view will go here
+                    See https://github.com/alenaksu/json-viewer
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mb-3 text-end">
+            <button class="btn btn-primary" type="button" id="saveButton" title="Save Template">
+                <i class="bi bi-floppy-fill"></i> Save
+            </button>
         </div>
     </form>
 </body>

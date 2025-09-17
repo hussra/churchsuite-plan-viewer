@@ -38,8 +38,16 @@ export async function addIpcHandlers(controller, mainWindow) {
         }
     })
 
-    ipcMain.handle('getTemplates', () => {
+    ipcMain.handle('getAllTemplates', () => {
         return controller.templateEngine.allTemplates
+    })
+
+    ipcMain.handle('getTemplate', (event, id) => {
+        return controller.templateEngine.getTemplateById(id)
+    })
+
+    ipcMain.handle('getFullTemplate', (event, id) => {
+        return controller.templateEngine.getFullTemplateById(id)
     })
 
     ipcMain.handle('isConfigured', async () => {

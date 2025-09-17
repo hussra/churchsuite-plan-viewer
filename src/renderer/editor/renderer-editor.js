@@ -47,14 +47,43 @@ const populateTemplates = (templates) => {
 }
 
 const load = async () => {
-    let templates = await window.electronAPI.getTemplates()
-    //alert(JSON.stringify(templates))
+    let templates = await window.electronAPI.getAllTemplates()
     populateTemplates(templates)
 
     document.getElementById('template').addEventListener('change', async (event) => {
         const templateId = event.target.value
-        alert('Selected template ' + templateId)
+        await selectTemplate(templateId)
     })
+}
+
+const selectTemplate = async (templateId) => {
+    let template = await window.electronAPI.getFullTemplate(templateId)
+
+    if (template == null) {
+        document.getElementById('name').value = ''
+        document.getElementById('filenameSuffix').value = ''
+        document.getElementById('liquid').value = ''
+        document.getElementById('css').value = ''
+    } else {
+        document.getElementById('name').value = template.name
+        document.getElementById('filenameSuffix').value = template.filenameSuffix
+        document.getElementById('liquid').value = template.liquid
+        document.getElementById('css').value = template.css
+    }
+
+    if (template == null || !template.editable) {
+        document.getElementById('name').setAttribute('disabled', 'disabled')
+        document.getElementById('filenameSuffix').setAttribute('disabled', 'disabled')
+        document.getElementById('liquid').setAttribute('disabled', 'disabled')
+        document.getElementById('css').setAttribute('disabled', 'disabled')
+        document.getElementById('saveButton').setAttribute('disabled', 'disabled')
+    } else {
+        document.getElementById('name').removeAttribute('disabled')
+        document.getElementById('filenameSuffix').removeAttribute('disabled')
+        document.getElementById('liquid').removeAttribute('disabled')
+        document.getElementById('css').removeAttribute('disabled')
+        document.getElementById('saveButton ').removeAttribute('disabled')
+    }
 }
 
 load()

@@ -29,8 +29,7 @@ export class TemplateEngine {
     constructor(controller) {
         this.#controller = controller
 
-        // Directory containing pre-defined plan templates
-        const viewDir = app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", "views") : "views"
+        const viewDir = this.viewDir
 
         // Find .liquid files in this directory which also have corresponding .css and .json files
         let files = fs.readdirSync(viewDir, { withFileTypes: true })
@@ -75,12 +74,31 @@ export class TemplateEngine {
     // TODO: Get these editable and loadable from settings
     #templates = []
 
+    // Directory containing pre-defined plan templates
+    get viewDir() {
+        return app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", "views") : "views"
+    }
+
     get allTemplates() {
         return this.#templates
     }
 
     getTemplateById(id) {
         return this.#templates.find((element) => (element.id == id))
+    }
+
+    getFullTemplateById(id) {
+        let template = this.getTemplateById(id)
+        if (!template) {
+            return null
+        }
+
+        const viewDir = this.viewDir
+
+        template.liquid = 'Liquid template here'
+        template.css = 'CSS here'
+
+        return template
     }
 
     renderPlanCSS(id, plan) {
