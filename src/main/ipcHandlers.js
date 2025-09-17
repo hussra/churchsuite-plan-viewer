@@ -15,11 +15,9 @@
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { app, ipcMain } from 'electron'
-
 import { EditorWindow } from './window-editor'
-import { controller, mainWindow } from './main'
 
-export async function addIpcHandlers() {
+export async function addIpcHandlers(controller, mainWindow) {
 
     // Called when left pane asks for list of plans to be refreshed
     ipcMain.handle('refresh', async () => {

@@ -25,17 +25,15 @@ if (require('electron-squirrel-startup')) {
     app.quit()
 }
 
-
-// The Controller contains all the business logic for the application
-export let controller = new Controller()
-export let mainWindow
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-    addIpcHandlers()
-    mainWindow = new MainWindow(controller)
+    // The Controller contains all the business logic for the application
+    let controller = new Controller()
+    let mainWindow = new MainWindow(controller)
+    
+    addIpcHandlers(controller, mainWindow)
 
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
