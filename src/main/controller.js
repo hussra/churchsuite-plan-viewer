@@ -59,7 +59,7 @@ export class Controller extends EventEmitter {
     set selectedTemplateId(templateId) {
         this.#selectedTemplate = templateId
         this.saveSetting('template', templateId)
-
+        this.emit('templateChanged', templateId)
         this.#planIdOrTemplateIdChanged()
     }
 
@@ -69,7 +69,7 @@ export class Controller extends EventEmitter {
 
     set selectedPlanId(planId) {
         this.#selectedPlanId = planId
-
+        this.emit('planChanged', planId)
         this.#planIdOrTemplateIdChanged()
     }
 

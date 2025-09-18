@@ -149,6 +149,11 @@ window.electronAPI.onSetTemplates((templates) => {
     populateTemplates(templates)
 })
 
+window.electronAPI.onSetTemplate((templateId) => {
+    //alert('Left: template changed to ' + templateId)
+    document.getElementById('template').value = templateId
+})
+
 const load = async () => {
     document.getElementById('refreshButton').addEventListener('click', refresh)
     document.getElementById('plan').addEventListener('change', selectPlan)

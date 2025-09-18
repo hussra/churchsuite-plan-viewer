@@ -119,6 +119,10 @@ export class MainWindow {
             this.#leftView.webContents.send('setTemplates', this.#controller.allTemplates)
         })
 
+        this.#controller.on('templateChanged', () => {
+            this.#leftView.webContents.send('setTemplate', this.#controller.selectedTemplateId)
+        })
+
         this.#win.show()
 
         // Hacky, but ensures bottom scrollbar button appears.

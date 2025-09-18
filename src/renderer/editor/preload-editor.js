@@ -9,9 +9,12 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
 contextBridge.exposeInMainWorld('electronAPI', {
+    // Messages from editor renderer to main process
     getFromStore: (key) => ipcRenderer.invoke('getFromStore', key),
-    setInStore: (key, value) => ipcRenderer.invoke('setInStore', key, value),
-
+    selectTemplate: (templateId) => ipcRenderer.invoke('selectTemplate', templateId),
     getAllTemplates: () => ipcRenderer.invoke('getAllTemplates'),
     getFullTemplate: (id) => ipcRenderer.invoke('getFullTemplate', id),
+
+    // Messages from main process to editor renderer
+    onSetTemplate: (callback) => ipcRenderer.on('setTemplate', (_event, value) => callback(value))
 })

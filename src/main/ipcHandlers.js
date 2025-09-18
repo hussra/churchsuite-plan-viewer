@@ -27,11 +27,11 @@ export async function addIpcHandlers(controller, mainWindow) {
     ipcMain.handle('editTemplates', () => {
         if (!globalThis.editorWindow) {
             // First time an editor window has been created
-            globalThis.editorWindow = new EditorWindow()
+            globalThis.editorWindow = new EditorWindow(controller)
             return
         } else {
             if (globalThis.editorWindow.isDestroyed()) {
-                globalThis.editorWindow = new EditorWindow()
+                globalThis.editorWindow = new EditorWindow(controller)
             } else {
                 globalThis.editorWindow.bringToFront()
             }
