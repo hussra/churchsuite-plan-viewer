@@ -20,37 +20,21 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.min.css'
 
 
-const populateTemplates = (templates) => {
+const populateTemplates = async (templates) => {
 
     const templateSelect = document.getElementById('template')
-    const selectedTemplate = templateSelect.value
 
-    // Remove all but '--Select plan--'
-    for (const el of document.querySelectorAll('#template option')) {
-        if (el.value !== '') {
-            el.remove()
-        }
-    }
-
-    let haveSelected = false
     for (let i in templates) {
         let option = document.createElement('option')
-        option.innerHTML = templates[i].name + (!(templates[i].editable) ? ' (read-only)' : '')
+        option.innerHTML = templates[i].name
         option.setAttribute('value', templates[i].id)
         templateSelect.append(option)
-        if (templates[i].id == selectedTemplate) {
-            templateSelect.value = selectedTemplate
-            haveSelected = true
-        }
     }
+    templateSelect.value = await window.electronAPI.getFromStore('template')
 
     templateSelect.dispatchEvent(new Event('change'))
 }
 
-
-const selectTemplate = async (templateId) => {
-    populateForm(await window.electronAPI.getFullTemplate(templateId))
-}
 
 const populateForm = (template) => {
     if (template == null) {
@@ -91,7 +75,8 @@ const load = async () => {
 
     document.getElementById('template').addEventListener('change', async (event) => {
         const templateId = event.target.value
-        await selectTemplate(templateId)
+        populateForm(await window.electronAPI.getFullTemplate(templateId))
+        await window.electronAPI.setInStore('template', templateId)
     })
 
     document.getElementById('saveButton').addEventListener('click', async (event) => {

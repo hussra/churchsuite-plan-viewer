@@ -9,7 +9,9 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
 contextBridge.exposeInMainWorld('electronAPI', {
+    getFromStore: (key) => ipcRenderer.invoke('getFromStore', key),
+    setInStore: (key, value) => ipcRenderer.invoke('setInStore', key, value),
+
     getAllTemplates: () => ipcRenderer.invoke('getAllTemplates'),
-    getTemplate: (id) => ipcRenderer.invoke('getTemplate', id),
     getFullTemplate: (id) => ipcRenderer.invoke('getFullTemplate', id),
 })
