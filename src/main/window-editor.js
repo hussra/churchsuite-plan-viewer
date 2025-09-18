@@ -48,7 +48,9 @@ export class EditorWindow {
         }
 
         this.#controller.on('templateChanged', () => {
-            this.#win.webContents.send('setTemplate', this.#controller.selectedTemplateId)
+            if (!this.isDestroyed()) {
+                this.#win.webContents.send('setTemplate', this.#controller.selectedTemplateId)
+            }
         })
 
         this.#win.on('ready-to-show', () => {
