@@ -26,3 +26,8 @@ body {
 h1 {
   margin-top: 0;
 }
+
+#liquid, #css {
+  font-size: 0.75rem;
+  font-family: var(--bs-font-monospace);
+}
