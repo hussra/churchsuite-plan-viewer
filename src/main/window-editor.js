@@ -14,14 +14,20 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app, BrowserWindow, Menu } from 'electron'
+import { app, BrowserWindow, Menu, screen } from 'electron'
+
+import { WINDOW_WIDTH, WINDOW_HEIGHT } from './constants'
 
 export class EditorWindow {
 
     constructor(controller) {
         this.#controller = controller
 
+        const defaultWindowSize = this.#getDefaultWindowSize()
+
         this.#win = new BrowserWindow({
+            width: defaultWindowSize.width,
+            height: defaultWindowSize.height,
             title: app.getName() + ' - Template Editor',
             modal: true,
             show: false,
@@ -53,6 +59,12 @@ export class EditorWindow {
             }
         })
 
+        this.#controller.on('selectedPlanChanged', () => {
+            if (!this.isDestroyed()) {
+                this.#win.webContents.send('setPlan', this.#controller.selectedPlan)
+            }
+        })
+
         this.#win.on('ready-to-show', () => {
             this.#win.show()
         })
@@ -72,5 +84,15 @@ export class EditorWindow {
     hide() {
         this.#win.hide()
         this.#win.destroy()
+    }
+
+    #getDefaultWindowSize() {
+        const primaryDisplay = screen.getPrimaryDisplay()
+        const { width: displayWidth, height: displayHeight } = primaryDisplay.workAreaSize
+
+        return {
+            width: Math.min(WINDOW_WIDTH, displayWidth),
+            height: Math.min(WINDOW_HEIGHT, displayHeight)
+        }
     }
 }

@@ -18,6 +18,7 @@ import './editor.css'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.min.css'
+import '@alenaksu/json-viewer'
 
 
 const populateTemplates = async (templates) => {
@@ -72,6 +73,11 @@ const populateForm = (template) => {
 window.electronAPI.onSetTemplate(async (templateId) => {
     document.getElementById('template').value = templateId
     populateForm(await window.electronAPI.getFullTemplate(templateId))
+})
+
+
+window.electronAPI.onSetPlan((plan) => {
+    document.getElementById('json').data = plan
 })
 
 

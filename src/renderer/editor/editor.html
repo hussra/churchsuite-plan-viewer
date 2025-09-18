@@ -58,7 +58,7 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
         <div class="container-fluid" id="templateEditing">
             <div class="row align-items-start">
                 <div class="col mb-3">
-                    <label for="liquid" class="form-label">Liquid</label>
+                    <label for="liquid" class="form-label">Liquid template</label>
                     <textarea class="form-control" id="liquid" rows="25"></textarea>
                 </div>
                 <div class="col mb-3">
@@ -66,8 +66,9 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
                     <textarea class="form-control" id="css" rows="25"></textarea>
                 </div>
                 <div class="col mb-3">
-                    JSON data view will go here
-                    See https://github.com/alenaksu/json-viewer
+                    <p>JSON data for selected plan, passed to Liquid template</p>
+                    <json-viewer id="json">
+                    </json-viewer>
                 </div>
             </div>
         </div>

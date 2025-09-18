@@ -31,3 +31,16 @@ h1 {
   font-size: 0.75rem;
   font-family: var(--bs-font-monospace);
 }
+
+json-viewer {
+  --font-size: 0.75rem;
+  --font-family: var(--bs-font-monospace);
+  --background-color: #ffffff;
+  --color: #000000;
+  --string-color: #048100;
+  --number-color: #a75202;
+  --boolean-color: #0078d4;
+  --null-color: #8c15b1;
+  --property-color: #00496b;
+  --preview-color: #cc6018;
+}

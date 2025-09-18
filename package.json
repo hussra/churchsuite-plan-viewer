@@ -36,6 +36,7 @@
     "webpack": "^5.101.3"
   },
   "dependencies": {
+    "@alenaksu/json-viewer": "^2.1.2",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",

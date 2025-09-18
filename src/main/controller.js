@@ -227,6 +227,7 @@ export class Controller extends EventEmitter {
 
         this.#showPlanView = true
         this.emit('viewChanged')
+        this.emit('selectedPlanChanged')
     }
 
 
