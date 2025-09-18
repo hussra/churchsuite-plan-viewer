@@ -93,25 +93,31 @@ export class TemplateEngine {
             return null
         }
 
-        const viewDir = this.viewDir
-
-        template.liquid = 'Liquid template here'
-        template.css = 'CSS here'
+        template.liquid = this.#getTemplateLiquid(id)
+        template.css = this.#getTemplateCSS(id)
 
         return template
     }
 
-    renderPlanCSS(id, plan) {
-        let template = this.getTemplateById(id)
-        let cssFile = path.resolve(__dirname, 'views/', template.id + '.css')
-        let fileContent = fs.readFileSync(cssFile, "UTF-8")
+    #getTemplateCSS(id) {
+        const template = this.getTemplateById(id)
+        const cssFile = path.resolve(__dirname, 'views/', template.id + '.css')
+        return fs.readFileSync(cssFile, "UTF-8")
+    }
 
+    renderPlanCSS(id, plan) {
         let primaryColor = plan.plan.brand.color
         let topCSS = `:root {
             --primary-color: ${primaryColor};
         }\n\n`
 
-        return topCSS + fileContent
+        return topCSS + this.#getTemplateCSS(id)
+    }
+
+    #getTemplateLiquid(id) {
+        const template = this.getTemplateById(id)
+        const liquidFile = path.resolve(__dirname, 'views/', template.id + '.liquid')
+        return fs.readFileSync(liquidFile, "UTF-8")
     }
 
     async renderPlanHTML(id, plan) {
