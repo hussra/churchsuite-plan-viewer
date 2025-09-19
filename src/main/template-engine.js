@@ -108,7 +108,7 @@ export class TemplateEngine {
 
     // Directory containing pre-defined plan templates
     get viewDir() {
-        return app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", "views") : "views"
+        return app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", "templates") : "templates"
     }
 
     get allTemplates() {
@@ -144,7 +144,7 @@ export class TemplateEngine {
     }
 
     #getTemplateCSSFromDisk(id) {
-        const cssFile = path.resolve(__dirname, 'views/', id + '.css')
+        const cssFile = path.resolve(__dirname, 'templates/', id + '.css')
         return fs.readFileSync(cssFile, "UTF-8")
     }
 
@@ -162,7 +162,7 @@ export class TemplateEngine {
     }
 
     #getTemplateLiquidFromDisk(id) {
-        const liquidFile = path.resolve(__dirname, 'views/', id + '.liquid')
+        const liquidFile = path.resolve(__dirname, 'templates/', id + '.liquid')
         return fs.readFileSync(liquidFile, "UTF-8")
     }
 

@@ -29,7 +29,7 @@ module.exports = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: "views", to: "views" }
+        { from: "templates", to: "templates" }
       ],
     }),
   ],
