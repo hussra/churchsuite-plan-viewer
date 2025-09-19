@@ -15,7 +15,19 @@
   this program.  If not, see <http://www.gnu.org/licenses/>.
 {% endcomment %}
 
-{% include 'header.liquid' %}
+<div class="container-fluid g-0">
+  <div class="row">
+    <div class="col-8">
+      <h2>
+        {{plan.detail.name}}<br />
+        {{plan.detail.date_time | date: "%A %e %b %Y, %l.%M%P"}}
+      </h2>
+    </div>
+    <div class="col-4">
+      <img id="logo" src="{{plan.brand.logo.data_url}}" style="max-width: 100%;" />
+    </div>
+  </div>
+</div>
 
 <table class="plan">
   {% for item in plan.items %}
