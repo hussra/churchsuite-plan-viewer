@@ -48,6 +48,7 @@
     "html-loader": "^5.1.0",
     "jsdom": "^27.0.0",
     "liquidjs": "^10.21.1",
+    "nanoid": "^5.1.5",
     "undici": "^7.16.0"
   },
   "packageManager": "yarn@4.9.2"

@@ -60,6 +60,20 @@ export const SETTINGS_SCHEMA = {
         enum: ['first', 'first_initial', 'first_last'],
         default: 'first'
     },
+    custom_templates: {
+        type: 'array',
+        items: {
+            type: 'object',
+            properties: {
+                id: { type: 'string' },
+                name: { type: 'string' },
+                filenameSuffix: { type: 'string' },
+                liquid: { type: 'string' },
+                css: { type: 'string' },
+            },
+        },
+        default: []
+    }
 }
 
 export const BOOK_MAPPING = {

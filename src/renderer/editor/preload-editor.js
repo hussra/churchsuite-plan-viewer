@@ -13,7 +13,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getFromStore: (key) => ipcRenderer.invoke('getFromStore', key),
     selectTemplate: (templateId) => ipcRenderer.invoke('selectTemplate', templateId),
     getAllTemplates: () => ipcRenderer.invoke('getAllTemplates'),
-    getFullTemplate: (id) => ipcRenderer.invoke('getFullTemplate', id),
+    getTemplate: (id) => ipcRenderer.invoke('getTemplate', id),
+    duplicateTemplate: (id) => ipcRenderer.invoke('duplicateTemplate', id),
 
     // Messages from main process to editor renderer
     onSetTemplate: (callback) => ipcRenderer.on('setTemplate', (_event, value) => callback(value)),

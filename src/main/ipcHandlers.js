@@ -46,8 +46,8 @@ export async function addIpcHandlers(controller, mainWindow) {
         return controller.templateEngine.getTemplateById(id)
     })
 
-    ipcMain.handle('getFullTemplate', (event, id) => {
-        return controller.templateEngine.getFullTemplateById(id)
+    ipcMain.handle('duplicateTemplate', (event, id) => {
+        return controller.templateEngine.duplicateTemplate(id)
     })
 
     ipcMain.handle('isConfigured', async () => {

@@ -64,15 +64,15 @@ const populateForm = (template) => {
         document.getElementById('filenameSuffix').removeAttribute('disabled')
         document.getElementById('liquid').removeAttribute('disabled')
         document.getElementById('css').removeAttribute('disabled')
-        document.getElementById('deleteButton ').removeAttribute('disabled')
-        document.getElementById('saveButton ').removeAttribute('disabled')
+        document.getElementById('deleteButton').removeAttribute('disabled')
+        document.getElementById('saveButton').removeAttribute('disabled')
     }
 }
 
 
 window.electronAPI.onSetTemplate(async (templateId) => {
     document.getElementById('template').value = templateId
-    populateForm(await window.electronAPI.getFullTemplate(templateId))
+    populateForm(await window.electronAPI.getTemplate(templateId))
 })
 
 
@@ -87,7 +87,7 @@ const load = async () => {
 
     document.getElementById('template').addEventListener('change', async (event) => {
         const templateId = event.target.value
-        populateForm(await window.electronAPI.getFullTemplate(templateId))
+        populateForm(await window.electronAPI.getTemplate(templateId))
         await window.electronAPI.selectTemplate(templateId)
     })
 
@@ -106,7 +106,8 @@ const load = async () => {
     })
 
     document.getElementById('duplicateButton').addEventListener('click', async (event) => {
-        alert('Duplicate not yet implemented')
+        const templateId = document.getElementById('template').value
+        let newTemplate = await window.electronAPI.duplicateTemplate(templateId)
     })
 
     populateForm(null)

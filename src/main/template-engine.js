@@ -23,6 +23,7 @@ import { JSDOM } from 'jsdom'
 import { Liquid } from 'liquidjs'
 
 import { BOOK_MAPPING } from './constants'
+import { nanoid } from 'nanoid'
 
 export class TemplateEngine {
 
@@ -50,18 +51,50 @@ export class TemplateEngine {
                         name: (jsonData.name ? jsonData.name : basename),
                         filenameSuffix: (jsonData.filenameSuffix ? jsonData.filenameSuffix : ''),
                         editable: false,
+                        liquid: this.#getTemplateLiquidFromDisk(basename),
+                        css: this.#getTemplateCSSFromDisk(basename)
                     })
                 } catch (err) {
+                    console.warn('Skipping template ' + basename + ' due to ' + err.message)
                 }
             }
         })
 
+        // Load any custom templates from settings
+        let customTemplates = this.#controller.getSetting('custom_templates')
+        for (let i in customTemplates) {
+            this.#templates.push(
+                customTemplates[i]
+            )
+        }
 
         // Set up Liquid engine
         this.#liquidEngine = new Liquid({
-            root: app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", "views") : "views",
-            extname: '.liquid',
-            jsTruthy: true
+            jsTruthy: true,
+            fs: {
+                readFile: (filePath) => {
+                    return this.getTemplateById(filePath).liquid
+                },
+                readFileSync: (filePath) => {
+                    return this.getTemplateById(filePath).liquid
+                },
+                exists: (filePath) => {
+                    return this.templateExists(filePath)
+                },
+                existsSync: (filePath) => {
+                    return this.templateExists(filePath)
+                },
+                contains: (filePath) => {
+                    return this.templateExists(filePath)
+                },
+                resolve: (root, file, ext) => {
+                    return file
+                },
+                sep: '/',
+                dirname: (filePath) => { 
+                    return ''
+                }
+            }
         })
         this.#liquidEngine.registerFilter('bibleBook', this.#bibleBookFilter)
         this.#liquidEngine.registerFilter('markdown', this.#markdownFilter)
@@ -71,7 +104,6 @@ export class TemplateEngine {
     #controller
     #liquidEngine
 
-    // TODO: Get these editable and loadable from settings
     #templates = []
 
     // Directory containing pre-defined plan templates
@@ -83,44 +115,61 @@ export class TemplateEngine {
         return this.#templates
     }
 
+    templateExists(id) {
+        return (this.getTemplateById(id) !== undefined)
+    }
+
     getTemplateById(id) {
         return this.#templates.find((element) => (element.id == id))
     }
 
-    getFullTemplateById(id) {
-        let template = this.getTemplateById(id)
-        if (!template) {
-            return null
+    duplicateTemplate(id) {
+        if (!(this.templateExists(id))) {
+            throw new Error('Template does not exist')
         }
 
-        template.liquid = this.#getTemplateLiquid(id)
-        template.css = this.#getTemplateCSS(id)
+        let newTemplate = Object.assign({}, this.getTemplateById(id))
+        newTemplate.id = nanoid()
+        newTemplate.name = newTemplate.name + ' (Copy)'
+        newTemplate.editable = true
 
-        return template
+        // Save to settings
+        let allTemplates = this.#controller.getSetting('custom_templates')
+        this.#controller.saveSetting('custom_templates', allTemplates.concat([newTemplate]))
+
+        // Save locally
+        this.#templates.push(newTemplate)
+
+        return newTemplate.id
     }
 
-    #getTemplateCSS(id) {
-        const template = this.getTemplateById(id)
-        const cssFile = path.resolve(__dirname, 'views/', template.id + '.css')
+    #getTemplateCSSFromDisk(id) {
+        const cssFile = path.resolve(__dirname, 'views/', id + '.css')
         return fs.readFileSync(cssFile, "UTF-8")
     }
 
     renderPlanCSS(id, plan) {
+        if (!(this.templateExists(id))) {
+            throw new Error('Template does not exist')
+        }
+
         let primaryColor = plan.plan.brand.color
         let topCSS = `:root {
             --primary-color: ${primaryColor};
         }\n\n`
 
-        return topCSS + this.#getTemplateCSS(id)
+        return topCSS + this.getTemplateById(id).css
     }
 
-    #getTemplateLiquid(id) {
-        const template = this.getTemplateById(id)
-        const liquidFile = path.resolve(__dirname, 'views/', template.id + '.liquid')
+    #getTemplateLiquidFromDisk(id) {
+        const liquidFile = path.resolve(__dirname, 'views/', id + '.liquid')
         return fs.readFileSync(liquidFile, "UTF-8")
     }
 
     async renderPlanHTML(id, plan) {
+        if (!(this.templateExists(id))) {
+            throw new Error('Template does not exist')
+        }
         const rawHtml = await this.#liquidEngine.renderFile(
             id,
             plan
