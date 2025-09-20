@@ -140,6 +140,9 @@ export class TemplateEngine {
         // Save locally
         this.#templates.push(newTemplate)
 
+        console.log('Emitting templatesChanged for new template ' + newTemplate.id)
+        this.#controller.emit('templatesChanged', newTemplate.id)
+
         return newTemplate.id
     }
 

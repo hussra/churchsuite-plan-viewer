@@ -21,17 +21,40 @@ import 'bootstrap-icons/font/bootstrap-icons.min.css'
 import '@alenaksu/json-viewer'
 
 
-const populateTemplates = async (templates) => {
+const populateTemplates = async (templates, newTemplateId) => {
 
     const templateSelect = document.getElementById('template')
+    const selectedTemplate = templateSelect.value
+
+    // Remove all but '--Select plan--'
+    for (const el of document.querySelectorAll('#template option')) {
+        if (el.value !== '') {
+            el.remove()
+        }
+    }
 
     for (let i in templates) {
         let option = document.createElement('option')
         option.innerHTML = templates[i].name
         option.setAttribute('value', templates[i].id)
         templateSelect.append(option)
+        if (templates[i].id == selectedTemplate) {
+            templateSelect.value = selectedTemplate
+        }
     }
-    templateSelect.value = await window.electronAPI.getFromStore('template')
+
+    if (newTemplateId) {
+        const ans = confirm('Template duplicated. Do you want to switch to the new template now?')
+        if (ans) {
+            document.getElementById('template').value = newTemplateId
+            populateForm(await window.electronAPI.getTemplate(newTemplateId))
+            await window.electronAPI.selectTemplate(newTemplateId)
+        } else {
+            templateSelect.value = await window.electronAPI.getFromStore('template')
+        }
+    } else {
+        templateSelect.value = await window.electronAPI.getFromStore('template')
+    }
 
     templateSelect.dispatchEvent(new Event('change'))
 }
@@ -68,6 +91,11 @@ const populateForm = (template) => {
         document.getElementById('saveButton').removeAttribute('disabled')
     }
 }
+
+
+window.electronAPI.onSetTemplates(async (templates, newTemplateId) => {
+    populateTemplates(templates, newTemplateId)
+})
 
 
 window.electronAPI.onSetTemplate(async (templateId) => {
@@ -107,7 +135,7 @@ const load = async () => {
 
     document.getElementById('duplicateButton').addEventListener('click', async (event) => {
         const templateId = document.getElementById('template').value
-        let newTemplate = await window.electronAPI.duplicateTemplate(templateId)
+        const newTemplateId = await window.electronAPI.duplicateTemplate(templateId)
     })
 
     populateForm(null)

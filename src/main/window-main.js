@@ -115,8 +115,8 @@ export class MainWindow {
             this.#leftView.webContents.send('setPlans', this.#controller.allPlans)
         })
 
-        this.#controller.on('templatesChanged', () => {
-            this.#leftView.webContents.send('setTemplates', this.#controller.allTemplates)
+        this.#controller.on('templatesChanged', (newTemplate) => {
+            this.#leftView.webContents.send('setTemplates', this.#controller.allTemplates, newTemplate)
         })
 
         this.#controller.on('templateChanged', () => {

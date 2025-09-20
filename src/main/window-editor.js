@@ -53,6 +53,14 @@ export class EditorWindow {
             })
         }
 
+        this.#controller.on('templatesChanged', (newTemplate) => {
+            console.log('EditorWindow: templatesChanged received, newTemplate=' + newTemplate)
+            if (!this.isDestroyed()) {
+                console.log('EditorWindow: sending setTemplates to renderer, newTemplate=' + newTemplate)
+                this.#win.webContents.send('setTemplates', this.#controller.allTemplates, newTemplate)
+            }
+        })
+
         this.#controller.on('templateChanged', () => {
             if (!this.isDestroyed()) {
                 this.#win.webContents.send('setTemplate', this.#controller.selectedTemplateId)
