@@ -43,18 +43,7 @@ const populateTemplates = async (templates, newTemplateId) => {
         }
     }
 
-    if (newTemplateId) {
-        const ans = confirm('Template duplicated. Do you want to switch to the new template now?')
-        if (ans) {
-            document.getElementById('template').value = newTemplateId
-            populateForm(await window.electronAPI.getTemplate(newTemplateId))
-            await window.electronAPI.selectTemplate(newTemplateId)
-        } else {
-            templateSelect.value = await window.electronAPI.getFromStore('template')
-        }
-    } else {
-        templateSelect.value = await window.electronAPI.getFromStore('template')
-    }
+    templateSelect.value = await window.electronAPI.getFromStore('template')
 
     templateSelect.dispatchEvent(new Event('change'))
 }

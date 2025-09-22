@@ -150,7 +150,6 @@ window.electronAPI.onSetTemplates((templates) => {
 })
 
 window.electronAPI.onSetTemplate((templateId) => {
-    //alert('Left: template changed to ' + templateId)
     document.getElementById('template').value = templateId
 })
 

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app, BrowserWindow, Menu, screen } from 'electron'
+import { app, BrowserWindow, dialog, Menu, screen } from 'electron'
 
 import { WINDOW_WIDTH, WINDOW_HEIGHT } from './constants'
 
@@ -54,10 +54,21 @@ export class EditorWindow {
         }
 
         this.#controller.on('templatesChanged', (newTemplate) => {
-            console.log('EditorWindow: templatesChanged received, newTemplate=' + newTemplate)
             if (!this.isDestroyed()) {
-                console.log('EditorWindow: sending setTemplates to renderer, newTemplate=' + newTemplate)
                 this.#win.webContents.send('setTemplates', this.#controller.allTemplates, newTemplate)
+
+                dialog.showMessageBox(this.#win, {
+                    type: 'question',
+                    title: 'Template Duplicated',
+                    message: 'Your template has been duplicated. Do you want to edit the new template?',
+                    buttons: ['Yes', 'No'],
+                }).then(
+                    ({ response: ans }) => {
+                        if (ans === 0) {
+                            this.#controller.selectedTemplateId = newTemplate
+                        }
+                    }
+                )
             }
         })
 
