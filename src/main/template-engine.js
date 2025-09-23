@@ -63,8 +63,10 @@ export class TemplateEngine {
         // Load any custom templates from settings
         let customTemplates = this.#controller.getSetting('custom_templates')
         for (let i in customTemplates) {
+            let customTemplate = customTemplates[i]
+            customTemplate.editable = true
             this.#templates.push(
-                customTemplates[i]
+                customTemplate
             )
         }
 
@@ -142,6 +144,27 @@ export class TemplateEngine {
         this.#controller.emit('templatesChanged', newTemplate.id)
 
         return newTemplate.id
+    }
+
+    saveTemplate(template) {
+        if (!(this.templateExists(template.id))) {
+            throw new Error('Template does not exist')
+        }
+        let allTemplates = this.#controller.getSetting('custom_templates')
+        let index = allTemplates.findIndex((element) => (element.id == template.id))
+        if (index === -1) {
+            throw new Error('Template does not exist in settings')
+        }
+
+        if (!(allTemplates[index].editable)) {
+            throw new Error('Template is not editable')
+        }
+
+        allTemplates[index] = template
+        this.#controller.saveSetting('custom_templates', allTemplates)
+        let localIndex = this.#templates.findIndex((element) => (element.id == template.id))
+        this.#templates[localIndex] = template
+        this.#controller.emit('templatesChanged')
     }
 
     #getTemplateCSSFromDisk(id) {

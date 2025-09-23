@@ -112,13 +112,15 @@ const load = async () => {
     })
 
     document.getElementById('saveButton').addEventListener('click', async (event) => {
-        const templateId = document.getElementById('template').value
-        const name = document.getElementById('name').value
-        const filenameSuffix = document.getElementById('filenameSuffix').value
-        const liquid = document.getElementById('liquid').value
-        const css = document.getElementById('css').value
-
-        alert('Save not yet implemented')
+        const template = {
+            id: document.getElementById('template').value,
+            name: document.getElementById('name').value,
+            filenameSuffix: document.getElementById('filenameSuffix').value,
+            liquid: document.getElementById('liquid').value,
+            css: document.getElementById('css').value,
+            editable: true
+        }
+        await window.electronAPI.saveTemplate(template)
     })
 
     document.getElementById('deleteButton').addEventListener('click', async (event) => {

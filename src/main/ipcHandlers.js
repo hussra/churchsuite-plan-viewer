@@ -50,6 +50,10 @@ export async function addIpcHandlers(controller, mainWindow) {
         return controller.templateEngine.duplicateTemplate(id)
     })
 
+    ipcMain.handle('saveTemplate', (event, template) => {
+        return controller.templateEngine.saveTemplate(template)
+    })
+
     ipcMain.handle('isConfigured', async () => {
         return controller.isConfigured()
     })
