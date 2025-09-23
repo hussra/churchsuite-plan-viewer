@@ -51,11 +51,11 @@ export async function addIpcHandlers(controller, mainWindow) {
     })
 
     ipcMain.handle('saveTemplate', (event, template) => {
-        return controller.templateEngine.saveTemplate(template)
+        controller.templateEngine.saveTemplate(template)
     })
 
     ipcMain.handle('deleteTemplate', (event, id) => {
-        return controller.templateEngine.deleteTemplate(id)
+        globalThis.editorWindow?.deleteTemplate(id)
     })
 
     ipcMain.handle('isConfigured', async () => {

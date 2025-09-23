@@ -116,4 +116,20 @@ export class EditorWindow {
             height: Math.min(WINDOW_HEIGHT, displayHeight)
         }
     }
+
+    async deleteTemplate(id) {
+        dialog.showMessageBox(this.#win, {
+            type: 'question',
+            title: 'Delete Template?',
+            message: 'Are you sure you want to delete this template? This action cannot be undone.',
+            buttons: ['Yes', 'No'],
+        }).then(
+            ({ response: ans }) => {
+                if (ans === 0) {
+                    this.#controller.templateEngine.deleteTemplate(id)
+                }
+            }
+        )
+    }
+
 }
