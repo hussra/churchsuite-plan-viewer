@@ -29,17 +29,27 @@ export class TemplateEngine {
 
     constructor(controller) {
         this.#controller = controller
+        this.#buildTemplateList()
+        this.#buildLiquidEngine()
+    }
 
-        const viewDir = this.viewDir
+    #controller
+    #liquidEngine
+
+    #templates = []
+
+    #buildTemplateList() {
+        
+        const templatesDir = this.templatesDir
 
         // Find .liquid files in this directory which also have corresponding .css and .json files
-        let files = fs.readdirSync(viewDir, { withFileTypes: true })
+        let files = fs.readdirSync(templatesDir, { withFileTypes: true })
         files.forEach(file => {
             if (file.isFile() && (path.extname(file.name) === '.liquid')) {
                 let basename = path.basename(file.name, '.liquid')
 
-                const cssFile = path.resolve(viewDir, basename + '.css')
-                const jsonFile = path.resolve(viewDir, basename + '.json')
+                const cssFile = path.resolve(templatesDir, basename + '.css')
+                const jsonFile = path.resolve(templatesDir, basename + '.json')
                 try {
                     fs.accessSync(cssFile, fs.constants.R_OK)
                     fs.accessSync(jsonFile, fs.constants.R_OK)
@@ -69,8 +79,9 @@ export class TemplateEngine {
                 customTemplate
             )
         }
+    }
 
-        // Set up Liquid engine
+    #buildLiquidEngine() {
         this.#liquidEngine = new Liquid({
             jsTruthy: true,
             fs: {
@@ -93,7 +104,7 @@ export class TemplateEngine {
                     return file
                 },
                 sep: '/',
-                dirname: (filePath) => { 
+                dirname: (filePath) => {
                     return ''
                 }
             }
@@ -104,13 +115,8 @@ export class TemplateEngine {
         this.#liquidEngine.registerFilter('songKey', this.#songKeyFilter)
     }
 
-    #controller
-    #liquidEngine
-
-    #templates = []
-
     // Directory containing pre-defined plan templates
-    get viewDir() {
+    get templatesDir() {
         return app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", "templates") : "templates"
     }
 
