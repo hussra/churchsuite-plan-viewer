@@ -101,6 +101,7 @@ export class TemplateEngine {
         this.#liquidEngine.registerFilter('bibleBook', this.#bibleBookFilter)
         this.#liquidEngine.registerFilter('markdown', this.#markdownFilter)
         this.#liquidEngine.registerFilter('personName', this.#personNameFilter.bind(this))
+        this.#liquidEngine.registerFilter('songKey', this.#songKeyFilter)
     }
 
     #controller
@@ -249,6 +250,19 @@ export class TemplateEngine {
                 return person.first_name + ' ' + person.last_name.charAt(0)
             case 'first_last':
                 return person.first_name + ' ' + person.last_name
+        }
+    }
+
+    #songKeyFilter(item) {
+        if (item.settings && item.settings.key) {
+            let key = item.settings.key
+            key.replace('b', '&flat;')
+            if (item.settings.scale == 'minor') {
+                key += 'm'
+            }
+            return key
+        } else {
+            return ''
         }
     }
 }
