@@ -54,6 +54,10 @@ export async function addIpcHandlers(controller, mainWindow) {
         return controller.templateEngine.saveTemplate(template)
     })
 
+    ipcMain.handle('deleteTemplate', (event, id) => {
+        return controller.templateEngine.deleteTemplate(id)
+    })
+
     ipcMain.handle('isConfigured', async () => {
         return controller.isConfigured()
     })

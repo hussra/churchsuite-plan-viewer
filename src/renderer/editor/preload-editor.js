@@ -16,6 +16,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getTemplate: (id) => ipcRenderer.invoke('getTemplate', id),
     duplicateTemplate: (id) => ipcRenderer.invoke('duplicateTemplate', id),
     saveTemplate: (template) => ipcRenderer.invoke('saveTemplate', template),
+    deleteTemplate: (id) => ipcRenderer.invoke('deleteTemplate', id),
 
     // Messages from main process to editor renderer
     onSetTemplates: (callback) => ipcRenderer.on('setTemplates', (_event, templates, newTemplate) => callback(templates, newTemplate)),

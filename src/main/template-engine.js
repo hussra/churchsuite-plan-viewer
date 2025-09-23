@@ -167,6 +167,28 @@ export class TemplateEngine {
         this.#controller.emit('templatesChanged')
     }
 
+    deleteTemplate(id) {
+        if (!(this.templateExists(id))) {
+            throw new Error('Template does not exist')
+        }
+        let allTemplates = this.#controller.getSetting('custom_templates')
+        let index = allTemplates.findIndex((element) => (element.id == id))
+        if (index === -1) {
+            throw new Error('Template does not exist in settings')
+        }
+
+        if (!(allTemplates[index].editable)) {
+            throw new Error('Template is not editable')
+        }
+        allTemplates.splice(index, 1)
+        this.#controller.saveSetting('custom_templates', allTemplates)
+
+        let localIndex = this.#templates.findIndex((element) => (element.id == id))
+        this.#templates.splice(localIndex, 1)
+        this.#controller.selectedTemplateId = ''
+        this.#controller.emit('templatesChanged')
+    }
+
     #getTemplateCSSFromDisk(id) {
         const cssFile = path.resolve(__dirname, 'templates/', id + '.css')
         return fs.readFileSync(cssFile, "UTF-8")

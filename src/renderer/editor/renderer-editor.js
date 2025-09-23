@@ -124,7 +124,11 @@ const load = async () => {
     })
 
     document.getElementById('deleteButton').addEventListener('click', async (event) => {
-        alert('Delete not yet implemented')
+        const templateId = document.getElementById('template').value
+        // TODO: Use a native dialog here
+        if (confirm('Are you sure you want to delete this template? This action cannot be undone.')) {
+            await window.electronAPI.deleteTemplate(templateId)
+        }
     })
 
     document.getElementById('duplicateButton').addEventListener('click', async (event) => {
