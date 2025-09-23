@@ -57,6 +57,8 @@ export class EditorWindow {
             if (!this.isDestroyed()) {
                 this.#win.webContents.send('setTemplates', this.#controller.allTemplates, newTemplate)
 
+                if (!newTemplate) return
+                
                 dialog.showMessageBox(this.#win, {
                     type: 'question',
                     title: 'Template Duplicated',

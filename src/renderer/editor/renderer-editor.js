@@ -94,7 +94,10 @@ window.electronAPI.onSetTemplate(async (templateId) => {
 
 
 window.electronAPI.onSetPlan((plan) => {
-    document.getElementById('json').data = plan
+    const viewer = document.getElementById('json')
+    viewer.data = plan
+    viewer.expand('plan')
+    viewer.expand('plan.items')
 })
 
 
