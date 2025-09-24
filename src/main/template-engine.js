@@ -260,13 +260,13 @@ export class TemplateEngine {
     }
 
     #songKeyFilter(item) {
-        if (item.settings && item.settings.key) {
+        if (item.type == 'song' && item.settings && item.settings.key) {
             let key = item.settings.key
             key.replace('b', '&flat;')
             if (item.settings.scale == 'minor') {
                 key += 'm'
             }
-            return key
+            return `<span class="song-key">${key}</span>`
         } else {
             return ''
         }
