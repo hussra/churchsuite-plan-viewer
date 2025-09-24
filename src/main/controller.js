@@ -222,8 +222,13 @@ export class Controller extends EventEmitter {
 
         const template = this.getSetting('template')
 
-        this.#selectedPlanHtml = await this.#templateEngine.renderPlanHTML(template, this.#selectedPlan)
-        this.#selectedPlanCss = this.#templateEngine.renderPlanCSS(template, this.#selectedPlan)
+        try {
+            this.#selectedPlanHtml = await this.#templateEngine.renderPlanHTML(template, this.#selectedPlan)
+            this.#selectedPlanCss = this.#templateEngine.renderPlanCSS(template, this.#selectedPlan)
+        } catch (e) {
+            this.#selectedPlanHtml = `<h1>Error</h1><div style="error">Error rendering plan with selected template:<br />${e.message}</div>`
+            this.#selectedPlanCss = ''
+        }
 
         this.#showPlanView = true
         this.emit('viewChanged')
