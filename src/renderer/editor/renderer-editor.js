@@ -20,7 +20,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.min.css'
 import '@alenaksu/json-viewer'
 
-
 const populateTemplates = async (templates, newTemplateId) => {
 
     const templateSelect = document.getElementById('template')
@@ -97,7 +96,7 @@ window.electronAPI.onSetPlan((plan) => {
     const viewer = document.getElementById('json')
     viewer.data = plan
     viewer.expand('plan')
-    viewer.expand('plan.items')
+    // viewer.expand('plan.items')
 })
 
 

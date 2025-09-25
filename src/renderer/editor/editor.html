@@ -23,10 +23,15 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
 </head>
 
 <body>
-    <h1>Template Editor</h1>
+    <div class="d-flex flex-column h-100">
 
-    <form>
-        <div class="container-fluid" id="mainControls">
+        <div class="w-100">
+            <h1>Template Editor</h1>
+        </div>
+
+
+        <div class="w-100 container-fluid" id="mainControls">
+
             <div class="row align-items-start">
                 <div class="col mb-3">
                     <label for="plan" class="form-label">Select template to edit</label>
@@ -53,35 +58,58 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="container-fluid" id="templateEditing">
             <div class="row align-items-start">
-                <div class="col mb-3">
+                <div class="col">
                     <label for="liquid" class="form-label">Liquid template</label>
-                    <textarea class="form-control" id="liquid" rows="25"></textarea>
                 </div>
-                <div class="col mb-3">
+
+                <div class="col">
                     <label for="css" class="form-label">CSS</label>
-                    <textarea class="form-control" id="css" rows="25"></textarea>
                 </div>
-                <div class="col mb-3">
-                    <p>JSON data for selected plan, passed to Liquid template</p>
-                    <json-viewer id="json">
-                    </json-viewer>
+
+                <div class="col">
+                    <p class="mb-2">JSON data for selected plan</p>
                 </div>
             </div>
         </div>
 
-        <div class="form-group mb-3 text-end">
-            <button class="btn btn-outline-secondary" type="button" id="deleteButton" title="Delete Template">
-                <i class="bi bi-file-earmark-x"></i> Delete
-            </button>
-            <button class="btn btn-primary" type="button" id="saveButton" title="Save Template">
-                <i class="bi bi-floppy-fill"></i> Save
-            </button>
+
+        <div class="w-100 flex-grow-1">
+            <div class="container-fluid h-100">
+                <div id="templateEditing" class="row align-items-start h-100">
+                    <div class="col h-100">
+                        <textarea class="form-control h-100" id="liquid"></textarea>
+                    </div>
+
+                    <div class="col mb-3 h-100">
+                        <textarea class="form-control h-100" id="css"></textarea>
+                    </div>
+
+                    <div class="col mb-3 mh-100">
+                        <div id="jsonContainer">
+                            <json-viewer id="json">
+                            </json-viewer>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </form>
+
+
+        <div class="w-100">
+            <div class="form-group mb-3 text-end">
+                <button class="btn btn-outline-secondary" type="button" id="deleteButton" title="Delete Template">
+                    <i class="bi bi-file-earmark-x"></i> Delete
+                </button>
+                
+                <button class="btn btn-primary" type="button" id="saveButton" title="Save Template">
+                    <i class="bi bi-floppy-fill"></i> Save
+                </button>
+            </div>
+        </div>
+
+    </div>
 </body>
 
 </html>
