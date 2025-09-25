@@ -132,6 +132,14 @@ const load = async () => {
         const newTemplateId = await window.electronAPI.duplicateTemplate(templateId)
     })
 
+    document.getElementById('exportButton').addEventListener('click', async(event) => {
+        alert('Export not yet implemented')
+    })
+
+    document.getElementById('importButton').addEventListener('click', (event) => {
+        alert('Import not yet implemented')
+    })
+
     populateForm(null)
 }
 
