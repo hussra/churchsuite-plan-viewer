@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Context menu in plan view with Select All and Copy options
 - Show default brand logo in plan header
 - Use default brand color in headings
+- Include song keys
+- Template editor
 
 ### Changed
 
