@@ -140,6 +140,12 @@ export class TemplateEngine {
         let newTemplate = Object.assign({}, this.getTemplateById(id))
         newTemplate.id = nanoid()
         newTemplate.name = newTemplate.name + ' (Copy)'
+
+        // If copying an out-of-the-box template, strip out any GPL licence at the start of the template
+        if (!newTemplate.editable) {
+            newTemplate.liquid = this.#stripGPL(newTemplate.liquid, '{% comment %}', '{% endcomment %}')
+            newTemplate.css = this.#stripGPL(newTemplate.css, '/*', '*/')
+        }
         newTemplate.editable = true
 
         // Save to settings
@@ -151,6 +157,17 @@ export class TemplateEngine {
         this.#controller.emit('templatesChanged', newTemplate.id)
 
         return newTemplate.id
+    }
+
+    #stripGPL(text, startToken, endToken) {
+        if (text.startsWith(startToken) && text.includes(endToken)) {
+            let endIndex = text.indexOf(endToken) + endToken.length
+            let comment = text.slice(0, endIndex)
+            if (comment.toLowerCase().includes('gnu general public license')) {
+                return text.slice(endIndex).trim()
+            }
+        }
+        return text
     }
 
     saveTemplate(template) {
