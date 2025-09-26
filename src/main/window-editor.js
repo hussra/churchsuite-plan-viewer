@@ -132,4 +132,12 @@ export class EditorWindow {
         )
     }
 
+    async exportTemplate(id) {
+       console.log('Export not yet implemented')
+    }
+
+    async importTemplate() {
+       console.log('Import not yet implemented')
+    }
+
 }

@@ -70,6 +70,7 @@ const populateForm = (template) => {
         document.getElementById('css').setAttribute('disabled', 'disabled')
         document.getElementById('deleteButton').setAttribute('disabled', 'disabled')
         document.getElementById('saveButton').setAttribute('disabled', 'disabled')
+        document.getElementById('exportButton').setAttribute('disabled', 'disabled')
     } else {
         document.getElementById('name').removeAttribute('disabled')
         document.getElementById('filenameSuffix').removeAttribute('disabled')
@@ -77,6 +78,7 @@ const populateForm = (template) => {
         document.getElementById('css').removeAttribute('disabled')
         document.getElementById('deleteButton').removeAttribute('disabled')
         document.getElementById('saveButton').removeAttribute('disabled')
+        document.getElementById('exportButton').removeAttribute('disabled')
     }
 }
 
@@ -133,11 +135,12 @@ const load = async () => {
     })
 
     document.getElementById('exportButton').addEventListener('click', async(event) => {
-        alert('Export not yet implemented')
+        const templateId = document.getElementById('template').value
+        await window.electronAPI.exportTemplate(templateId)
     })
 
-    document.getElementById('importButton').addEventListener('click', (event) => {
-        alert('Import not yet implemented')
+    document.getElementById('importButton').addEventListener('click', async (event) => {
+        await window.electronAPI.importTemplate()
     })
 
     populateForm(null)

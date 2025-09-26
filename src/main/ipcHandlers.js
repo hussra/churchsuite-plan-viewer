@@ -58,6 +58,14 @@ export async function addIpcHandlers(controller, mainWindow) {
         globalThis.editorWindow?.deleteTemplate(id)
     })
 
+    ipcMain.handle('exportTemplate', (event, id) => {
+       globalThis.editorWindow?.exportTemplate(id)
+    })
+
+    ipcMain.handle('importTemplate', (event) => {
+       globalThis.editorWindow?.importTemplate()
+    })
+
     ipcMain.handle('isConfigured', async () => {
         return controller.isConfigured()
     })
