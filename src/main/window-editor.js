@@ -14,7 +14,10 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app, BrowserWindow, dialog, Menu, screen } from 'electron'
+import path from 'path'
+import * as fs from 'fs'
+
+import { app, BrowserWindow, dialog, Menu, screen, shell } from 'electron'
 
 import { WINDOW_WIDTH, WINDOW_HEIGHT } from './constants'
 
@@ -133,7 +136,33 @@ export class EditorWindow {
     }
 
     async exportTemplate(id) {
-       console.log('Export not yet implemented')
+        const template = this.#controller.templateEngine.getTemplateById(id)
+        const now = new Date()
+        const date = now.toISOString().split('T')[0]
+        const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0')
+
+        const defaultFilename = path.join(
+            app.getPath('downloads'),
+            template.name + ' ' + date + ' ' + time + '.plantemplate'
+        )
+
+        dialog.showSaveDialog(this.#win, {
+            defaultPath: defaultFilename
+        }).then((result) => {
+            if (result.canceled) return
+            
+            try {
+                fs.writeFileSync(result.filePath, JSON.stringify(template, null, 2))
+                shell.showItemInFolder(result.filePath)
+            } catch(err) {
+                console.log(err)
+                dialog.showMessageBox(this.#win, {
+                    type: 'error',
+                    title: 'Unable to save file',
+                    message: `Sorry, we were not able to save this plan to ${result.filePath} - is the file already open?`
+                })
+            }
+        })
     }
 
     async importTemplate() {
