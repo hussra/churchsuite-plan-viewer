@@ -26,7 +26,7 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.9.0",
     "@electron-forge/plugin-fuses": "^7.9.0",
     "@electron-forge/plugin-webpack": "^7.9.0",
-    "@electron/fuses": "^2.0.0",
+    "@electron/fuses": "^1.8.0",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
     "copy-webpack-plugin": "^13.0.1",
     "css-loader": "^7.1.2",
@@ -38,6 +38,7 @@
   "dependencies": {
     "@alenaksu/json-viewer": "^2.1.2",
     "@popperjs/core": "^2.11.8",
+    "ajv": "^8.17.1",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "coherentpdf": "^2.5.5",
@@ -46,9 +47,9 @@
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^10.1.0",
     "html-loader": "^5.1.0",
-    "jsdom": "^27.0.0",
+    "jsdom": "^26.1.0",
     "liquidjs": "^10.21.1",
-    "nanoid": "^5.1.5",
+    "nanoid": "^5.1.6",
     "undici": "^7.16.0"
   },
   "packageManager": "yarn@4.9.2"
