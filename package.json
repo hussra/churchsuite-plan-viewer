@@ -30,7 +30,7 @@
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
     "copy-webpack-plugin": "^13.0.1",
     "css-loader": "^7.1.2",
-    "electron": "^38.1.2",
+    "electron": "^38.2.0",
     "node-loader": "^2.1.0",
     "style-loader": "^4.0.0",
     "webpack": "^5.101.3"
@@ -45,7 +45,7 @@
     "commonmark": "^0.31.2",
     "dompurify": "^3.2.7",
     "electron-squirrel-startup": "^1.0.1",
-    "electron-store": "^10.1.0",
+    "electron-store": "^11.0.0",
     "html-loader": "^5.1.0",
     "jsdom": "^26.1.0",
     "liquidjs": "^10.21.1",
