@@ -170,6 +170,46 @@ export class TemplateEngine {
         return text
     }
 
+    importTemplate(template, generateNewId) {
+        // Get the new template record ready to import
+        template.editable = true
+
+        if (generateNewId) {
+            template.id = nanoid()
+        }
+
+        // Search for this template's ID in our existing settings
+        let allTemplates = this.#controller.getSetting('custom_templates')
+        let index = allTemplates.findIndex((element) => (element.id == template.id))
+
+        if (generateNewId || index === -1) {
+
+            // Save to settings
+            this.#controller.saveSetting('custom_templates', allTemplates.concat([template]))
+
+            // Save locally
+            this.#templates.push(template)
+            this.#controller.emit('templatesChanged', template.id)
+
+            return template.id
+
+        } else {
+
+            // Save to settings
+            let allTemplates = this.#controller.getSetting('custom_templates')
+            let index = allTemplates.findIndex((element) => (element.id == template.id))
+            allTemplates[index] = template
+            this.#controller.saveSetting('custom_templates', allTemplates)
+
+            // Save locally
+            let localIndex = this.#templates.findIndex((element) => (element.id == template.id))
+            this.#templates[localIndex] = template
+            this.#controller.emit('templatesChanged')
+        
+            return template.id
+        }
+    }
+
     saveTemplate(template) {
         if (!(this.templateExists(template.id))) {
             throw new Error('Template does not exist')

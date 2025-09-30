@@ -18,8 +18,9 @@ import path from 'path'
 import * as fs from 'fs'
 
 import { app, BrowserWindow, dialog, Menu, screen, shell } from 'electron'
+import Ajv from 'ajv'
 
-import { WINDOW_WIDTH, WINDOW_HEIGHT } from './constants'
+import { WINDOW_WIDTH, WINDOW_HEIGHT, CUSTOM_TEMPLATE_SCHEMA } from './constants'
 
 export class EditorWindow {
 
@@ -65,7 +66,7 @@ export class EditorWindow {
                 dialog.showMessageBox(this.#win, {
                     type: 'question',
                     title: 'Template Duplicated',
-                    message: 'Your template has been duplicated. Do you want to edit the new template?',
+                    message: 'Do you want to edit the new template?',
                     buttons: ['Yes', 'No'],
                 }).then(
                     ({ response: ans }) => {
@@ -155,7 +156,6 @@ export class EditorWindow {
                 fs.writeFileSync(result.filePath, JSON.stringify(template, null, 2))
                 shell.showItemInFolder(result.filePath)
             } catch(err) {
-                console.log(err)
                 dialog.showMessageBox(this.#win, {
                     type: 'error',
                     title: 'Unable to save file',
@@ -166,7 +166,85 @@ export class EditorWindow {
     }
 
     async importTemplate() {
-       console.log('Import not yet implemented')
+        dialog.showOpenDialog(this.#win, {
+            filters: [
+                { name: 'Plan Templates', extensions: ['plantemplate']}
+            ],
+            properties: ['openFile']
+        }).then(result => {
+            if (result.canceled) return
+
+            console.log('Reading ' + result.filePaths[0])
+            fs.readFile(result.filePaths[0], 'utf8', (err, data) => {
+                if (err) {
+                    dialog.showMessageBox(this.#win,
+                            {
+                                title: 'Unable to read file',
+                                type: 'error',
+                                buttons: ['OK'],
+                                message: 'Sorry, we were unable to read the file'
+                            }
+                        )
+
+                    return
+                }
+
+                let templateData
+                try {
+                    templateData = JSON.parse(data)
+                } catch (parseError) {
+                    console.error('Error parsing JSON data:', parseError)
+                    dialog.showMessageBox(this.#win,
+                        {
+                            title: 'Unable to read file',
+                            type: 'error',
+                            buttons: ['OK'],
+                            message: 'Sorry, this file appears to be corrupted'
+                        }
+                    )
+                    return
+                }
+
+                const ajv = new Ajv()
+
+                const isDataValid = ajv.validate(CUSTOM_TEMPLATE_SCHEMA, templateData)
+                if (!isDataValid) {
+                    dialog.showMessageBox(this.#win,
+                        {
+                            title: 'Unable to read file',
+                            type: 'error',
+                            buttons: ['OK'],
+                            message: 'Sorry, this file appears to be corrupted'
+                        }
+                    )
+                    return
+                }
+
+                console.log('OK, add to the template engine')
+
+                const idExists = this.#controller.templateEngine.templateExists(templateData.id)
+                console.log('Template ID already exists? ' + idExists)
+                if (idExists) {
+                    const ans = dialog.showMessageBoxSync(this.#win, {
+                        type: 'question',
+                        title: 'Overwrite existing template?',
+                        message: 'A template with the same ID already exists. Do you want to overwrite it, or import this as a new template?',
+                        buttons: ['New template','Overwrite'],
+                        noLink: true,
+                    })
+                    if (ans == 0) {
+                        console.log('Import as new template')
+                        this.#controller.templateEngine.importTemplate(templateData, true)
+                    } else {
+                        console.log('Overwrite existing template')
+                        this.#controller.templateEngine.importTemplate(templateData, false)
+                    }
+                } else {
+                    console.log('Import as new template')
+                    this.#controller.templateEngine.importTemplate(templateData, false)
+                }
+            })
+        })
     }
 
 }

@@ -19,6 +19,18 @@ export const WINDOW_HEIGHT = 800
 export const LEFT_PANEL_WIDTH = 300
 export const BAR_WIDTH = 2
 
+export const CUSTOM_TEMPLATE_SCHEMA = {
+    type: 'object',
+    properties: {
+        id: { type: 'string' },
+        name: { type: 'string' },
+        filenameSuffix: { type: 'string' },
+        liquid: { type: 'string' },
+        css: { type: 'string' },
+    },
+    required: ['id', 'name', 'liquid', 'css'],
+}
+
 export const SETTINGS_SCHEMA = {
     client_secret: {
         type: 'string',
@@ -62,16 +74,7 @@ export const SETTINGS_SCHEMA = {
     },
     custom_templates: {
         type: 'array',
-        items: {
-            type: 'object',
-            properties: {
-                id: { type: 'string' },
-                name: { type: 'string' },
-                filenameSuffix: { type: 'string' },
-                liquid: { type: 'string' },
-                css: { type: 'string' },
-            },
-        },
+        items: CUSTOM_TEMPLATE_SCHEMA,
         default: []
     }
 }
