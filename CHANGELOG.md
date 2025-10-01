@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Show default brand logo in plan header
 - Use default brand color in headings
 - Include song keys
-- Template editor
+- Template editor, including duplicate, delete, export, import functions
 
 ### Changed
 
@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hide Inspect menu except in develoment mode
 - When showing past plans, sort in reverse date order (most recent first)
 - Improved date formatting
-- Much refactoring in preparation for template editor
+- Much refactoring
 - Dependencies updated
 
 ## [v1.0.0] - 2025-07-29
