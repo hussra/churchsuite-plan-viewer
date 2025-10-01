@@ -318,12 +318,20 @@ export class TemplateEngine {
 
     #songKeyFilter(item) {
         if (item.type == 'song' && item.settings && item.settings.key) {
+
             let key = item.settings.key
-            key.replace('b', '&flat;')
+
+            if (key.endsWith('b')) {
+                key = key.replace('b', '&flat;')
+            } else if (key.endsWith('#')) {
+                key = key.replace('#', '&sharp;')
+            }
+
             if (item.settings.scale == 'minor') {
                 key += 'm'
             }
             return `<span class="song-key">${key}</span>`
+            
         } else {
             return ''
         }
