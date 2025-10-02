@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hide Inspect menu except in develoment mode
 - When showing past plans, sort in reverse date order (most recent first)
 - Improved date formatting
+- Fix issue when API access token expires
 - Much refactoring
 - Dependencies updated
 
