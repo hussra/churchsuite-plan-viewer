@@ -46,7 +46,9 @@ const populatePlans = async (plans) => {
         planSelect.value = plans[0].id
     }
 
-    planSelect.dispatchEvent(new Event('change'))
+    if (planSelect.value != selectedPlan) {
+        selectPlan()
+    }
 }
 
 const populateTemplates = async (templates) => {
@@ -76,7 +78,9 @@ const populateTemplates = async (templates) => {
         templateSelect.value = await window.electronAPI.getFromStore('template')
     }
 
-    templateSelect.dispatchEvent(new Event('change'))
+    if (templateSelect.value != selectedTemplate) {
+        selectTemplate()
+    }
 }
 
 const exportPDF = () => {
