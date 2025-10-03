@@ -45,7 +45,6 @@
             <strong>Video:</strong>
           {% endif %}
           {{item.name}}
-          {{item | songKey}}
           {%- for question in item.question_responses %}
             {%- if question.response_type == 'bible'%}:
               {% for value in question.value %}
@@ -55,6 +54,7 @@
               {% endfor %}
             {% endif %}
           {% endfor %}
+          {{item | songKey}}
         </td>
         <td>
           {% for person in item.people -%}
