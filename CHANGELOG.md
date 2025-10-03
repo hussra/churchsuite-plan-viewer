@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [v1.1.0] - 2025-10-03
 
 ### Added
 
@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Encrypt API key in config file
 - Multiple, selectable, templates, each with their own CSS
 - When printing a multi-page document two-up, print two of the same page on each sheet
-- In "Full" template, render markdown in liturgy and prayer items
+- Add "Full" template, which renders markdown in liturgy and prayer items
 - Option to change how names are shown against plan items - first name, first name and initial, or full name
 - Context menu in plan view with Select All and Copy options
 - Show default brand logo in plan header
@@ -41,5 +41,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial version of Companion Plan Viewer for the needs of Elmdon Church
 
-[Unreleased]: https://github.com/hussra/churchsuite-plan-viewer/compare/v1.0.0...HEAD
+[v1.1.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.1.0
 [v1.0.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.0.0
