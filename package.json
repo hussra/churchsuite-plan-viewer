@@ -33,7 +33,7 @@
     "electron": "^38.2.0",
     "node-loader": "^2.1.0",
     "style-loader": "^4.0.0",
-    "webpack": "^5.101.3"
+    "webpack": "^5.102.0"
   },
   "dependencies": {
     "@alenaksu/json-viewer": "^2.1.2",
