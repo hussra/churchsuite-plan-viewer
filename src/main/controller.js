@@ -281,16 +281,18 @@ export class Controller extends EventEmitter {
         if (statusCode != 200) {
             // Retry once
             authToken = await this.#getAuthToken(true)
-            ({ statusCode, body } = await request(url, {
+            const { statusCode: retryStatusCode, body: retryBody } = await request(url, {
                 headers: {
                     'Authorization': 'Bearer ' + authToken
                 }
-            }))
+            })
 
-            if (statusCode != 200) {
+            if (retryStatusCode != 200) {
                 this.connected = false
                 return {}
             }
+
+            body = retryBody
         }
         this.connected = true
         return await body.json()
