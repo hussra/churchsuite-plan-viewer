@@ -174,7 +174,6 @@ export class EditorWindow {
         }).then(result => {
             if (result.canceled) return
 
-            console.log('Reading ' + result.filePaths[0])
             fs.readFile(result.filePaths[0], 'utf8', (err, data) => {
                 if (err) {
                     dialog.showMessageBox(this.#win,
@@ -220,10 +219,7 @@ export class EditorWindow {
                     return
                 }
 
-                console.log('OK, add to the template engine')
-
                 const idExists = this.#controller.templateEngine.templateExists(templateData.id)
-                console.log('Template ID already exists? ' + idExists)
                 if (idExists) {
                     const ans = dialog.showMessageBoxSync(this.#win, {
                         type: 'question',
@@ -233,14 +229,11 @@ export class EditorWindow {
                         noLink: true,
                     })
                     if (ans == 0) {
-                        console.log('Import as new template')
                         this.#controller.templateEngine.importTemplate(templateData, true)
                     } else {
-                        console.log('Overwrite existing template')
                         this.#controller.templateEngine.importTemplate(templateData, false)
                     }
                 } else {
-                    console.log('Import as new template')
                     this.#controller.templateEngine.importTemplate(templateData, false)
                 }
             })
