@@ -263,7 +263,7 @@ export class TemplateEngine {
             throw new Error('Template does not exist')
         }
 
-        let primaryColor = plan.plan.brand.color
+        let primaryColor = plan.brand.color
         let topCSS = `:root {
             --primary-color: ${primaryColor};
         }\n\n`

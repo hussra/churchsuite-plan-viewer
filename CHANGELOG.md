@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Make plan item types available to templates as `types`, keyed by name, so item type can
+  be checked by name rather than needing to check by ID directly. Updated supplied templates
+  to match.
+- Make default brand available to templates as `brand` rather than `plan.brand`
+
 ### Changed
 
 ## [v1.1.0] - 2025-10-03

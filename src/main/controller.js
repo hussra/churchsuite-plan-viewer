@@ -21,6 +21,7 @@ import { request } from "undici"
 
 import { SETTINGS_SCHEMA } from './constants'
 import { TemplateEngine } from './template-engine'
+import toValidIdentifier from 'to-valid-identifier'
 
 export class Controller extends EventEmitter {
 
@@ -43,6 +44,7 @@ export class Controller extends EventEmitter {
     #isConnected = false
 
     #defaultBrand = null
+    #types = null
 
     #allPlans = [];                          // All available plans for selection
     #showPlanView = false;                   // Is currently selected plan available for viewing?
@@ -175,7 +177,9 @@ export class Controller extends EventEmitter {
     }
 
     async reload() {
-        this.loadPlans()
+        await this.#getDefaultBrand(true)
+        await this.#getTypes(true)
+        await this.loadPlans()
 
         this.emit('templatesChanged')
     }
@@ -207,7 +211,8 @@ export class Controller extends EventEmitter {
     async loadPlan() {
         const detail = (await this.#getPlanDetail(this.#selectedPlanId)).data
         const items = (await this.#getPlanItems(this.#selectedPlanId)).data
-        const brand = (await this.getDefaultBrand()).data
+        const brand = (await this.#getDefaultBrand()).data
+        const types = (await this.#getTypes())
 
         this.#selectedPlan = {
             plan: {
@@ -216,8 +221,9 @@ export class Controller extends EventEmitter {
                     date_time: new Date(Date.parse(detail.date + " " + detail.time))
                 },
                 items: items,
-                brand: brand
-            }
+            },
+            brand: brand,
+            types: types,
         }
 
         const template = this.getSetting('template')
@@ -339,9 +345,28 @@ export class Controller extends EventEmitter {
     }
 
 
+    // Get the item types, as an array keyed by name
+    async #getTypes(force = false) {
+        if ((this.#types == null) || force) {
+            const typesFromAPI = (await this.#makeApiCall('https://api.churchsuite.com/v2/planning/types')).data
+
+            let types = {}
+
+            for (let type of typesFromAPI) {
+                const name = toValidIdentifier(type.name.toLowerCase().replace(/\s+/g, '_'))
+                types[name] = type
+            }
+
+            this.#types = types
+        }
+
+        return this.#types
+    }
+
+
     // Get the default brand for our account, and add a data.logo.data_url property
-    async getDefaultBrand() {
-        if (this.#defaultBrand == null) {
+    async #getDefaultBrand(force = false) {
+        if ((this.#defaultBrand == null) || force) {
             this.#defaultBrand = await this.#makeApiCall('https://api.churchsuite.com/v2/account/brands/default')   
         }
 

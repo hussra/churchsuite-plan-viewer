@@ -24,14 +24,14 @@
       </h2>
     </div>
     <div class="col-4">
-      <img id="logo" src="{{plan.brand.logo.data_url}}" style="max-width: 100%;" />
+      <img id="logo" src="{{brand.logo.data_url}}" style="max-width: 100%;" />
     </div>
   </div>
 </div>
 
 <table class="plan">
   {% for item in plan.items %}
-    {% if item.type_id == 22 %}
+    {% if item.type_id == types.heading.id %}
       <tr class="heading">
         <td colspan="2">{{item.name}}</td>
       </tr>
@@ -41,7 +41,7 @@
           {% if item.type == 'song' %}
             <strong>Song:</strong>
           {% endif %}
-          {% if item.type_id == 19 %}
+          {% if item.type_id == types.video.id %}
             <strong>Video:</strong>
           {% endif %}
           {{item.name}}

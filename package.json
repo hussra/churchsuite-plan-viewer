@@ -50,6 +50,7 @@
     "jsdom": "^26.1.0",
     "liquidjs": "^10.21.1",
     "nanoid": "^5.1.6",
+    "to-valid-identifier": "^0.1.1",
     "undici": "^7.16.0"
   },
   "packageManager": "yarn@4.9.2"

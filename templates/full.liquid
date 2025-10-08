@@ -24,13 +24,13 @@
       </h2>
     </div>
     <div class="col-4">
-      <img id="logo" src="{{plan.brand.logo.data_url}}" style="max-width: 100%;" />
+      <img id="logo" src="{{brand.logo.data_url}}" style="max-width: 100%;" />
     </div>
   </div>
 </div>
 
 {% for item in plan.items %}
-  {% if item.type_id == 22 %}
+  {% if item.type_id == types.heading.id %}
     <h3>{{item.name}}</h3>
   {% else %}
 
@@ -46,7 +46,7 @@
         {% if item.type == 'song' %}
           Song:
         {% endif %}
-        {% if item.type_id == 19 %}
+        {% if item.type_id == types.video.id %}
           Video:
         {% endif %}
         {{item.name}}
@@ -63,9 +63,9 @@
       </h4>
     </div>
 
-    {% if item.type_id == 20 or item.type_id == 21 %}
+    {% if item.type_id == types.liturgy.id or item.type_id == types.prayers.id %}
         {%- for question in item.question_responses %}
-          {% if question.id == 9 or question.id == 10 %}
+          {% if question.response_type == 'paragraph' %}
             {% if question.value %}
               <div class="liturgy">{{question.value | markdown}}</div>
             {% endif %}
