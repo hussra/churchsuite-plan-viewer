@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Setting Up ChurchSuite Plan Viewer
 ---
 # Setting Up ChurchSuite Plan Viewer
