@@ -33,8 +33,8 @@
         {% if site.show_downloads %}
         <ul class="downloads">
           <li><a href="{{ site.github.releases_url }}">Releases on <strong>GitHub</strong></a></li>
-          <li><a href="{{ site.github.repository_url }}/blob/main/CHANGELOG.md">Changelog on <strong>GitHub</strong></a></li>
-          <li><a href="{{ site.github.issues_url }}">Issues on <strong>GitHub</strong></a></li>
+          <li><a href="{{ site.github.repository_url }}/blob/main/CHANGELOG.md"><strong>Changelog</strong></a></li>
+          <li><a href="{{ site.github.issues_url }}"><strong>Issues</strong></a></li>
          </ul>
         {% endif %}
         {% assign sorted = site.html_pages | sort:"rank" %}
