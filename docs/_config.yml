@@ -1,2 +1,4 @@
 theme: jekyll-theme-minimal
 title: ChurchSuite Plan Viewer
+logo: /assets/images/icon.png
+show_downloads: true
