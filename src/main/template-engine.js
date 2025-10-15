@@ -290,6 +290,10 @@ export class TemplateEngine {
         return purify.sanitize(rawHtml)
     }
 
+    async renderPlanTitle(plan) {
+        return await this.#liquidEngine.parseAndRender('{{plan.detail.date_time | date: "%A %e %b %Y, %l.%M%P"}} - {{plan.detail.name}}', plan)
+    }
+
     #bibleBookFilter(abbr) {
         let name = BOOK_MAPPING[abbr]
         if (name === undefined) {

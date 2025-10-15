@@ -22,6 +22,7 @@ window.electronAPI.onSetPlan((planDetail) => {
     if (planDetail.show) {
         document.getElementById('selectPlan').classList.add('d-none')
         document.getElementById('planContents').innerHTML = planDetail.html
+        document.title = planDetail.title
         window.scrollTo({
             top: 0,
             left: 0,
@@ -30,5 +31,6 @@ window.electronAPI.onSetPlan((planDetail) => {
     } else {
         document.getElementById('selectPlan').classList.remove('d-none')
         document.getElementById('planContents').innerHTML = ''
+        document.title = ''
     }
 })

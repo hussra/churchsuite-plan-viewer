@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   be checked by name rather than needing to check by ID directly. Updated supplied templates
   to match.
 - Make default brand available to templates as `brand` rather than `plan.brand`
+- Output PDFs now have a suitable title
 
 ### Changed
 

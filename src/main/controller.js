@@ -53,6 +53,7 @@ export class Controller extends EventEmitter {
 
     #selectedPlan
     #selectedPlanHtml = '';
+    #selectedPlanTitle = '';
     #selectedPlanCss = '';
 
     #templateEngine
@@ -117,6 +118,10 @@ export class Controller extends EventEmitter {
 
     get selectedPlanHtml() {
         return this.#selectedPlanHtml
+    }
+
+    get selectedPlanTitle() {
+        return this.#selectedPlanTitle
     }
 
     get selectedPlanCss() {
@@ -230,9 +235,11 @@ export class Controller extends EventEmitter {
 
         try {
             this.#selectedPlanHtml = await this.#templateEngine.renderPlanHTML(template, this.#selectedPlan)
+            this.#selectedPlanTitle = await this.#templateEngine.renderPlanTitle(this.#selectedPlan)
             this.#selectedPlanCss = this.#templateEngine.renderPlanCSS(template, this.#selectedPlan)
         } catch (e) {
             this.#selectedPlanHtml = `<h1>Error</h1><div style="error">Error rendering plan with selected template:<br />${e.message}</div>`
+            this.#selectedPlanTitle = 'Error'
             this.#selectedPlanCss = ''
         }
 

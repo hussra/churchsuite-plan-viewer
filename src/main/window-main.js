@@ -97,7 +97,8 @@ export class MainWindow {
         this.#controller.on('viewChanged', async () => {
             this.#rightView.webContents.send('setPlan', {
                 show: this.#controller.showPlanView,
-                html: this.#controller.selectedPlanHtml
+                html: this.#controller.selectedPlanHtml,
+                title: this.#controller.selectedPlanTitle,
             })
 
             if (this.#css != '') {
@@ -252,6 +253,8 @@ export class MainWindow {
                 if (twoUp) {
                     // Load the PDF file
                     pdf = coherentpdf.fromMemory(data, '')
+                    const title = coherentpdf.getTitle(pdf)
+                    console.log(title)
 
                     // Duplicate each page - 1, 1, 2, 2, etc.
                     mergedPdf = coherentpdf.mergeSame(
@@ -262,6 +265,8 @@ export class MainWindow {
                     // Two-up and rotate
                     coherentpdf.twoUp(mergedPdf)
                     coherentpdf.rotate(mergedPdf, coherentpdf.all(mergedPdf), 90)
+
+                    coherentpdf.setTitle(mergedPdf, title)
 
                     // Save to file
                     coherentpdf.toFile(mergedPdf, result.filePath, false, false)
