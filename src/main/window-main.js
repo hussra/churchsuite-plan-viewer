@@ -183,6 +183,12 @@ export class MainWindow {
                 role: 'help',
                 submenu: [
                     {
+                        label: 'ChurchSuite Plan Viewer Help...',
+                        click: async () => {
+                            await shell.openExternal('https://hussra.github.io/churchsuite-plan-viewer/')
+                        }
+                    },
+                    {
                         label: 'About...',
                         click: async () => {
                             const about = new BrowserWindow({
