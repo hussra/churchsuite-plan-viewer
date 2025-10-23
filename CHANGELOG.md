@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fix functionality of refresh button
 - Remove superfluous logging
 
 ## [v1.1.0] - 2025-10-03
