@@ -46,9 +46,7 @@ const populatePlans = async (plans) => {
         planSelect.value = plans[0].id
     }
 
-    if (planSelect.value != selectedPlan) {
-        selectPlan()
-    }
+    selectPlan()
 }
 
 const populateTemplates = async (templates) => {
