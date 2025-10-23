@@ -1,9 +1,9 @@
 ---
-title: Setting Up ChurchSuite Plan Viewer
+title: Installation and Setup
 layout: default
 rank: 1
 ---
-# Setting Up ChurchSuite Plan Viewer
+# Installation and Setup
 This guide will help you set up and configure the ChurchSuite Plan Viewer application.
 
 ## Setting up access
