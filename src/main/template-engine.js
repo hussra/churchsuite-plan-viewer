@@ -294,6 +294,16 @@ export class TemplateEngine {
         return await this.#liquidEngine.parseAndRender('{{plan.detail.date_time | date: "%A %e %b %Y, %l.%M%P"}} - {{plan.detail.name}}', plan)
     }
 
+    async renderPlanTitleShort(date_time, name) {
+        return await this.#liquidEngine.parseAndRender(
+            '{{date_time | date: "%d-%m-%Y %H:%M"}} {{name}}',
+            {
+                date_time: date_time,
+                name: name
+            }
+        )
+    }
+
     #bibleBookFilter(abbr) {
         let name = BOOK_MAPPING[abbr]
         if (name === undefined) {

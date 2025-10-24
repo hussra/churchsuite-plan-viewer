@@ -194,13 +194,15 @@ export class Controller extends EventEmitter {
 
         let allPlans = []
         if (planData.data) {
-            allPlans = planData.data.map((plan) => {
+            allPlans = await Promise.all(planData.data.map(async (plan) => {
+                const timestamp = Date.parse(plan.date + " " + plan.time)
                 return {
                     id: plan.id,
                     date: plan.date,
-                    timestamp: Date.parse(plan.date + " " + plan.time)
+                    timestamp: timestamp,
+                    name: await this.#templateEngine.renderPlanTitleShort(new Date(timestamp), plan.name)
                 }
-            })
+            }))
         }
 
         // For past plans, sort in reverse date order (most recent first)
