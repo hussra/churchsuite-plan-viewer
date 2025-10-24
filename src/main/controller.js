@@ -399,6 +399,18 @@ export class Controller extends EventEmitter {
         return 'data:' + headers['content-type'] + ';base64,' + bytes.toBase64()
     }
 
+    async suggestFilename() {
+        return (await this.#templateEngine.renderPlanDateTimeShort(
+                    this.#selectedPlan.plan.detail.date_time,
+                    this.#selectedPlan.plan.detail.name
+                ))
+            .replace(/\s/g, '-')
+            .replace(/:/g, '') +
+            this.template.filenameSuffix +
+            (this.getSetting('two_up') ? '-2up' : '') +
+            '.pdf'
+    }
+
     appStartupComplete() {
         // this.#configChanged()
         this.emit('configChanged', this.isConfigured() && this.#isConnected)

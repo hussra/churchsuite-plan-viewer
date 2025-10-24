@@ -294,14 +294,17 @@ export class TemplateEngine {
         return await this.#liquidEngine.parseAndRender('{{plan.detail.date_time | date: "%A %e %b %Y, %l.%M%P"}} - {{plan.detail.name}}', plan)
     }
 
-    async renderPlanTitleShort(date_time, name) {
-        return await this.#liquidEngine.parseAndRender(
-            '{{date_time | date: "%d-%m-%Y %H:%M"}} {{name}}',
+    async renderPlanDateTimeShort(date_time) {
+       return await this.#liquidEngine.parseAndRender(
+            '{{date_time | date: "%d-%m-%Y %H:%M"}}',
             {
-                date_time: date_time,
-                name: name
+                date_time: date_time
             }
         )
+    }
+
+    async renderPlanTitleShort(date_time, name) {
+        return await this.renderPlanDateTimeShort(date_time) + ' ' + name
     }
 
     #bibleBookFilter(abbr) {

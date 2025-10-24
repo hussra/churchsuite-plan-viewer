@@ -234,7 +234,7 @@ export class MainWindow {
 
         const defaultFilename = path.join(
             app.getPath('downloads'),
-            this.#controller.selectedPlan.plan.detail.date + template.filenameSuffix + (twoUp ? '-2up' : '') + '.pdf'
+            await this.#controller.suggestFilename()
         )
 
         dialog.showSaveDialog(this.#win, {

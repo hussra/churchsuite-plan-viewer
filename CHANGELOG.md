@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Make default brand available to templates as `brand` rather than `plan.brand`
 - Output PDFs now have a suitable title
 - Show plan time and name in "Select a plan" drop-down, not just date
+- Include plan time in suggested filename, not just date
 
 ### Changed
 
