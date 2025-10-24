@@ -16,11 +16,6 @@
   this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif;
-}
-
 @media screen {
   body {
     padding: 2rem;
