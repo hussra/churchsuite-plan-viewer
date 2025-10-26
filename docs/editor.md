@@ -52,7 +52,8 @@ When your Liquid template has been applied to the plan data, it is loaded into t
 main plan viewer window, where it is inserted into a `<div id="planContents" />` element.
 
 This pane has the [Bootstrap 5.3](https://getbootstrap.com/docs/5.3/getting-started/introduction/) styles applied,
-including their sans-serif native font stack. Your template's own styles are also loaded.
+including their sans-serif native font stack. Your template's own styles are also loaded, and in them you can use
+the `--primary-color` variable to reference your ChurchSuite account's primary colour.
 
 ## Liquid filters
 In addition to the [standard LiquidJS filters](https://liquidjs.com/filters/overview.html), the following
