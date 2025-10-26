@@ -357,13 +357,15 @@ export class Controller extends EventEmitter {
     // Get the item types, as an array keyed by name
     async #getTypes(force = false) {
         if ((this.#types == null) || force) {
-            const typesFromAPI = (await this.#makeApiCall('https://api.churchsuite.com/v2/planning/types')).data
+            const typesFromAPI = (await this.#makeApiCall('https://api.churchsuite.com/v2/planning/types'))
 
             let types = {}
-
-            for (let type of typesFromAPI) {
-                const name = toValidIdentifier(type.name.toLowerCase().replace(/\s+/g, '_'))
-                types[name] = type
+            
+            if (typesFromAPI.hasOwnProperty('data') && Array.isArray(typesFromAPI.data)) {
+                for (let type of typesFromAPI.data) {
+                    const name = toValidIdentifier(type.name.toLowerCase().replace(/\s+/g, '_'))
+                    types[name] = type
+                }
             }
 
             this.#types = types
