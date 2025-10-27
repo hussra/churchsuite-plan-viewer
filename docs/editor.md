@@ -54,7 +54,7 @@ There are three top-level objects:
   template to display the different item types in appropriate ways - there are examples of this in the default
   templates.
 
-### The #planContent pane
+### The #planContents pane
 
 When your Liquid template has been applied to the plan data, it is loaded into the right hand pane of the
 main plan viewer window, where it is inserted into a `<div id="planContents" />` element.
