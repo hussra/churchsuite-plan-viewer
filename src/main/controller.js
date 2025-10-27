@@ -17,11 +17,11 @@
 import { EventEmitter } from 'node:events'
 import { safeStorage } from 'electron'
 import Store from 'electron-store'
-import { request } from "undici"
+import { request } from 'undici'
+import toValidIdentifier from 'to-valid-identifier'
 
 import { SETTINGS_SCHEMA } from './constants'
 import { TemplateEngine } from './template-engine'
-import toValidIdentifier from 'to-valid-identifier'
 
 export class Controller extends EventEmitter {
 

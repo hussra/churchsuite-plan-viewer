@@ -16,7 +16,6 @@
 
 import path from 'path'
 import * as fs from 'fs'
-
 import { app, BrowserWindow, dialog, Menu, screen, shell } from 'electron'
 import Ajv from 'ajv'
 

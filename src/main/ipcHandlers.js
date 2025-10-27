@@ -15,6 +15,7 @@
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { app, ipcMain } from 'electron'
+
 import { EditorWindow } from './window-editor'
 
 export async function addIpcHandlers(controller, mainWindow) {

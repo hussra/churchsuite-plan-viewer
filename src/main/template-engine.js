@@ -21,9 +21,9 @@ import { HtmlRenderer, Parser } from 'commonmark'
 import DOMPurify from 'dompurify'
 import { JSDOM } from 'jsdom'
 import { Liquid } from 'liquidjs'
+import { nanoid } from 'nanoid'
 
 import { BOOK_MAPPING } from './constants'
-import { nanoid } from 'nanoid'
 
 export class TemplateEngine {
 
