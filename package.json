@@ -53,5 +53,5 @@
     "to-valid-identifier": "^1.0.0",
     "undici": "^7.16.0"
   },
-  "packageManager": "yarn@4.9.2"
+  "packageManager": "yarn@4.10.3"
 }
