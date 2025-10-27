@@ -1,7 +1,7 @@
 ---
 title: Template editor
 layout: default
-rank: 3
+rank: 4
 ---
 ## Template editor
 
