@@ -254,7 +254,6 @@ export class MainWindow {
                     // Load the PDF file
                     pdf = coherentpdf.fromMemory(data, '')
                     const title = coherentpdf.getTitle(pdf)
-                    console.log(title)
 
                     // Duplicate each page - 1, 1, 2, 2, etc.
                     mergedPdf = coherentpdf.mergeSame(
