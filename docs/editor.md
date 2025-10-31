@@ -41,18 +41,23 @@ creates the printable plan.
 ### JSON data
 
 Use the right hand section to explore the data available to your template, clicking the triangle icons to
-expand and collapse different sections.
+expand and collapse different sections. Most of this data is structured according to ChurchSuite's
+[Planning module API models](https://developer.churchsuite.com/planning#models).
 
 There are three top-level objects:
 
 * `plan`, representing the chosen service plan. Within this are two further objects:
-  * `plan.detail` contains the overall plan properties.
-  * `plan.items` is an array of objects, each representing an item in the service plan.
-* `brand` represents your account's default branding, allowing you to display your logo and use the default
-  brand colour.
-* `types` is an array of objects, each representing one of your plan item types. This can be used by your
-  template to display the different item types in appropriate ways - there are examples of this in the default
-  templates.
+  * `plan.detail` contains the overall plan properties. It is a [Plan model](https://developer.churchsuite.com/planning#model/plan)
+    with one addition, the date_time property which represents the plan's start date and time as a JavaScript
+    Date object.
+  * `plan.items` is an array of objects, each representing an item in the service plan as a
+    [PlanItem model](https://developer.churchsuite.com/planning#model/planitem).
+* `brand` represents your account's default branding as a [Brand model](https://developer.churchsuite.com/account#model/brand),
+  allowing you to display your logo and use the default brand colour. In addition, a `logo.data_url` property is added giving your
+  logo as a data: URL for easier display within your template.
+* `types` is an array of objects, each representing one of your plan item types as [Type model](https://developer.churchsuite.com/planning#model/type).
+  This can be used by your template to display the different item types in appropriate ways - there are
+  examples of this in the default templates.
 
 ### The #planContents pane
 
