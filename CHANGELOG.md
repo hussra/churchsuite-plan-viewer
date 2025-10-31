@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Output PDFs now have a suitable title
 - Show plan time and name in "Select a plan" drop-down, not just date
 - Include plan time in suggested filename, not just date
+- Make each plan item's start time available to templates
 
 ### Changed
 

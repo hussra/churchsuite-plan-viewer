@@ -216,16 +216,35 @@ export class Controller extends EventEmitter {
     }
 
     async loadPlan() {
+        // Get plan detail, items, brand, types from ChurchSuite API
         const detail = (await this.#getPlanDetail(this.#selectedPlanId)).data
         const items = (await this.#getPlanItems(this.#selectedPlanId)).data
         const brand = (await this.#getDefaultBrand()).data
         const types = (await this.#getTypes())
 
+        // Calculate plan start time
+        const startTimestamp = Date.parse(detail.date + " " + detail.time)
+        let currentTimestamp = startTimestamp
+
+        // Assign times to each item
+        for (let item of items) {
+            // Time now is either when the previous item ended, or the item's own start time
+            if (item.time_start) {
+                currentTimestamp = Date.parse(detail.date + " " + item.time_start)
+            }
+            item.date_time = new Date(currentTimestamp)
+
+            if (item.duration) {
+                currentTimestamp += item.duration * 1000
+            }
+        }
+
+        // Build object to send to template engine
         this.#selectedPlan = {
             plan: {
                 detail: {
                     ...detail,
-                    date_time: new Date(Date.parse(detail.date + " " + detail.time))
+                    date_time: new Date(startTimestamp)
                 },
                 items: items,
             },
@@ -233,8 +252,8 @@ export class Controller extends EventEmitter {
             types: types,
         }
 
+        // Render plan with selected template
         const template = this.getSetting('template')
-
         try {
             this.#selectedPlanHtml = await this.#templateEngine.renderPlanHTML(template, this.#selectedPlan)
             this.#selectedPlanTitle = await this.#templateEngine.renderPlanTitle(this.#selectedPlan)
@@ -245,6 +264,7 @@ export class Controller extends EventEmitter {
             this.#selectedPlanCss = ''
         }
 
+        // Send to views
         this.#showPlanView = true
         this.emit('viewChanged')
         this.emit('selectedPlanChanged')

@@ -48,10 +48,11 @@ There are three top-level objects:
 
 * `plan`, representing the chosen service plan. Within this are two further objects:
   * `plan.detail` contains the overall plan properties. It is a [Plan model](https://developer.churchsuite.com/planning#model/plan)
-    with one addition, the date_time property which represents the plan's start date and time as a JavaScript
+    with one addition, the `date_time` property which represents the plan's start date and time as a JavaScript
     Date object.
   * `plan.items` is an array of objects, each representing an item in the service plan as a
-    [PlanItem model](https://developer.churchsuite.com/planning#model/planitem).
+    [PlanItem model](https://developer.churchsuite.com/planning#model/planitem) with one addition, the `date_time` property which
+    represents the plan item's start date and time as a JavaScript Date object.
 * `brand` represents your account's default branding as a [Brand model](https://developer.churchsuite.com/account#model/brand),
   allowing you to display your logo and use the default brand colour. In addition, a `logo.data_url` property is added giving your
   logo as a data: URL for easier display within your template.
