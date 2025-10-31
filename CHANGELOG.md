@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+## [v1.2.0] - 2025-10-31
+
+### Added
+
 - Menu item for docs
 - Make plan item types available to templates as `types`, keyed by name, so item type can
   be checked by name rather than needing to check by ID directly. Updated supplied templates
@@ -60,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial version of Companion Plan Viewer for the needs of Elmdon Church
 
-[Unreleased]: https://github.com/hussra/churchsuite-plan-viewer/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/hussra/churchsuite-plan-viewer/compare/v1.2.0...HEAD
+[v1.2.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.2.0
 [v1.1.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.1.0
 [v1.0.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.0.0
