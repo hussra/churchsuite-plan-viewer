@@ -56,9 +56,10 @@ There are three top-level objects:
 * `brand` represents your account's default branding as a [Brand model](https://developer.churchsuite.com/account#model/brand),
   allowing you to display your logo and use the default brand colour. In addition, a `logo.data_url` property is added giving your
   logo as a data: URL for easier display within your template.
-* `types` is an array of objects, each representing one of your plan item types as [Type model](https://developer.churchsuite.com/planning#model/type).
-  This can be used by your template to display the different item types in appropriate ways - there are
-  examples of this in the default templates.
+* `types` contains a set of properties each representing one of your plan item types as
+  [Type model](https://developer.churchsuite.com/planning#model/type), and with the key being the type name converted
+  to lower case with spaces changed to underscores. This can be used by your template to display the different item types
+  in appropriate ways - there are examples of this in the default templates.
 
 ### The #planContents pane
 
