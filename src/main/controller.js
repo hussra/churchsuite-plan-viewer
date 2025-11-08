@@ -226,6 +226,7 @@ export class Controller extends EventEmitter {
         const startTimestamp = Date.parse(detail.date + " " + detail.time)
         let currentTimestamp = startTimestamp
 
+        if (this.#isIterable(items)) {
         // Assign times to each item
         for (let item of items) {
             // Time now is either when the previous item ended, or the item's own start time
@@ -237,6 +238,7 @@ export class Controller extends EventEmitter {
             if (item.duration) {
                 currentTimestamp += item.duration * 1000
             }
+        }
         }
 
         // Build object to send to template engine
@@ -431,6 +433,19 @@ export class Controller extends EventEmitter {
             this.template.filenameSuffix +
             (this.getSetting('two_up') ? '-2up' : '') +
             '.pdf'
+    }
+
+    /**
+     * Determine whether the given `input` is iterable.
+     *
+     * @returns boolean
+     */
+    #isIterable(input) {  
+    if (input === null || input === undefined) {
+        return false
+    }
+
+    return typeof input[Symbol.iterator] === 'function'
     }
 
     appStartupComplete() {
