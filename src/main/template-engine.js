@@ -263,8 +263,10 @@ export class TemplateEngine {
             throw new Error('Template does not exist')
         }
 
-        let primaryColor = plan.brand.color
-        let topCSS = `:root {
+        const baseFontSize = this.#controller.getSetting('font_size')
+        const primaryColor = plan.brand.color
+        const topCSS = `:root {
+            font-size: ${baseFontSize}px;
             --primary-color: ${primaryColor};
         }\n\n`
 

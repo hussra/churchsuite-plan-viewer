@@ -72,6 +72,12 @@ export const SETTINGS_SCHEMA = {
         enum: ['first', 'first_initial', 'first_last'],
         default: 'first'
     },
+    font_size: {
+        type: 'number',
+        minimum: 10,
+        maximum: 24,
+        default: 16
+    },
     custom_templates: {
         type: 'array',
         items: CUSTOM_TEMPLATE_SCHEMA,
