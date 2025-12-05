@@ -2143,18 +2143,18 @@ __metadata:
     copy-webpack-plugin: "npm:^13.0.1"
     css-loader: "npm:^7.1.2"
     dompurify: "npm:^3.3.0"
-    electron: "npm:^38.4.0"
+    electron: "npm:^39.2.5"
     electron-squirrel-startup: "npm:^1.0.1"
     electron-store: "npm:^11.0.2"
     html-loader: "npm:^5.1.0"
     jsdom: "npm:^26.1.0"
-    liquidjs: "npm:^10.23.0"
+    liquidjs: "npm:^10.24.0"
     nanoid: "npm:^5.1.6"
     node-loader: "npm:^2.1.0"
     style-loader: "npm:^4.0.0"
     to-valid-identifier: "npm:^1.0.0"
     undici: "npm:^7.16.0"
-    webpack: "npm:^5.102.1"
+    webpack: "npm:^5.103.0"
   languageName: unknown
   linkType: soft
 
@@ -2938,16 +2938,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^38.4.0":
-  version: 38.4.0
-  resolution: "electron@npm:38.4.0"
+"electron@npm:^39.2.5":
+  version: 39.2.5
+  resolution: "electron@npm:39.2.5"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^22.7.7"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10c0/3458409151d12f1fcd5e95374aa36e0d2f4aa0d3421c9f57dc521c606070294f33b24a681b3f93b49b02f4a3a07eb0070100ebda51b1198efd4b49dbf1260713
+  checksum: 10c0/d2c396cdbbd06c56c7a55264d485421501fcd65ffb1d88f6865766ffabd9c6ad912be75225c148f6087fe773c25537f5d870d79eba7a599136756c10b20cf38f
   languageName: node
   linkType: hard
 
@@ -4604,15 +4604,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"liquidjs@npm:^10.23.0":
-  version: 10.23.0
-  resolution: "liquidjs@npm:10.23.0"
+"liquidjs@npm:^10.24.0":
+  version: 10.24.0
+  resolution: "liquidjs@npm:10.24.0"
   dependencies:
     commander: "npm:^10.0.0"
   bin:
     liquid: bin/liquid.js
     liquidjs: bin/liquid.js
-  checksum: 10c0/4b11de851468f8a968ffbef8008255b292231be6a0bca957afc9ae6cc2e5430e41fa912714837a9734bc2d944ff09055c05fe97cbf4409614595dd170b3b7155
+  checksum: 10c0/a3bbf856bf306236152ed3fba66bd39bd43d0e21736a8036892c1dfe0897cdc2afd07816fffe0822444cfb1885da9e3add52204265223eb09d618592711a2cb4
   languageName: node
   linkType: hard
 
@@ -4677,6 +4677,13 @@ __metadata:
   version: 4.3.0
   resolution: "loader-runner@npm:4.3.0"
   checksum: 10c0/a44d78aae0907a72f73966fe8b82d1439c8c485238bd5a864b1b9a2a3257832effa858790241e6b37876b5446a78889adf2fcc8dd897ce54c089ecc0a0ce0bf0
+  languageName: node
+  linkType: hard
+
+"loader-runner@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "loader-runner@npm:4.3.1"
+  checksum: 10c0/a523b6329f114e0a98317158e30a7dfce044b731521be5399464010472a93a15ece44757d1eaed1d8845019869c5390218bc1c7c3110f4eeaef5157394486eac
   languageName: node
   linkType: hard
 
@@ -7499,9 +7506,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.102.1":
-  version: 5.102.1
-  resolution: "webpack@npm:5.102.1"
+"webpack@npm:^5.103.0":
+  version: 5.103.0
+  resolution: "webpack@npm:5.103.0"
   dependencies:
     "@types/eslint-scope": "npm:^3.7.7"
     "@types/estree": "npm:^1.0.8"
@@ -7520,7 +7527,7 @@ __metadata:
     glob-to-regexp: "npm:^0.4.1"
     graceful-fs: "npm:^4.2.11"
     json-parse-even-better-errors: "npm:^2.3.1"
-    loader-runner: "npm:^4.2.0"
+    loader-runner: "npm:^4.3.1"
     mime-types: "npm:^2.1.27"
     neo-async: "npm:^2.6.2"
     schema-utils: "npm:^4.3.3"
@@ -7533,7 +7540,7 @@ __metadata:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: 10c0/74c3afeef50a5414e58399f1c0123fe5cdb3d8d081c206fae74b8334097d5ff6b729147154dbb4af48e662ba756a89e06d550b3390917153fa1d7ce285f96777
+  checksum: 10c0/d0cf86f8cac249874d6f36292e25011413ebb5bae82c48fa78a165a217e63db00b1a1f563f5195070eb17a055c6da4b6ab89fbdd37f781abdda862aa8c0bd623
   languageName: node
   linkType: hard
 
