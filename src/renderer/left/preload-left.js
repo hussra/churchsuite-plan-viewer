@@ -26,8 +26,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getTemplates: () => ipcRenderer.invoke('getTemplates'),
     leftRendererStartupComplete: () => ipcRenderer.invoke('leftRendererStartupComplete'),
 
-    getFromStore: (key) => ipcRenderer.invoke('getFromStore', key),
-    setInStore: (key, value) => ipcRenderer.invoke('setInStore', key, value),
+    getGlobalSetting: (key) => ipcRenderer.invoke('getGlobalSetting', key),
+    setGlobalSetting: (key, value) => ipcRenderer.invoke('setGlobalSetting', key, value),
 
     // Messages from main process to left renderer
     onSetConnected: (callback) => ipcRenderer.on('setConnected', (_event, value) => callback(value)),

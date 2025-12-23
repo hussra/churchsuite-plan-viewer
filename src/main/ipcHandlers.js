@@ -85,13 +85,13 @@ export async function addIpcHandlers(controller, mainWindow) {
         mainWindow.exportPDF()
     })
 
-    // Get a setting from the setting store
-    ipcMain.handle('getFromStore', (event, key) => {
+    // Get a global setting from the setting store
+    ipcMain.handle('getGlobalSetting', (event, key) => {
         return controller.getSetting(key)
     })
 
-    // Set a setting in the setting store
-    ipcMain.handle('setInStore', (event, key, value) => {
+    // Set a global setting in the setting store
+    ipcMain.handle('setGlobalSetting', (event, key, value) => {
         controller.saveSetting(key, value)
     })
 

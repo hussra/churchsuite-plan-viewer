@@ -42,7 +42,7 @@ const populateTemplates = async (templates, newTemplateId) => {
         }
     }
 
-    templateSelect.value = await window.electronAPI.getFromStore('template')
+    templateSelect.value = await window.electronAPI.getGlobalSetting('template')
 
     templateSelect.dispatchEvent(new Event('change'))
 }

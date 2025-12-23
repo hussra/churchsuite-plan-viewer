@@ -73,7 +73,7 @@ const populateTemplates = async (templates) => {
         }
     }
     if ((!haveSelected) && (templates.length > 0)) {
-        templateSelect.value = await window.electronAPI.getFromStore('template')
+        templateSelect.value = await window.electronAPI.getGlobalSetting('template')
     }
 
     if (templateSelect.value != selectedTemplate) {
@@ -100,31 +100,31 @@ const selectTemplate = (event) => {
 }
 
 const loadSettings = async () => {
-    const client_secret = await window.electronAPI.getFromStore('client_secret')
+    const client_secret = await window.electronAPI.getGlobalSetting('client_secret')
     document.getElementById('client_secret').value = client_secret
 
-    const client_id = await window.electronAPI.getFromStore('client_id')
+    const client_id = await window.electronAPI.getGlobalSetting('client_id')
     document.getElementById('client_id').value = client_id
 
-    const past_plans = await window.electronAPI.getFromStore('past_plans')
+    const past_plans = await window.electronAPI.getGlobalSetting('past_plans')
     document.getElementById('past_plans').checked = past_plans
 
-    const draft_plans = await window.electronAPI.getFromStore('draft_plans')
+    const draft_plans = await window.electronAPI.getGlobalSetting('draft_plans')
     document.getElementById('draft_plans').checked = draft_plans
 
-    const plans_quantity = await window.electronAPI.getFromStore('plans_quantity')
+    const plans_quantity = await window.electronAPI.getGlobalSetting('plans_quantity')
     document.getElementById('plans_quantity').value = plans_quantity
 
-    const font_size = await window.electronAPI.getFromStore('font_size')
+    const font_size = await window.electronAPI.getGlobalSetting('font_size')
     document.getElementById('font_size').value = font_size
 
-    const name_style = await window.electronAPI.getFromStore('name_style')
+    const name_style = await window.electronAPI.getGlobalSetting('name_style')
     document.getElementById('name_style').value = name_style
 
-    const two_up = await window.electronAPI.getFromStore('two_up')
+    const two_up = await window.electronAPI.getGlobalSetting('two_up')
     document.getElementById('two_up').checked = two_up
 
-    const page_size = await window.electronAPI.getFromStore('page_size')
+    const page_size = await window.electronAPI.getGlobalSetting('page_size')
     document.querySelector('#page_size option[value=' + page_size + ']').selected = true
 }
 
@@ -166,36 +166,36 @@ const load = async () => {
     document.getElementById('exportPDF').addEventListener('click', exportPDF)
 
     document.getElementById('past_plans').addEventListener('change', async () => {
-        await window.electronAPI.setInStore('past_plans', document.getElementById('past_plans').checked)
+        await window.electronAPI.setGlobalSetting('past_plans', document.getElementById('past_plans').checked)
         refresh()
     })
     document.getElementById('draft_plans').addEventListener('change', async () => {
-        await window.electronAPI.setInStore('draft_plans', document.getElementById('draft_plans').checked)
+        await window.electronAPI.setGlobalSetting('draft_plans', document.getElementById('draft_plans').checked)
         refresh()
     })
     document.getElementById('plans_quantity').addEventListener('change', async () => {
-        await window.electronAPI.setInStore('plans_quantity', parseInt(document.getElementById('plans_quantity').value))
+        await window.electronAPI.setGlobalSetting('plans_quantity', parseInt(document.getElementById('plans_quantity').value))
         refresh()
     })
     document.getElementById('font_size').addEventListener('change', async () => {
-        await window.electronAPI.setInStore('font_size', parseInt(document.getElementById('font_size').value))
+        await window.electronAPI.setGlobalSetting('font_size', parseInt(document.getElementById('font_size').value))
         refresh()
     })
     document.getElementById('name_style').addEventListener('change', async () => {
-        await window.electronAPI.setInStore('name_style', document.getElementById('name_style').value)
+        await window.electronAPI.setGlobalSetting('name_style', document.getElementById('name_style').value)
         refresh()
     })
     document.getElementById('two_up').addEventListener('change', async () => {
-        await window.electronAPI.setInStore('two_up', document.getElementById('two_up').checked)
+        await window.electronAPI.setGlobalSetting('two_up', document.getElementById('two_up').checked)
     })
     document.getElementById('page_size').addEventListener('change', async () => {
-        await window.electronAPI.setInStore('page_size', document.getElementById('page_size').value)
+        await window.electronAPI.setGlobalSetting('page_size', document.getElementById('page_size').value)
     })
     document.getElementById('client_secret').addEventListener('change', async () => {
-        await window.electronAPI.setInStore('client_secret', document.getElementById('client_secret').value)
+        await window.electronAPI.setGlobalSetting('client_secret', document.getElementById('client_secret').value)
     })
     document.getElementById('client_id').addEventListener('change', async () => {
-        await window.electronAPI.setInStore('client_id', document.getElementById('client_id').value)
+        await window.electronAPI.setGlobalSetting('client_id', document.getElementById('client_id').value)
     })
 
     await loadSettings()
