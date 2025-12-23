@@ -230,7 +230,7 @@ export class MainWindow {
 
     async exportPDF() {
         const template = this.#controller.template
-        const twoUp = this.#controller.getSetting('two_up')
+        const twoUp = this.#controller.getTemplateSetting('two_up')
 
         const defaultFilename = path.join(
             app.getPath('downloads'),
@@ -247,7 +247,7 @@ export class MainWindow {
 
             this.#rightView.webContents.printToPDF({
                 printBackground: true,
-                pageSize: this.#controller.getSetting('page_size')
+                pageSize: this.#controller.getTemplateSetting('page_size')
             }).then(data => {
 
                 if (twoUp) {

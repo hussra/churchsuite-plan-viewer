@@ -71,7 +71,7 @@ export class TemplateEngine {
         })
 
         // Load any custom templates from settings
-        let customTemplates = this.#controller.getSetting('custom_templates')
+        let customTemplates = this.#controller.getGlobalSetting('custom_templates')
         for (let i in customTemplates) {
             let customTemplate = customTemplates[i]
             customTemplate.editable = true
@@ -149,8 +149,8 @@ export class TemplateEngine {
         newTemplate.editable = true
 
         // Save to settings
-        let allTemplates = this.#controller.getSetting('custom_templates')
-        this.#controller.saveSetting('custom_templates', allTemplates.concat([newTemplate]))
+        let allTemplates = this.#controller.getGlobalSetting('custom_templates')
+        this.#controller.setGlobalSetting('custom_templates', allTemplates.concat([newTemplate]))
 
         // Save locally
         this.#templates.push(newTemplate)
@@ -179,13 +179,13 @@ export class TemplateEngine {
         }
 
         // Search for this template's ID in our existing settings
-        let allTemplates = this.#controller.getSetting('custom_templates')
+        let allTemplates = this.#controller.getGlobalSetting('custom_templates')
         let index = allTemplates.findIndex((element) => (element.id == template.id))
 
         if (generateNewId || index === -1) {
 
             // Save to settings
-            this.#controller.saveSetting('custom_templates', allTemplates.concat([template]))
+            this.#controller.setGlobalSetting('custom_templates', allTemplates.concat([template]))
 
             // Save locally
             this.#templates.push(template)
@@ -196,10 +196,10 @@ export class TemplateEngine {
         } else {
 
             // Save to settings
-            let allTemplates = this.#controller.getSetting('custom_templates')
+            let allTemplates = this.#controller.getGlobalSetting('custom_templates')
             let index = allTemplates.findIndex((element) => (element.id == template.id))
             allTemplates[index] = template
-            this.#controller.saveSetting('custom_templates', allTemplates)
+            this.#controller.setGlobalSetting('custom_templates', allTemplates)
 
             // Save locally
             let localIndex = this.#templates.findIndex((element) => (element.id == template.id))
@@ -214,7 +214,7 @@ export class TemplateEngine {
         if (!(this.templateExists(template.id))) {
             throw new Error('Template does not exist')
         }
-        let allTemplates = this.#controller.getSetting('custom_templates')
+        let allTemplates = this.#controller.getGlobalSetting('custom_templates')
         let index = allTemplates.findIndex((element) => (element.id == template.id))
         if (index === -1) {
             throw new Error('Template does not exist in settings')
@@ -225,7 +225,7 @@ export class TemplateEngine {
         }
 
         allTemplates[index] = template
-        this.#controller.saveSetting('custom_templates', allTemplates)
+        this.#controller.setGlobalSetting('custom_templates', allTemplates)
         let localIndex = this.#templates.findIndex((element) => (element.id == template.id))
         this.#templates[localIndex] = template
         this.#controller.emit('templatesChanged')
@@ -235,7 +235,7 @@ export class TemplateEngine {
         if (!(this.templateExists(id))) {
             throw new Error('Template does not exist')
         }
-        let allTemplates = this.#controller.getSetting('custom_templates')
+        let allTemplates = this.#controller.getGlobalSetting('custom_templates')
         let index = allTemplates.findIndex((element) => (element.id == id))
         if (index === -1) {
             throw new Error('Template does not exist in settings')
@@ -245,7 +245,7 @@ export class TemplateEngine {
             throw new Error('Template is not editable')
         }
         allTemplates.splice(index, 1)
-        this.#controller.saveSetting('custom_templates', allTemplates)
+        this.#controller.setGlobalSetting('custom_templates', allTemplates)
 
         let localIndex = this.#templates.findIndex((element) => (element.id == id))
         this.#templates.splice(localIndex, 1)
@@ -263,7 +263,7 @@ export class TemplateEngine {
             throw new Error('Template does not exist')
         }
 
-        const baseFontSize = this.#controller.getSetting('font_size')
+        const baseFontSize = this.#controller.getTemplateSetting('font_size')
         const primaryColor = plan.brand.color
         const topCSS = `:root {
             font-size: ${baseFontSize}px;
@@ -324,7 +324,7 @@ export class TemplateEngine {
         return writer.render(parsed)
     }
 
-    #personNameFilter(person, style = this.#controller.getSetting('name_style')) {
+    #personNameFilter(person, style = this.#controller.getTemplateSetting('name_style')) {
         switch(style) {
             case 'first':
                 return person.first_name

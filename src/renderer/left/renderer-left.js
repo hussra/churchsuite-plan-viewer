@@ -114,18 +114,6 @@ const loadSettings = async () => {
 
     const plans_quantity = await window.electronAPI.getGlobalSetting('plans_quantity')
     document.getElementById('plans_quantity').value = plans_quantity
-
-    const font_size = await window.electronAPI.getGlobalSetting('font_size')
-    document.getElementById('font_size').value = font_size
-
-    const name_style = await window.electronAPI.getGlobalSetting('name_style')
-    document.getElementById('name_style').value = name_style
-
-    const two_up = await window.electronAPI.getGlobalSetting('two_up')
-    document.getElementById('two_up').checked = two_up
-
-    const page_size = await window.electronAPI.getGlobalSetting('page_size')
-    document.querySelector('#page_size option[value=' + page_size + ']').selected = true
 }
 
 const showHideSettings = (connected) => {
@@ -154,8 +142,21 @@ window.electronAPI.onSetTemplates((templates) => {
     populateTemplates(templates)
 })
 
-window.electronAPI.onSetTemplate((templateId) => {
+window.electronAPI.onSetTemplate(async(templateId) => {
     document.getElementById('template').value = templateId
+
+    const font_size = await window.electronAPI.getTemplateSetting('font_size')
+    document.getElementById('font_size').value = font_size
+
+    const name_style = await window.electronAPI.getTemplateSetting('name_style')
+    document.getElementById('name_style').value = name_style
+
+    const two_up = await window.electronAPI.getTemplateSetting('two_up')
+    document.getElementById('two_up').checked = two_up
+
+    const page_size = await window.electronAPI.getTemplateSetting('page_size')
+    document.querySelector('#page_size option[value=' + page_size + ']').selected = true
+
 })
 
 const load = async () => {
@@ -178,18 +179,18 @@ const load = async () => {
         refresh()
     })
     document.getElementById('font_size').addEventListener('change', async () => {
-        await window.electronAPI.setGlobalSetting('font_size', parseInt(document.getElementById('font_size').value))
+        await window.electronAPI.setTemplateSetting('font_size', parseInt(document.getElementById('font_size').value))
         refresh()
     })
     document.getElementById('name_style').addEventListener('change', async () => {
-        await window.electronAPI.setGlobalSetting('name_style', document.getElementById('name_style').value)
+        await window.electronAPI.setTemplateSetting('name_style', document.getElementById('name_style').value)
         refresh()
     })
     document.getElementById('two_up').addEventListener('change', async () => {
-        await window.electronAPI.setGlobalSetting('two_up', document.getElementById('two_up').checked)
+        await window.electronAPI.setTemplateSetting('two_up', document.getElementById('two_up').checked)
     })
     document.getElementById('page_size').addEventListener('change', async () => {
-        await window.electronAPI.setGlobalSetting('page_size', document.getElementById('page_size').value)
+        await window.electronAPI.setTemplateSetting('page_size', document.getElementById('page_size').value)
     })
     document.getElementById('client_secret').addEventListener('change', async () => {
         await window.electronAPI.setGlobalSetting('client_secret', document.getElementById('client_secret').value)

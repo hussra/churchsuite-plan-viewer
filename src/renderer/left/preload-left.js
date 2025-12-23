@@ -29,6 +29,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getGlobalSetting: (key) => ipcRenderer.invoke('getGlobalSetting', key),
     setGlobalSetting: (key, value) => ipcRenderer.invoke('setGlobalSetting', key, value),
 
+    getTemplateSetting: (key) => ipcRenderer.invoke('getTemplateSetting', key),
+    setTemplateSetting: (key, value) => ipcRenderer.invoke('setTemplateSetting', key, value),
+
     // Messages from main process to left renderer
     onSetConnected: (callback) => ipcRenderer.on('setConnected', (_event, value) => callback(value)),
     onSetPlans: (callback) => ipcRenderer.on('setPlans', (_event, value) => callback(value)),

@@ -87,12 +87,20 @@ export async function addIpcHandlers(controller, mainWindow) {
 
     // Get a global setting from the setting store
     ipcMain.handle('getGlobalSetting', (event, key) => {
-        return controller.getSetting(key)
+        return controller.getGlobalSetting(key)
     })
 
     // Set a global setting in the setting store
     ipcMain.handle('setGlobalSetting', (event, key, value) => {
-        controller.saveSetting(key, value)
+        controller.setGlobalSetting(key, value)
+    })
+
+    ipcMain.handle('getTemplateSetting', (event, key) => {
+        return controller.getTemplateSetting(key)
+    })
+
+    ipcMain.handle('setTemplateSetting', (event, key, value) => {
+        controller.setTemplateSetting(key, value)
     })
 
     // Called when left renderer startup is complete

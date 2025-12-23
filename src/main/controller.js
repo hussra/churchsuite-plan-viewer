@@ -61,7 +61,7 @@ export class Controller extends EventEmitter {
 
     set selectedTemplateId(templateId) {
         this.#selectedTemplate = templateId
-        this.saveSetting('template', templateId)
+        this.setGlobalSetting('template', templateId)
         this.emit('templateChanged', templateId)
         this.#planIdOrTemplateIdChanged()
     }
@@ -132,7 +132,7 @@ export class Controller extends EventEmitter {
         return this.#templateEngine.getTemplateById(this.#selectedTemplate)
     }
 
-    getSetting(key) {
+    getGlobalSetting(key) {
         if ((key == 'client_secret') || (key == 'client_id')) {
             const value = this.#store.get(key)
             if (value.startsWith('base64:')) {
@@ -147,12 +147,22 @@ export class Controller extends EventEmitter {
         }
     }
 
-    saveSetting(key, value) {
+    setGlobalSetting(key, value) {
         if ((key == 'client_secret') || (key == 'client_id')) {
             this.#store.set(key, 'base64:' + safeStorage.encryptString(value).toString('base64'))
         } else {
             this.#store.set(key, value)
         }
+    }
+
+    getTemplateSetting(key) {
+        // TODO: Make this per-template
+        return this.getGlobalSetting(`${key}`)
+    }
+
+    setTemplateSetting(key, value) {
+        // TODO: Make this per-template
+        this.setGlobalSetting(`${key}`, value)
     }
 
     #planIdOrTemplateIdChanged() {
@@ -206,7 +216,7 @@ export class Controller extends EventEmitter {
         }
 
         // For past plans, sort in reverse date order (most recent first)
-        if (this.getSetting('past_plans')) {
+        if (this.getGlobalSetting('past_plans')) {
             this.#allPlans = allPlans.sort(({ timestamp: a }, { timestamp: b }) => b - a)
         } else {
             this.#allPlans = allPlans
@@ -255,7 +265,7 @@ export class Controller extends EventEmitter {
         }
 
         // Render plan with selected template
-        const template = this.getSetting('template')
+        const template = this.getGlobalSetting('template')
         try {
             this.#selectedPlanHtml = await this.#templateEngine.renderPlanHTML(template, this.#selectedPlan)
             this.#selectedPlanTitle = await this.#templateEngine.renderPlanTitle(this.#selectedPlan)
@@ -285,7 +295,7 @@ export class Controller extends EventEmitter {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Basic ' + Buffer.from(this.getSetting('client_id') + ":" + this.getSetting('client_secret')).toString('base64'),
+                    'Authorization': 'Basic ' + Buffer.from(this.getGlobalSetting('client_id') + ":" + this.getGlobalSetting('client_secret')).toString('base64'),
                 },
                 body: '{"grant_type": "client_credentials", "scope": "full_access"}',
             });
@@ -347,16 +357,16 @@ export class Controller extends EventEmitter {
 
         let url = 'https://api.churchsuite.com/v2/planning/plans'
 
-        if (this.getSetting('past_plans')) {
+        if (this.getGlobalSetting('past_plans')) {
             url = url + `?starts_before=${today}`
         } else {
             url = url + `?starts_after=${yesterday}`
         }
 
-        const limit = this.getSetting('plans_quantity')
+        const limit = this.getGlobalSetting('plans_quantity')
         url = url + `&per_page=${limit}`
 
-        if (this.getSetting('draft_plans')) {
+        if (this.getGlobalSetting('draft_plans')) {
             url = url + '&status=draft'
         }
 
@@ -431,8 +441,7 @@ export class Controller extends EventEmitter {
             .replace(/\s/g, '-')
             .replace(/:/g, '') +
             this.template.filenameSuffix +
-            (this.getSetting('two_up') ? '-2up' : '') +
-            '.pdf'
+            (this.getTemplateSetting('two_up') ? '-2up' : '') + '.pdf'
     }
 
     /**
