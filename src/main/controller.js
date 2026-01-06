@@ -366,11 +366,26 @@ export class Controller extends EventEmitter {
         const limit = this.getGlobalSetting('plans_quantity')
         url = url + `&per_page=${limit}`
 
+        let plans = await this.#makeApiCall(url)
+
         if (this.getGlobalSetting('draft_plans')) {
             url = url + '&status=draft'
+            let draftPlans = await this.#makeApiCall(url)
+
+            if (draftPlans.hasOwnProperty('data') && Array.isArray(draftPlans.data)) {
+                if (!plans.hasOwnProperty('data') || !Array.isArray(plans.data)) {
+                    plans.data = []
+                }
+                draftPlans.data.forEach((element) => {
+                    element.name = element.name + ' (Draft)'
+                })
+                plans.data = plans.data.concat(draftPlans.data)
+            }
         }
 
-        return this.#makeApiCall(url)
+        console.log(JSON.stringify(plans, null, 2))
+
+        return plans
     }
 
 

@@ -34,7 +34,7 @@ Next to it is the **Refresh** button (2 in the screenshot) which will reload the
 You can change which plans are shown using the other controls:
 
 * **Show past plans** (3)
-* **Show draft plans** (4), and
+* **Include draft plans** (4), and
 * **Number of plans to show** (5).
 
 ### Selecting a template
