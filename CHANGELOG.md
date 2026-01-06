@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - New setting for base font size
+- Change "Show draft plans" to "Include draft plans"
 
 ### Changed
 
