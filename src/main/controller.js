@@ -383,8 +383,6 @@ export class Controller extends EventEmitter {
             }
         }
 
-        console.log(JSON.stringify(plans, null, 2))
-
         return plans
     }
 
