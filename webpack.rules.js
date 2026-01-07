@@ -14,7 +14,18 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
+const path = require('path')
+
 module.exports = [
+  {
+    // workaround for https://github.com/jsdom/jsdom/issues/3951
+    test: /jsdom\/.+\/style-rules\.js$/,
+    use: [
+      {
+        loader: path.resolve('./webpack-jsdom-patch'),
+      },
+    ],
+  },
   // Add support for native node modules
   {
     // We're specifying native_modules in the test because the asset relocator loader generates a

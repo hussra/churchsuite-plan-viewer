@@ -47,7 +47,7 @@
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^11.0.2",
     "html-loader": "^5.1.0",
-    "jsdom": "^26.1.0",
+    "jsdom": "^27.4.0",
     "liquidjs": "^10.24.0",
     "nanoid": "^5.1.6",
     "to-valid-identifier": "^1.0.0",
