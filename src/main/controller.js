@@ -379,7 +379,7 @@ export class Controller extends EventEmitter {
                 draftPlans.data.forEach((element) => {
                     element.name = element.name + ' (Draft)'
                 })
-                plans.data = plans.data.concat(draftPlans.data)
+                plans.data = plans.data.concat(draftPlans.data).slice(0, limit)
             }
         }
 
