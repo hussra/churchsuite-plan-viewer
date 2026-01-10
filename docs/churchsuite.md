@@ -44,7 +44,19 @@ will be shown in the printed plan like this:
 
 ![Snippet from service plan](assets/images/churchsuite5.png)
 
-Adding display of plan item notes is an obvious enhancement for the future, but not yet supported.
+If you have a plan item note category named "People", any note of that type will be shown by the
+out-of-the-box templates after the names of the people assigned to a plan item. (We find this useful,
+for example, on occasions when we need to show the use of recorded music rather than live musicians.)
+
+For example, this plan item:
+
+![ChurchSuite plan item with a "People" note](assets/images/churchsuite6.png)
+
+would be shown by the "Outline Running Order" template like this:
+
+![Snippet from service plan](assets/images/churchsuite7.png)
+
+Display of other types of plan item note is an obvious enhancement for the future, but is not yet supported.
 
 ### Song lyrics
 

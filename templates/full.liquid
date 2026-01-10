@@ -40,6 +40,11 @@
           {{person | personName}}
           {%- if forloop.last == false %}, {% endif %}
         {% endfor %}
+        {% for note in item.notes -%}
+          {% if note.name == 'People' %}
+            {{note.note}}
+          {% endif %}
+        {% endfor %}
       </p>
 
       <h4>

@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - New setting for base font size
 - Change "Show draft plans" to "Include draft plans"
+- If plan includes a notes category named "People", supplied templates now show those
+  notes alongside the people for each item.
 
 ### Changed
 
