@@ -113,6 +113,7 @@ export class TemplateEngine {
         this.#liquidEngine.registerFilter('markdown', this.#markdownFilter)
         this.#liquidEngine.registerFilter('personName', this.#personNameFilter.bind(this))
         this.#liquidEngine.registerFilter('songKey', this.#songKeyFilter)
+        this.#liquidEngine.registerFilter('songCredits', this.#songCreditsFilter.bind(this))
     }
 
     // Directory containing pre-defined plan templates
@@ -353,6 +354,27 @@ export class TemplateEngine {
             
         } else {
             return ''
+        }
+    }
+
+    #songCreditsFilter(item) {
+        if (item.type == 'song' && item.arrangement && item.song) {
+            let credits = `"${item.song.name}" by ${item.arrangement.artist}`
+            if (item.song.copyright != '') {
+                if (item.song.copyright.startsWith('Public Domain')) {
+                    credits += ' (Public Domain)'
+                } else { 
+                    credits += ` &copy; ${item.song.copyright}`
+                    if (item.song.administration && item.song.administration != '') {
+                        credits += ` (Admin. ${item.song.administration})`
+                    }
+                    const ccli_licence = this.#controller.getGlobalSetting('ccli_licence')
+                    if (ccli_licence && (ccli_licence > 1)) {
+                        credits += ` Used by permission. CCLI Licence No. ${ccli_licence}`
+                    }
+                }
+            }
+            return credits
         }
     }
 }

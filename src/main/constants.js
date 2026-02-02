@@ -78,6 +78,15 @@ export const SETTINGS_SCHEMA = {
         maximum: 24,
         default: 16
     },
+    song_lyrics: {
+        type: 'boolean',
+        default: false
+    },
+    ccli_licence: {
+        type: 'number',
+        minimum: 1,
+        default: 1
+    },
     custom_templates: {
         type: 'array',
         items: CUSTOM_TEMPLATE_SCHEMA,
@@ -153,3 +162,18 @@ export const BOOK_MAPPING = {
     "JUD": 'Jude',
     "REV": 'Revelation'
 }
+
+export const STANZA_TYPES = [
+    'INTRO',
+    'VERSE',
+    'CHORUS',
+    'PRE-CHORUS',
+    'BRIDGE',
+    'OUTRO',
+    'TAG'
+]
+
+export const IGNORE_EMPTY_STANZA_TYPES = [
+    'INTRO',
+    'OUTRO'
+]

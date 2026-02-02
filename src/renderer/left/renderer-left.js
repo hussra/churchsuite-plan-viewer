@@ -114,6 +114,9 @@ const loadSettings = async () => {
 
     const plans_quantity = await window.electronAPI.getGlobalSetting('plans_quantity')
     document.getElementById('plans_quantity').value = plans_quantity
+
+    const ccli_licence = await window.electronAPI.getGlobalSetting('ccli_licence')
+    document.getElementById('ccli_licence').value = ccli_licence
 }
 
 const showHideSettings = (connected) => {
@@ -151,6 +154,9 @@ window.electronAPI.onSetTemplate(async(templateId) => {
     const name_style = await window.electronAPI.getTemplateSetting('name_style')
     document.getElementById('name_style').value = name_style
 
+    const song_lyrics = await window.electronAPI.getTemplateSetting('song_lyrics')
+    document.getElementById('song_lyrics').checked = song_lyrics
+
     const two_up = await window.electronAPI.getTemplateSetting('two_up')
     document.getElementById('two_up').checked = two_up
 
@@ -184,6 +190,14 @@ const load = async () => {
     })
     document.getElementById('name_style').addEventListener('change', async () => {
         await window.electronAPI.setTemplateSetting('name_style', document.getElementById('name_style').value)
+        refresh()
+    })
+    document.getElementById('song_lyrics').addEventListener('change', async () => {
+        await window.electronAPI.setTemplateSetting('song_lyrics', document.getElementById('song_lyrics').checked)
+        refresh()
+    })
+    document.getElementById('ccli_licence').addEventListener('change', async () => {
+        await window.electronAPI.setGlobalSetting('ccli_licence', parseInt(document.getElementById('ccli_licence').value))
         refresh()
     })
     document.getElementById('two_up').addEventListener('change', async () => {

@@ -22,6 +22,7 @@ import toValidIdentifier from 'to-valid-identifier'
 
 import { SETTINGS_SCHEMA } from './constants'
 import { TemplateEngine } from './template-engine'
+import { ChartEngine } from './chart-engine'
 
 export class Controller extends EventEmitter {
 
@@ -36,6 +37,7 @@ export class Controller extends EventEmitter {
         })
 
         this.#templateEngine = new TemplateEngine(this)
+        this.#chartEngine = new ChartEngine(this)
     }
 
     #store
@@ -58,6 +60,8 @@ export class Controller extends EventEmitter {
 
     #templateEngine
     #selectedTemplate = ''
+
+    #chartEngine
 
     set selectedTemplateId(templateId) {
         this.#selectedTemplate = templateId
@@ -237,18 +241,29 @@ export class Controller extends EventEmitter {
         let currentTimestamp = startTimestamp
 
         if (this.#isIterable(items)) {
-        // Assign times to each item
-        for (let item of items) {
-            // Time now is either when the previous item ended, or the item's own start time
-            if (item.time_start) {
-                currentTimestamp = Date.parse(detail.date + " " + item.time_start)
-            }
-            item.date_time = new Date(currentTimestamp)
+            for (let item of items) {
+                // Assign times to each item
+                // Time now is either when the previous item ended, or the item's own start time
+                if (item.time_start) {
+                    currentTimestamp = Date.parse(detail.date + " " + item.time_start)
+                }
+                item.date_time = new Date(currentTimestamp)
 
-            if (item.duration) {
-                currentTimestamp += item.duration * 1000
+                if (item.duration) {
+                    currentTimestamp += item.duration * 1000
+                }
+
+                // Handle songs
+                if ((this.getTemplateSetting('song_lyrics')) && (item.type == 'song') && (item.arrangement_id != null)) {
+                    let arrangement = (await this.#getSongArrangement(item.arrangement_id)).data
+                    let song = (await this.#getSong(arrangement.song_id)).data
+
+                    item.arrangement = arrangement
+                    item.song = song
+
+                    item.arrangement.stanzas = this.#chartEngine.chartToStanzas(arrangement.chart || '')
+                }
             }
-        }
         }
 
         // Build object to send to template engine
@@ -396,6 +411,18 @@ export class Controller extends EventEmitter {
     // Get the items for a plan, by ID
     async #getPlanItems(planId) {
         return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/plan_items?plan_ids%5B%5D=${planId}`)
+    }
+
+
+    // Get a song, by ID
+    async #getSong(songId) {
+        return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/songs/${songId}`)
+    }
+
+
+    // Get a song arrangement, by ID
+    async #getSongArrangement(arrangementId) {
+        return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/song_arrangements/${arrangementId}`)
     }
 
 
