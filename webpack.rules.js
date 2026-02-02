@@ -17,15 +17,6 @@
 const path = require('path')
 
 module.exports = [
-  {
-    // workaround for https://github.com/jsdom/jsdom/issues/3951
-    test: /jsdom\/.+\/style-rules\.js$/,
-    use: [
-      {
-        loader: path.resolve('./webpack-jsdom-patch'),
-      },
-    ],
-  },
   // Add support for native node modules
   {
     // We're specifying native_modules in the test because the asset relocator loader generates a
