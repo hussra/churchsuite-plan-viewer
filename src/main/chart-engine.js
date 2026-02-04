@@ -31,10 +31,11 @@ export class ChartEngine {
 
         for (let line of lines) {
             line = line.trim().replace(/:$/, '').replace(/\[.*?\]/g, '').trim()
+            var stanzaName = this.#isStanzaHeader(line)
 
-            if (this.#isStanzaHeader(line)) {
+            if (stanzaName) {
                 stanzas.push({
-                    name: line,
+                    name: stanzaName,
                     lines: []
                 })
             } else if (line === '') {
@@ -57,7 +58,7 @@ export class ChartEngine {
     #isStanzaHeader(line) {
         for (const type of STANZA_TYPES) {
             if (line.toUpperCase().startsWith(type)) {
-                return true
+                return line
             }
         }
         return false
