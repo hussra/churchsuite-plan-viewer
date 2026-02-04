@@ -29,6 +29,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getGlobalSetting: (key) => ipcRenderer.invoke('getGlobalSetting', key),
     setGlobalSetting: (key, value) => ipcRenderer.invoke('setGlobalSetting', key, value),
 
+    openAuthHelpLink: () => ipcRenderer.invoke('openAuthHelpLink'),
+
     getTemplateSetting: (key) => ipcRenderer.invoke('getTemplateSetting', key),
     setTemplateSetting: (key, value) => ipcRenderer.invoke('setTemplateSetting', key, value),
 

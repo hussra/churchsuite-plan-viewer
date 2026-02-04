@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app, ipcMain } from 'electron'
+import { app, ipcMain, shell } from 'electron'
 
 import { EditorWindow } from './window-editor'
 
@@ -101,6 +101,10 @@ export async function addIpcHandlers(controller, mainWindow) {
 
     ipcMain.handle('setTemplateSetting', (event, key, value) => {
         controller.setTemplateSetting(key, value)
+    })
+
+    ipcMain.handle('openAuthHelpLink', async () => {
+        shell.openExternal('https://hussra.github.io/churchsuite-plan-viewer/setup.html')
     })
 
     // Called when left renderer startup is complete

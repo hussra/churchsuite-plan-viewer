@@ -223,6 +223,9 @@ const load = async () => {
     })
 
     // Authentication settings
+    document.getElementById('authHelpLink').addEventListener('click', async () => {
+        await window.electronAPI.openAuthHelpLink()
+    })
     document.getElementById('client_secret').addEventListener('change', async () => {
         await window.electronAPI.setGlobalSetting('client_secret', document.getElementById('client_secret').value)
     })
