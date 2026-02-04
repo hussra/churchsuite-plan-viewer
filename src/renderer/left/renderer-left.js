@@ -123,10 +123,12 @@ const loadSettings = async () => {
 
 const showHideSettings = (connected) => {
     if (connected) {
-        document.getElementById('mainControls').classList.remove('d-none')
+        document.getElementById('mainControlsTop').classList.remove('d-none')
+        document.getElementById('mainControlsBottom').classList.remove('d-none')
         document.getElementById('authenticationSettings').classList.remove('show')
     } else {
-        document.getElementById('mainControls').classList.add('d-none')
+        document.getElementById('mainControlsTop').classList.add('d-none')
+        document.getElementById('mainControlsBottom').classList.add('d-none')
         document.getElementById('authenticationSettings').classList.add('show')
     }
 }

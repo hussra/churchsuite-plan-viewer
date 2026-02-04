@@ -25,7 +25,7 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
 <body>
   <h1>ChurchSuite Plan Viewer</h1>
   <form>
-    <div class="container d-none" id="mainControls">
+    <div class="container d-none" id="mainControlsTop">
       <div class="form-group mb-2">
         <label for="plan">Select a plan</label>
         <div class="input-group">
@@ -49,85 +49,103 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
           </button>
         </div>
       </div>
-
-      <div class="form-group mb-2">
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="past_plans">
-          <label class="form-check-label" for="past_plans">Show past plans</label>
-        </div>
-      </div>
-
-      <div class="form-group mb-2">
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="draft_plans">
-          <label class="form-check-label" for="draft_plans">Include draft plans</label>
-        </div>
-      </div>
-
-      <div class="form-group mb-2">
-        <label class="form-label" for="plans_quantity">Number of plans to show</label>
-        <input type="number" min="1" max="250" class="form-control" id="plans_quantity" />
-      </div>
-      
-      <div class="form-group mb-2">
-        <label class="form-label" for="plans_quantity">CCLI Licence No</label>
-        <input type="number" min="1" class="form-control" id="ccli_licence" />
-      </div>
-
-      <div class="form-group mb-2">
-        <label class="form-label" for="plans_quantity">Base font size (px)</label>
-        <input type="number" min="10" max="24" class="form-control" id="font_size" />
-      </div>
-
-      <div class="form-group mb-2">
-        <label for="name_style">Default name style<br /><em>(Some templates may over-ride)</em></label>
-        <div class="input-group">
-          <select class="form-select" id="name_style" aria-label="Show names as">
-            <option value="first">Fred</option>
-            <option value="first_initial">Fred J</option>
-            <option value="first_last">Fred Jones</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-group mb-2">
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="song_lyrics">
-          <label class="form-check-label" for="song_lyrics">Show song lyrics</label>
-        </div>
-      </div>
-
-      <div class="form-group mb-2">
-        <label for="page_size">Page size</label>
-        <select class="form-select" id="page_size" aria-label="Page size">
-          <option value="a4">A4</option>
-          <option value="letter">Letter</option>
-        </select>
-      </div>
-
-      <div class="form-group mb-2">
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="two_up">
-          <label class="form-check-label" for="two_up">2 copies per sheet</label>
-        </div>
-      </div>
-
-      <div class="form-group mb-2">
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="page_numbers">
-          <label class="form-check-label" for="page_numbers">Show page numbers</label>
-        </div>
-      </div>
-
-      <div class="mb-2">
-        <button type="button" class="btn btn-primary" id="exportPDF">
-          <i class="bi bi-file-earmark-pdf"></i>
-          Create PDF
-        </button>
-      </div>
     </div>
 
     <div class="accordion mb-2" id="settingsAccordion">
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#globalSettings" aria-controls="globalSettings">
+            Global settings
+          </button>
+        </h2>
+        <div id="globalSettings" class="accordion-collapse collapse" data-bs-parent="#settingsAccordion">
+          <div class="accordion-body">
+            <div class="form-group mb-2">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="past_plans">
+                <label class="form-check-label" for="past_plans">Show past plans</label>
+              </div>
+            </div>
+
+            <div class="form-group mb-2">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="draft_plans">
+                <label class="form-check-label" for="draft_plans">Include draft plans</label>
+              </div>
+            </div>
+
+            <div class="form-group mb-2">
+              <label class="form-label" for="plans_quantity">Number of plans to show</label>
+              <input type="number" min="1" max="250" class="form-control" id="plans_quantity" />
+            </div>
+            
+            <div class="form-group mb-2">
+              <label class="form-label" for="plans_quantity">CCLI Licence No</label>
+              <input type="number" min="1" class="form-control" id="ccli_licence" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#templateSettings" aria-controls="templateSettings">
+            Template settings
+          </button>
+        </h2>
+        <div id="templateSettings" class="accordion-collapse collapse" data-bs-parent="#settingsAccordion">
+          <div class="accordion-body">
+            <div class="form-group mb-2">
+              <label class="form-label" for="plans_quantity">Base font size (px)</label>
+              <input type="number" min="10" max="24" class="form-control" id="font_size" />
+            </div>
+
+            <div class="form-group mb-2">
+              <label for="name_style">Default name style<br /><em>(Some templates may over-ride)</em></label>
+              <div class="input-group">
+                <select class="form-select" id="name_style" aria-label="Show names as">
+                  <option value="first">Fred</option>
+                  <option value="first_initial">Fred J</option>
+                  <option value="first_last">Fred Jones</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group mb-2">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="song_lyrics">
+                <label class="form-check-label" for="song_lyrics">Show song lyrics</label>
+              </div>
+            </div>
+
+            <div class="form-group mb-2">
+              <label for="page_size">Page size</label>
+              <select class="form-select" id="page_size" aria-label="Page size">
+                <option value="a4">A4</option>
+                <option value="letter">Letter</option>
+              </select>
+            </div>
+
+            <div class="form-group mb-2">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="two_up">
+                <label class="form-check-label" for="two_up">2 copies per sheet</label>
+              </div>
+            </div>
+
+            <div class="form-group mb-2">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="page_numbers">
+                <label class="form-check-label" for="page_numbers">Show page numbers</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="accordion-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -135,8 +153,10 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
             Authentication settings
           </button>
         </h2>
+
         <div id="authenticationSettings" class="accordion-collapse collapse" data-bs-parent="#settingsAccordion">
           <div class="accordion-body">
+
             <div class="mb-2 alert alert-info">
               First you will need to set up API v2 access for your user - see the
               <a href="https://support.churchsuite.com/article/454-developer-api#manage">ChurchSuite documentation</a>
@@ -151,7 +171,18 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
               <input type="password" class="form-control" id="client_secret">
             </div>
           </div>
+
         </div>
+
+      </div>
+    </div>
+
+    <div class="container d-none" id="mainControlsBottom">
+      <div class="mb-2">
+        <button type="button" class="btn btn-primary" id="exportPDF">
+          <i class="bi bi-file-earmark-pdf"></i>
+          Create PDF
+        </button>
       </div>
     </div>
 
