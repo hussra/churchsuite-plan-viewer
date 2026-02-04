@@ -100,12 +100,7 @@ const selectTemplate = (event) => {
 }
 
 const loadSettings = async () => {
-    const client_secret = await window.electronAPI.getGlobalSetting('client_secret')
-    document.getElementById('client_secret').value = client_secret
-
-    const client_id = await window.electronAPI.getGlobalSetting('client_id')
-    document.getElementById('client_id').value = client_id
-
+    // Global settings
     const past_plans = await window.electronAPI.getGlobalSetting('past_plans')
     document.getElementById('past_plans').checked = past_plans
 
@@ -117,6 +112,13 @@ const loadSettings = async () => {
 
     const ccli_licence = await window.electronAPI.getGlobalSetting('ccli_licence')
     document.getElementById('ccli_licence').value = ccli_licence
+
+    // Authentication settings
+    const client_secret = await window.electronAPI.getGlobalSetting('client_secret')
+    document.getElementById('client_secret').value = client_secret
+
+    const client_id = await window.electronAPI.getGlobalSetting('client_id')
+    document.getElementById('client_id').value = client_id
 }
 
 const showHideSettings = (connected) => {
@@ -157,24 +159,26 @@ window.electronAPI.onSetTemplate(async(templateId) => {
     const song_lyrics = await window.electronAPI.getTemplateSetting('song_lyrics')
     document.getElementById('song_lyrics').checked = song_lyrics
 
-    const page_numbers = await window.electronAPI.getTemplateSetting('page_numbers')
-    document.getElementById('page_numbers').checked = page_numbers
+    const page_size = await window.electronAPI.getTemplateSetting('page_size')
+    document.querySelector('#page_size option[value=' + page_size + ']').selected = true
 
     const two_up = await window.electronAPI.getTemplateSetting('two_up')
     document.getElementById('two_up').checked = two_up
 
-    const page_size = await window.electronAPI.getTemplateSetting('page_size')
-    document.querySelector('#page_size option[value=' + page_size + ']').selected = true
-
+    const page_numbers = await window.electronAPI.getTemplateSetting('page_numbers')
+    document.getElementById('page_numbers').checked = page_numbers
 })
 
 const load = async () => {
-    document.getElementById('refreshButton').addEventListener('click', refresh)
+    // Set up event handlers
+
+    // Plan and template selection
     document.getElementById('plan').addEventListener('change', selectPlan)
+    document.getElementById('refreshButton').addEventListener('click', refresh)
     document.getElementById('template').addEventListener('change', selectTemplate)
     document.getElementById('editButton').addEventListener('click', editTemplates)
-    document.getElementById('exportPDF').addEventListener('click', exportPDF)
 
+    // Global settings
     document.getElementById('past_plans').addEventListener('change', async () => {
         await window.electronAPI.setGlobalSetting('past_plans', document.getElementById('past_plans').checked)
         refresh()
@@ -187,6 +191,12 @@ const load = async () => {
         await window.electronAPI.setGlobalSetting('plans_quantity', parseInt(document.getElementById('plans_quantity').value))
         refresh()
     })
+    document.getElementById('ccli_licence').addEventListener('change', async () => {
+        await window.electronAPI.setGlobalSetting('ccli_licence', parseInt(document.getElementById('ccli_licence').value))
+        refresh()
+    })
+
+    // Template settings
     document.getElementById('font_size').addEventListener('change', async () => {
         await window.electronAPI.setTemplateSetting('font_size', parseInt(document.getElementById('font_size').value))
         refresh()
@@ -199,26 +209,27 @@ const load = async () => {
         await window.electronAPI.setTemplateSetting('song_lyrics', document.getElementById('song_lyrics').checked)
         refresh()
     })
-    document.getElementById('page_numbers').addEventListener('change', async () => {
-        await window.electronAPI.setTemplateSetting('page_numbers', document.getElementById('page_numbers').checked)
-        refresh()
-    })
-    document.getElementById('ccli_licence').addEventListener('change', async () => {
-        await window.electronAPI.setGlobalSetting('ccli_licence', parseInt(document.getElementById('ccli_licence').value))
-        refresh()
+    document.getElementById('page_size').addEventListener('change', async () => {
+        await window.electronAPI.setTemplateSetting('page_size', document.getElementById('page_size').value)
     })
     document.getElementById('two_up').addEventListener('change', async () => {
         await window.electronAPI.setTemplateSetting('two_up', document.getElementById('two_up').checked)
     })
-    document.getElementById('page_size').addEventListener('change', async () => {
-        await window.electronAPI.setTemplateSetting('page_size', document.getElementById('page_size').value)
+    document.getElementById('page_numbers').addEventListener('change', async () => {
+        await window.electronAPI.setTemplateSetting('page_numbers', document.getElementById('page_numbers').checked)
+        refresh()
     })
+
+    // Authentication settings
     document.getElementById('client_secret').addEventListener('change', async () => {
         await window.electronAPI.setGlobalSetting('client_secret', document.getElementById('client_secret').value)
     })
     document.getElementById('client_id').addEventListener('change', async () => {
         await window.electronAPI.setGlobalSetting('client_id', document.getElementById('client_id').value)
     })
+
+    // Export PDF button
+    document.getElementById('exportPDF').addEventListener('click', exportPDF)
 
     await loadSettings()
 
