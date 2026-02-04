@@ -157,6 +157,9 @@ window.electronAPI.onSetTemplate(async(templateId) => {
     const song_lyrics = await window.electronAPI.getTemplateSetting('song_lyrics')
     document.getElementById('song_lyrics').checked = song_lyrics
 
+    const page_numbers = await window.electronAPI.getTemplateSetting('page_numbers')
+    document.getElementById('page_numbers').checked = page_numbers
+
     const two_up = await window.electronAPI.getTemplateSetting('two_up')
     document.getElementById('two_up').checked = two_up
 
@@ -194,6 +197,10 @@ const load = async () => {
     })
     document.getElementById('song_lyrics').addEventListener('change', async () => {
         await window.electronAPI.setTemplateSetting('song_lyrics', document.getElementById('song_lyrics').checked)
+        refresh()
+    })
+    document.getElementById('page_numbers').addEventListener('change', async () => {
+        await window.electronAPI.setTemplateSetting('page_numbers', document.getElementById('page_numbers').checked)
         refresh()
     })
     document.getElementById('ccli_licence').addEventListener('change', async () => {

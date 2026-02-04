@@ -245,10 +245,17 @@ export class MainWindow {
             let pdf
             let mergedPdf
 
-            this.#rightView.webContents.printToPDF({
+            const options = {
                 printBackground: true,
-                pageSize: this.#controller.getTemplateSetting('page_size')
-            }).then(data => {
+                pageSize: this.#controller.getTemplateSetting('page_size'),
+                ...(this.#controller.getTemplateSetting('page_numbers')) ? { 
+                    displayHeaderFooter: true,
+                    headerTemplate: '<div></div>',
+                    footerTemplate: '<div style="font-size:16px; width: 100%; text-align: center;"><span class="pageNumber"></span></div>',
+                } : { }
+            }
+
+            this.#rightView.webContents.printToPDF(options).then(data => {
 
                 if (twoUp) {
                     // Load the PDF file

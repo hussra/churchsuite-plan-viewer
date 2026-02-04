@@ -82,6 +82,10 @@ export const SETTINGS_SCHEMA = {
         type: 'boolean',
         default: false
     },
+    page_numbers: {
+        type: 'boolean',
+        default: false
+    },
     ccli_licence: {
         type: 'number',
         minimum: 1,
