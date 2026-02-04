@@ -24,7 +24,9 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <body>
   <h1>ChurchSuite Plan Viewer</h1>
+
   <form>
+
     <div class="container d-none" id="mainControlsTop">
       <div class="form-group mb-2">
         <label for="plan">Select a plan</label>
@@ -49,7 +51,7 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
           </button>
         </div>
       </div>
-    </div>
+    </div><!-- mainControlsTop -->
 
     <div class="accordion mb-2" id="settingsAccordion">
 
@@ -60,8 +62,10 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
             Global settings
           </button>
         </h2>
+
         <div id="globalSettings" class="accordion-collapse collapse" data-bs-parent="#settingsAccordion">
           <div class="accordion-body">
+
             <div class="form-group mb-2">
               <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" role="switch" id="past_plans">
@@ -85,8 +89,9 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
               <label class="form-label" for="plans_quantity">CCLI Licence No</label>
               <input type="number" min="1" class="form-control" id="ccli_licence" />
             </div>
+
           </div>
-        </div>
+        </div><!-- globalSettings -->
       </div>
 
       <div class="accordion-item">
@@ -96,8 +101,10 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
             Template settings
           </button>
         </h2>
+
         <div id="templateSettings" class="accordion-collapse collapse" data-bs-parent="#settingsAccordion">
           <div class="accordion-body">
+
             <div class="form-group mb-2">
               <label class="form-label" for="plans_quantity">Base font size (px)</label>
               <input type="number" min="10" max="24" class="form-control" id="font_size" />
@@ -142,8 +149,9 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
                 <label class="form-check-label" for="page_numbers">Show page numbers</label>
               </div>
             </div>
+
           </div>
-        </div>
+        </div><!-- templateSettings -->
       </div>
 
       <div class="accordion-item">
@@ -172,7 +180,7 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
           </div>
 
-        </div>
+        </div><!-- authenticationSettings -->
 
       </div>
     </div>
@@ -184,7 +192,7 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
           Create PDF
         </button>
       </div>
-    </div>
+    </div><!-- mainControlsBottom -->
 
   </form>
 </body>
