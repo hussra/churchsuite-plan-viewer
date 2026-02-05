@@ -1,0 +1,31 @@
+#planContents h3 + #planContents div.song {
+    page-break-before: avoid;
+}
+
+#planContents h3, #planContents h4 {
+    page-break-after: avoid;
+}
+
+#planContents h3 {
+    margin-top: 2rem;
+}
+
+#planContents h4 {
+    margin-left: 0.75rem;
+    font-size: 1.1rem;
+}
+
+#planContents div.song p.stanza {
+    page-break-inside: avoid;
+    margin-left: 1.5rem;
+    font-family: Georgia, \"Times New Roman\", serif;
+    line-height: 1.2;
+    font-size: 1.4rem;
+}
+
+#planContents p.songCredits {
+    page-break-before: avoid;
+    margin-left: 1.5rem;
+    font-size: 0.6rem;
+    font-style: italic;
+}

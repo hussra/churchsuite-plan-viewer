@@ -1,0 +1,35 @@
+<div class="container-fluid g-0">
+  <div class="row">
+    <div class="col-8">
+      <h2>
+        {{plan.detail.name}}<br />
+        {{plan.detail.date_time | date: "%A %e %b %Y, %l.%M%P"}}
+      </h2>
+    </div>
+    <div class="col-4">
+      <img id="logo" src="{{brand.logo.data_url}}" style="max-width: 100%;" />
+    </div>
+  </div>
+</div>
+
+{% for item in plan.items %}
+  {% if item.type == 'song' %}
+    <h3>{{item.name}}</h3>
+    <div class="song">
+      {% for stanza in item.arrangement.stanzas %}
+        <h4>{{stanza.name}}</h4>
+        <p class="stanza">
+          {% for line in stanza.lines %}
+            {{line}}
+            {% if forloop.last == false %}
+              <br />
+            {% endif %}
+          {% endfor %}
+        </p>
+      {% endfor %}
+      <p class="songCredits">
+        {{item | songCredits}}
+      </p>
+    </div>
+  {% endif %}
+{% endfor %}
