@@ -179,13 +179,11 @@ export class Controller extends EventEmitter {
     }
 
     getTemplateSetting(key) {
-        // TODO: Make this per-template
-        return this.getGlobalSetting(`${key}`)
+        return this.getGlobalSetting(`templates.${this.#selectedTemplate}.${key}`)
     }
 
     setTemplateSetting(key, value) {
-        // TODO: Make this per-template
-        this.setGlobalSetting(`${key}`, value)
+        this.setGlobalSetting(`templates.${this.#selectedTemplate}.${key}`, value)
     }
 
     #planIdOrTemplateIdChanged() {
