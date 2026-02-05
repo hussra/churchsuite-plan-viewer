@@ -1,4 +1,5 @@
 {
     "name": "Song Lyrics",
-    "filenameSuffix": "-songsheet"
+    "filenameSuffix": "-songsheet",
+    "song_lyrics": true
 }
