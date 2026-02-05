@@ -30,7 +30,26 @@ export class Controller extends EventEmitter {
         super()
 
         this.#store = new Store({
-            schema: SETTINGS_SCHEMA
+            schema: SETTINGS_SCHEMA,
+            beforeEachMigration: (store, context) => {
+		        console.log(`[main-config] migrate from ${context.fromVersion} to ${context.toVersion}`);
+	        },
+            migrations: {
+                '1.3.0-dev': (store) => {
+                    console.log('[main-config] running migration for version 1.3.0: migrating custom template storage to new format')
+                    const customTemplates = store.get('custom_templates')
+
+                    if (customTemplates && Array.isArray(customTemplates)) {
+                        customTemplates.forEach(template => {
+                            const id = template.id
+                            delete template.id
+                            store.set(`templates.${id}`, template)
+                        })
+                        // const keysToDelete = ['font_size', 'name_style', 'song_lyrics', 'page_size', 'two_up', 'page_numbers', 'custom_templates']
+                        // keysToDelete.forEach(key => store.delete(key))
+                    }
+                }
+            }
         })
         this.#store.onDidAnyChange((newValue, oldValue) => {
             this.#configChanged()
