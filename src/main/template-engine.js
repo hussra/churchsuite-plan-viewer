@@ -64,6 +64,22 @@ export class TemplateEngine {
                         liquid: this.#getTemplateLiquidFromDisk(basename),
                         css: this.#getTemplateCSSFromDisk(basename)
                     })
+
+                    // Load into settings if not already present, so that template settings can be edited by the user and saved against the template
+                    const tmpl = {
+                        name: jsonData.name,
+                        filenameSuffix: jsonData.filenameSuffix,
+                        liquid: this.#getTemplateLiquidFromDisk(basename),
+                        css: this.#getTemplateCSSFromDisk(basename),
+                        font_size: (jsonData.font_size ? jsonData.font_size : this.#controller.getGlobalSetting(`templates.${basename}.font_size`)),
+                        name_style: (jsonData.name_style ? jsonData.name_style : this.#controller.getGlobalSetting(`templates.${basename}.name_style`)),
+                        song_lyrics: (jsonData.song_lyrics ? jsonData.song_lyrics : this.#controller.getGlobalSetting(`templates.${basename}.song_lyrics`)),
+                        page_size: (jsonData.page_size ? jsonData.page_size : this.#controller.getGlobalSetting(`templates.${basename}.page_size`)),
+                        two_up: (jsonData.two_up ? jsonData.two_up : this.#controller.getGlobalSetting(`templates.${basename}.two_up`)),
+                        page_numbers: (jsonData.page_numbers ? jsonData.page_numbers : this.#controller.getGlobalSetting(`templates.${basename}.page_numbers`)),
+                    }
+
+                    this.#controller.setGlobalSetting(`templates.${basename}`, tmpl)
                 } catch (err) {
                     console.warn('Skipping template ' + basename + ' due to ' + err.message)
                 }
