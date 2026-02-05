@@ -31,7 +31,25 @@ export const CUSTOM_TEMPLATE_SCHEMA = {
     required: ['id', 'name', 'liquid', 'css'],
 }
 
+export const TEMPLATE_SCHEMA = {
+    type: 'object',
+    properties: {
+        name: { type: 'string' },
+        filenameSuffix: { type: 'string' },
+        liquid: { type: 'string' },
+        css: { type: 'string' },
+        font_size: { type: 'number', minimum: 10, maximum: 24, default: 16 },
+        name_style: { type: 'string', enum: ['first', 'first_initial', 'first_last'], default: 'first'},
+        song_lyrics: { type: 'boolean', default: false },
+        page_size: { type: 'string', enum: ['a4', 'letter'], default: 'a4' },
+        two_up: { type: 'boolean', default: false },
+        page_numbers: { type: 'boolean', default: false },
+    },
+    required: ['name', 'liquid', 'css', 'font_size', 'name_style', 'song_lyrics', 'page_size', 'two_up', 'page_numbers'],
+}
+
 export const SETTINGS_SCHEMA = {
+    // Authentication
     client_secret: {
         type: 'string',
         default: ''
@@ -40,15 +58,8 @@ export const SETTINGS_SCHEMA = {
         type: 'string',
         default: ''
     },
-    page_size: {
-        type: 'string',
-        enum: ['a4', 'letter'],
-        default: 'a4'
-    },
-    two_up: {
-        type: 'boolean',
-        default: true
-    },
+
+    // Global settings
     past_plans: {
         type: 'boolean',
         default: false
@@ -63,38 +74,62 @@ export const SETTINGS_SCHEMA = {
         maximum: 250,
         default: 10
     },
-    template: {
-        type: 'string',
-        default: 'default'
+    ccli_licence: {
+        type: 'number',
+        minimum: 1,
+        default: 1
     },
-    name_style: {
-        type: 'string',
-        enum: ['first', 'first_initial', 'first_last'],
-        default: 'first'
-    },
+
+    // Template settings
     font_size: {
         type: 'number',
         minimum: 10,
         maximum: 24,
         default: 16
     },
+    name_style: {
+        type: 'string',
+        enum: ['first', 'first_initial', 'first_last'],
+        default: 'first'
+    },
     song_lyrics: {
         type: 'boolean',
         default: false
+    },
+    page_size: {
+        type: 'string',
+        enum: ['a4', 'letter'],
+        default: 'a4'
+    },
+    two_up: {
+        type: 'boolean',
+        default: true
     },
     page_numbers: {
         type: 'boolean',
         default: false
     },
-    ccli_licence: {
-        type: 'number',
-        minimum: 1,
-        default: 1
+
+    // Selected template
+    template: {
+        type: 'string',
+        default: 'default'
     },
+
+    // Custom templates
     custom_templates: {
         type: 'array',
         items: CUSTOM_TEMPLATE_SCHEMA,
         default: []
+    },
+
+    // New template storage format
+    templates: {
+        type: 'object',
+        patternProperties: {
+            '^[a-zA-Z0-9_-]+$': TEMPLATE_SCHEMA
+        },
+        default: {}
     }
 }
 
