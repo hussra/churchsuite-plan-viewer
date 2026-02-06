@@ -9,13 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- New setting for base font size
-- Change "Show draft plans" to "Include draft plans"
+- New "Song Lyrics" template.
+- Add option for showing song lyrics in full service order template
+- New settings for base font size, including song lyrics, and showing page numbers
 - If plan includes a notes category named "People", supplied templates now show those
   notes alongside the people for each item.
 
 ### Changed
 
+- Split settings into global settings, template settings, and authentication settings
+- Many settings are now configurable per template, rather than being global
+- Change "Show draft plans" to "Include draft plans"
 - Dependencies updated
 
 ## [v1.2.0] - 2025-10-31
