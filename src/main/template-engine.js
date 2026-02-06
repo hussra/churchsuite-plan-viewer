@@ -238,23 +238,30 @@ export class TemplateEngine {
     }
 
     saveTemplate(template) {
+        const id = template.id
         if (!(this.templateExists(template.id))) {
             throw new Error('Template does not exist')
         }
-        let allTemplates = this.#controller.getGlobalSetting('custom_templates')
-        let index = allTemplates.findIndex((element) => (element.id == template.id))
-        if (index === -1) {
-            throw new Error('Template does not exist in settings')
-        }
-
-        if (!(allTemplates[index].editable)) {
+        if (!this.getTemplateById(id).editable) {
             throw new Error('Template is not editable')
         }
+        delete template.id
 
-        allTemplates[index] = template
-        this.#controller.setGlobalSetting('custom_templates', allTemplates)
-        let localIndex = this.#templates.findIndex((element) => (element.id == template.id))
-        this.#templates[localIndex] = template
+        // Augment template from editor with missing per-template properties from the existing template before saving
+        const existingTemplate = this.#controller.templateEngine.getTemplateById(id)
+        if (existingTemplate) {
+            template = {
+                ...template,
+                font_size: existingTemplate.font_size,
+                name_style: existingTemplate.name_style,
+                song_lyrics: existingTemplate.song_lyrics,
+                page_size: existingTemplate.page_size,
+                two_up: existingTemplate.two_up,
+                page_numbers: existingTemplate.page_numbers
+            }
+        }
+
+        this.#controller.setGlobalSetting(`templates.${id}`, template)
         this.#controller.emit('templatesChanged')
     }
 
