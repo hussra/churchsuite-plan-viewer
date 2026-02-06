@@ -158,7 +158,8 @@ export class TemplateEngine {
     }
 
     getTemplateById(id) {
-        return this.#templates.find((element) => (element.id == id))
+        const template = this.#controller.getGlobalSetting(`templates.${id}`)
+        return (template ? { ...template, id: id } : undefined)
     }
 
     duplicateTemplate(id) {
