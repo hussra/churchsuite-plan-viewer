@@ -279,12 +279,14 @@ export class Controller extends EventEmitter {
                 // Handle songs
                 if ((this.getTemplateSetting('song_lyrics')) && (item.type == 'song') && (item.arrangement_id != null)) {
                     let arrangement = (await this.#getSongArrangement(item.arrangement_id)).data
-                    let song = (await this.#getSong(arrangement.song_id)).data
+                    if (arrangement?.song_id) {
+                        let song = (await this.#getSong(arrangement.song_id)).data
 
-                    item.arrangement = arrangement
-                    item.song = song
+                        item.arrangement = arrangement
+                        item.song = song
 
-                    item.arrangement.stanzas = this.#chartEngine.chartToStanzas(arrangement.chart || '')
+                        item.arrangement.stanzas = this.#chartEngine.chartToStanzas(arrangement.chart || '')
+                    }
                 }
             }
         }
