@@ -19,7 +19,7 @@ import * as fs from 'fs'
 import { app, BrowserWindow, dialog, Menu, screen, shell } from 'electron'
 import Ajv from 'ajv'
 
-import { WINDOW_WIDTH, WINDOW_HEIGHT, CUSTOM_TEMPLATE_SCHEMA } from './constants'
+import { WINDOW_WIDTH, WINDOW_HEIGHT, TEMPLATE_SCHEMA_FILE } from './constants'
 
 export class EditorWindow {
 
@@ -205,8 +205,9 @@ export class EditorWindow {
 
                 const ajv = new Ajv()
 
-                const isDataValid = ajv.validate(CUSTOM_TEMPLATE_SCHEMA, templateData)
+                const isDataValid = ajv.validate(TEMPLATE_SCHEMA_FILE, templateData)
                 if (!isDataValid) {
+                    console.error('JSON data does not match schema:', ajv.errors)
                     dialog.showMessageBox(this.#win,
                         {
                             title: 'Unable to read file',

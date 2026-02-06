@@ -48,6 +48,8 @@ export class Controller extends EventEmitter {
                         // const keysToDelete = ['font_size', 'name_style', 'song_lyrics', 'page_size', 'two_up', 'page_numbers', 'custom_templates']
                         // keysToDelete.forEach(key => store.delete(key))
                     }
+
+                    store.delete('custom_templates')
                 }
             }
         })

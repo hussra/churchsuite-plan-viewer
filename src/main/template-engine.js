@@ -36,8 +36,6 @@ export class TemplateEngine {
     #controller
     #liquidEngine
 
-    #templates = []
-
     #buildTemplateList() {
         
         const templatesDir = this.templatesDir
@@ -55,15 +53,6 @@ export class TemplateEngine {
                     fs.accessSync(jsonFile, fs.constants.R_OK)
 
                     const jsonData = JSON.parse(fs.readFileSync(jsonFile))
-
-                    this.#templates.push({
-                        id: basename,
-                        name: (jsonData.name ? jsonData.name : basename),
-                        filenameSuffix: (jsonData.filenameSuffix ? jsonData.filenameSuffix : ''),
-                        editable: false,
-                        liquid: this.#getTemplateLiquidFromDisk(basename),
-                        css: this.#getTemplateCSSFromDisk(basename)
-                    })
 
                     // Load into settings if not already present, so that template settings can be edited by the user and saved against the template
                     const tmpl = {
@@ -86,16 +75,6 @@ export class TemplateEngine {
                 }
             }
         })
-
-        // Load any custom templates from settings
-        let customTemplates = this.#controller.getGlobalSetting('custom_templates')
-        for (let i in customTemplates) {
-            let customTemplate = customTemplates[i]
-            customTemplate.editable = true
-            this.#templates.push(
-                customTemplate
-            )
-        }
     }
 
     #buildLiquidEngine() {

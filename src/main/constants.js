@@ -19,7 +19,9 @@ export const WINDOW_HEIGHT = 800
 export const LEFT_PANEL_WIDTH = 300
 export const BAR_WIDTH = 2
 
-export const CUSTOM_TEMPLATE_SCHEMA = {
+// Old (pre-v1.3) custom templates
+// Will be removed in a future release, but kept for now to allow migration of old templates to the new storage format
+export const OLD_TEMPLATE_SCHEMA = {
     type: 'object',
     properties: {
         id: { type: 'string' },
@@ -31,6 +33,7 @@ export const CUSTOM_TEMPLATE_SCHEMA = {
     required: ['id', 'name', 'liquid', 'css'],
 }
 
+// New (v1.3) template storage
 export const TEMPLATE_SCHEMA = {
     type: 'object',
     properties: {
@@ -46,6 +49,15 @@ export const TEMPLATE_SCHEMA = {
         page_numbers: { type: 'boolean', default: false },
     },
     required: ['name', 'liquid', 'css', 'font_size', 'name_style', 'song_lyrics', 'page_size', 'two_up', 'page_numbers'],
+}
+
+export const TEMPLATE_SCHEMA_FILE = {
+    type: 'object',
+    properties: {
+        ...TEMPLATE_SCHEMA.properties,
+        id: { type: 'string' }
+    },
+    required: ['id', 'name', 'liquid', 'css']
 }
 
 export const SETTINGS_SCHEMA = {
@@ -116,14 +128,15 @@ export const SETTINGS_SCHEMA = {
         default: 'default'
     },
 
-    // Custom templates
+    // Old (pre-v1.3) custom templates
+    // Will be removed in a future release, but kept for now to allow migration of old templates to the new storage format
     custom_templates: {
         type: 'array',
-        items: CUSTOM_TEMPLATE_SCHEMA,
+        items: OLD_TEMPLATE_SCHEMA,
         default: []
     },
 
-    // New template storage format
+    // New (v1.3) template storage
     templates: {
         type: 'object',
         patternProperties: {
