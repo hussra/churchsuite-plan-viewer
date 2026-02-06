@@ -162,7 +162,10 @@ window.electronAPI.onSetTemplate(async(templateId) => {
     document.getElementById('song_lyrics').checked = song_lyrics
 
     const page_size = await window.electronAPI.getTemplateSetting('page_size')
-    document.querySelector('#page_size option[value=' + page_size + ']').selected = true
+    const pageSizeOption = document.querySelector('#page_size option[value=' + page_size + ']')
+    if (pageSizeOption) {
+        pageSizeOption.selected = true
+    }
 
     const two_up = await window.electronAPI.getTemplateSetting('two_up')
     document.getElementById('two_up').checked = two_up
