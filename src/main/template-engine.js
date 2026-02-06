@@ -71,6 +71,7 @@ export class TemplateEngine {
                         filenameSuffix: jsonData.filenameSuffix,
                         liquid: this.#getTemplateLiquidFromDisk(basename),
                         css: this.#getTemplateCSSFromDisk(basename),
+                        editable: false,
                         font_size: (jsonData.font_size ? jsonData.font_size : this.#controller.getGlobalSetting(`templates.${basename}.font_size`)),
                         name_style: (jsonData.name_style ? jsonData.name_style : this.#controller.getGlobalSetting(`templates.${basename}.name_style`)),
                         song_lyrics: (jsonData.song_lyrics ? jsonData.song_lyrics : this.#controller.getGlobalSetting(`templates.${basename}.song_lyrics`)),
@@ -137,8 +138,21 @@ export class TemplateEngine {
         return app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", "templates") : "templates"
     }
 
+    // Get array of template IDs and names
     get allTemplates() {
-        return this.#templates
+        return Object.entries(this.#controller.getGlobalSetting('templates'))
+            .map(([key, template]) => {
+                return {
+                    id: key,
+                    name: template.name,
+                    editable: template.editable
+                }
+            })
+            .sort((a, b) => {
+                // Out-of-the-box templates (editable: false) before user templates (editable: true),
+                // then sorted alphabetically by name within those groups
+                return ((a.editable === b.editable) ? 0 : a.editable ? 1 : -1) || a.name.localeCompare(b.name)
+            })
     }
 
     templateExists(id) {
