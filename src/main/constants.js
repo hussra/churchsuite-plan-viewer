@@ -26,7 +26,7 @@ export const OLD_TEMPLATE_SCHEMA = {
     properties: {
         id: { type: 'string' },
         name: { type: 'string' },
-        filenameSuffix: { type: 'string' },
+        filenameSuffix: { type: 'string', default: '' },
         liquid: { type: 'string' },
         css: { type: 'string' },
     },
@@ -38,7 +38,7 @@ export const TEMPLATE_SCHEMA = {
     type: 'object',
     properties: {
         name: { type: 'string' },
-        filenameSuffix: { type: 'string' },
+        filenameSuffix: { type: 'string', default: '' },
         liquid: { type: 'string' },
         css: { type: 'string' },
         font_size: { type: 'number', minimum: 10, maximum: 24, default: 16 },
@@ -90,36 +90,6 @@ export const SETTINGS_SCHEMA = {
         type: 'number',
         minimum: 1,
         default: 1
-    },
-
-    // Template settings
-    font_size: {
-        type: 'number',
-        minimum: 10,
-        maximum: 24,
-        default: 16
-    },
-    name_style: {
-        type: 'string',
-        enum: ['first', 'first_initial', 'first_last'],
-        default: 'first'
-    },
-    song_lyrics: {
-        type: 'boolean',
-        default: false
-    },
-    page_size: {
-        type: 'string',
-        enum: ['a4', 'letter'],
-        default: 'a4'
-    },
-    two_up: {
-        type: 'boolean',
-        default: true
-    },
-    page_numbers: {
-        type: 'boolean',
-        default: false
     },
 
     // Selected template

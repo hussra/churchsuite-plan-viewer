@@ -505,7 +505,7 @@ export class Controller extends EventEmitter {
                 ))
             .replace(/\s/g, '-')
             .replace(/:/g, '') +
-            this.template.filenameSuffix +
+            this.getTemplateSetting('filenameSuffix') +
             (this.getTemplateSetting('two_up') ? '-2up' : '') + '.pdf'
     }
 
