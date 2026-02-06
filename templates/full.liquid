@@ -78,6 +78,25 @@
         {% endfor %}
     {% endif %}
 
+    {% if item.type == 'song' and item.arrangement %}
+      <div class="song">
+        {% for stanza in item.arrangement.stanzas %}
+          <h5>{{stanza.name}}</h5>
+          <p class="stanza">
+            {% for line in stanza.lines %}
+              {{line}}
+              {% if forloop.last == false %}
+                <br />
+              {% endif %}
+            {% endfor %}
+          </p>
+        {% endfor %}
+        <p class="songCredits">
+          {{item | songCredits}}
+        </p>
+      </div>
+    {% endif %}
+
     {% if item.comment %}
         <p class="comment">{{ item.comment }}</p>
     {% endif %}

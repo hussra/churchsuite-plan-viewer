@@ -63,3 +63,20 @@
   border-radius: 0.8rem;
   vertical-align: 0.1rem;
 }
+
+.song h5 {
+    margin-left: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.song p.stanza {
+    page-break-inside: avoid;
+    margin-left: 1.5rem;
+}
+
+.songCredits {
+    page-break-before: avoid;
+    margin-left: 1.5rem;
+    font-size: 0.6rem;
+    font-style: italic;
+}
