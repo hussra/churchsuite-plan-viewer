@@ -141,18 +141,16 @@ export class TemplateEngine {
     // Get array of template IDs and names
     get allTemplates() {
         return Object.entries(this.#controller.getGlobalSetting('templates'))
-            .map(([key, template]) => {
-                return {
-                    id: key,
-                    name: template.name,
-                    editable: template.editable
-                }
-            })
-            .sort((a, b) => {
+            .map(([key, template]) => ({
+                id: key,
+                name: template.name,
+                editable: template.editable
+            }))
+            .sort((a, b) => 
                 // Out-of-the-box templates (editable: false) before user templates (editable: true),
                 // then sorted alphabetically by name within those groups
-                return ((a.editable === b.editable) ? 0 : a.editable ? 1 : -1) || a.name.localeCompare(b.name)
-            })
+                ((a.editable === b.editable) ? 0 : a.editable ? 1 : -1) || a.name.localeCompare(b.name)
+            )
     }
 
     templateExists(id) {
