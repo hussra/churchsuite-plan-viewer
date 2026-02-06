@@ -168,7 +168,8 @@ export class TemplateEngine {
         }
 
         let newTemplate = Object.assign({}, this.getTemplateById(id))
-        newTemplate.id = nanoid()
+        const newId = nanoid()
+        delete newTemplate.id
         newTemplate.name = newTemplate.name + ' (Copy)'
 
         // If copying an out-of-the-box template, strip out any GPL licence at the start of the template
@@ -179,14 +180,10 @@ export class TemplateEngine {
         newTemplate.editable = true
 
         // Save to settings
-        let allTemplates = this.#controller.getGlobalSetting('custom_templates')
-        this.#controller.setGlobalSetting('custom_templates', allTemplates.concat([newTemplate]))
+        this.#controller.setGlobalSetting(`templates.${newId}`, newTemplate)
 
-        // Save locally
-        this.#templates.push(newTemplate)
-        this.#controller.emit('templatesChanged', newTemplate.id)
-
-        return newTemplate.id
+        this.#controller.emit('templatesChanged', newId)
+        return newId
     }
 
     #stripGPL(text, startToken, endToken) {
