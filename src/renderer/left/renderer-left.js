@@ -125,10 +125,14 @@ const showHideSettings = (connected) => {
     if (connected) {
         document.getElementById('mainControlsTop').classList.remove('d-none')
         document.getElementById('mainControlsBottom').classList.remove('d-none')
+        document.getElementById('globalSettingsAccordionItem').classList.remove('d-none')
+        document.getElementById('templateSettingsAccordionItem').classList.remove('d-none')
         document.getElementById('authenticationSettings').classList.remove('show')
     } else {
         document.getElementById('mainControlsTop').classList.add('d-none')
         document.getElementById('mainControlsBottom').classList.add('d-none')
+        document.getElementById('globalSettingsAccordionItem').classList.add('d-none')
+        document.getElementById('templateSettingsAccordionItem').classList.add('d-none')
         document.getElementById('authenticationSettings').classList.add('show')
     }
 }
