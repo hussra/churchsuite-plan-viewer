@@ -269,20 +269,14 @@ export class TemplateEngine {
         if (!(this.templateExists(id))) {
             throw new Error('Template does not exist')
         }
-        let allTemplates = this.#controller.getGlobalSetting('custom_templates')
-        let index = allTemplates.findIndex((element) => (element.id == id))
-        if (index === -1) {
-            throw new Error('Template does not exist in settings')
-        }
 
-        if (!(allTemplates[index].editable)) {
+        const template = this.getTemplateById(id)
+        if (!template.editable) {
             throw new Error('Template is not editable')
         }
-        allTemplates.splice(index, 1)
-        this.#controller.setGlobalSetting('custom_templates', allTemplates)
 
-        let localIndex = this.#templates.findIndex((element) => (element.id == id))
-        this.#templates.splice(localIndex, 1)
+        this.#controller.deleteGlobalSetting(`templates.${id}`)
+
         this.#controller.selectedTemplateId = ''
         this.#controller.emit('templatesChanged')
     }

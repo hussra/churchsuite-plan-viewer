@@ -178,6 +178,10 @@ export class Controller extends EventEmitter {
         }
     }
 
+    deleteGlobalSetting(key) {
+        this.#store.delete(key)
+    }
+
     getTemplateSetting(key) {
         return this.getGlobalSetting(`templates.${this.#selectedTemplate}.${key}`)
     }
