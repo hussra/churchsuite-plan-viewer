@@ -57,8 +57,3 @@ would be shown by the "Outline Running Order" template like this:
 ![Snippet from service plan](assets/images/churchsuite7.png)
 
 Display of other types of plan item note is an obvious enhancement for the future, but is not yet supported.
-
-### Song lyrics
-
-Unfortunately the ChurchSuite API does not yet support retrieval of song lyrics - this is an
-obvious thing to add to this program, once that enhancement is possible.
