@@ -58,7 +58,7 @@
         </td>
         <td>
           {% for person in item.people -%}
-            {{person | personName: "first"}}
+            {{person | personName}}
             {%- if forloop.last == false %}, {% endif %}
           {% endfor %}
           {% for note in item.notes -%}
