@@ -31,7 +31,12 @@
 
 {% for item in plan.items %}
   {% if item.type_id == types.heading.id %}
-    <h3>{{item.name}}</h3>
+    <h3>
+      {% if settings.timings %}
+        {{item.date_time | date: settings.time_format}}
+      {% endif %}
+      {{item.name}}
+    </h3>
   {% else %}
 
     <div class="item">
@@ -48,6 +53,9 @@
       </p>
 
       <h4>
+        {% if settings.timings %}
+          {{item.date_time | date: settings.time_format}}
+        {% endif %}
         {% if item.type == 'song' %}
           Song:
         {% endif %}
@@ -78,7 +86,7 @@
         {% endfor %}
     {% endif %}
 
-    {% if item.type == 'song' and item.arrangement %}
+    {% if item.type == 'song' and settings.song_lyrics and item.arrangement %}
       <div class="song">
         {% for stanza in item.arrangement.stanzas %}
           <h5>{{stanza.name}}</h5>

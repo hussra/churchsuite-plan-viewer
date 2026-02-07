@@ -44,11 +44,13 @@ export const TEMPLATE_SCHEMA = {
         font_size: { type: 'number', minimum: 10, maximum: 24, default: 16 },
         name_style: { type: 'string', enum: ['first', 'first_initial', 'first_last'], default: 'first'},
         song_lyrics: { type: 'boolean', default: false },
+        timings: { type: 'boolean', default: false },
+        time_format: { type: 'string', enum: ['%l.%M%P', '%H:%M', '%H:%M:%S'], default: '%H:%M' },
         page_size: { type: 'string', enum: ['a4', 'letter'], default: 'a4' },
         two_up: { type: 'boolean', default: false },
         page_numbers: { type: 'boolean', default: false },
     },
-    required: ['name', 'liquid', 'css', 'font_size', 'name_style', 'song_lyrics', 'page_size', 'two_up', 'page_numbers'],
+    required: ['name', 'liquid', 'css', 'font_size', 'name_style', 'song_lyrics', 'timings', 'time_format', 'page_size', 'two_up', 'page_numbers'],
 }
 
 export const TEMPLATE_SCHEMA_FILE = {

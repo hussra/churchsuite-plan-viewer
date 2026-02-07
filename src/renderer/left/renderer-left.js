@@ -165,6 +165,15 @@ window.electronAPI.onSetTemplate(async(templateId) => {
     const song_lyrics = await window.electronAPI.getTemplateSetting('song_lyrics')
     document.getElementById('song_lyrics').checked = song_lyrics
 
+    const timings = await window.electronAPI.getTemplateSetting('timings')
+    document.getElementById('timings').checked = timings
+
+    const time_format = await window.electronAPI.getTemplateSetting('time_format')
+    const timeFormatOption = document.querySelector('#time_format option[value=' + CSS.escape(time_format)/*.replaceAll('%', '\\%').replaceAll(':', '\\:')*/ + ']')
+    if (timeFormatOption) {
+        timeFormatOption.selected = true
+    }
+
     const page_size = await window.electronAPI.getTemplateSetting('page_size')
     const pageSizeOption = document.querySelector('#page_size option[value=' + page_size + ']')
     if (pageSizeOption) {
@@ -216,6 +225,14 @@ const load = async () => {
     })
     document.getElementById('song_lyrics').addEventListener('change', async () => {
         await window.electronAPI.setTemplateSetting('song_lyrics', document.getElementById('song_lyrics').checked)
+        refresh()
+    })
+    document.getElementById('timings').addEventListener('change', async () => {
+        await window.electronAPI.setTemplateSetting('timings', document.getElementById('timings').checked)
+        refresh()
+    })
+    document.getElementById('time_format').addEventListener('change', async () => {
+        await window.electronAPI.setTemplateSetting('time_format', document.getElementById('time_format').value)
         refresh()
     })
     document.getElementById('page_size').addEventListener('change', async () => {

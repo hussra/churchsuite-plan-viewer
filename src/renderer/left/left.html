@@ -129,11 +129,28 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
 
             <div class="form-group mb-2">
-              <label for="page_size">Page size</label>
-              <select class="form-select" id="page_size" aria-label="Page size">
-                <option value="a4">A4</option>
-                <option value="letter">Letter</option>
-              </select>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="timings">
+                <label class="form-check-label" for="timings">Show timings</label>
+              </div>
+            </div>
+
+            <div class="form-group mb-2">
+              <label for="time_format">Time format</label>
+              <div class="input-group">
+                <select class="form-select" id="time_format" aria-label="Time format">
+                  <option value="%l.%M%P">12-hour (10.15am)</option>
+                  <option value="%H:%M">24-hour (10:15)</option>
+                  <option value="%H:%M:%S">24-hour with seconds (10:15:00)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group mb-2">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="page_numbers">
+                <label class="form-check-label" for="page_numbers">Show page numbers</label>
+              </div>
             </div>
 
             <div class="form-group mb-2">
@@ -144,10 +161,11 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
             </div>
 
             <div class="form-group mb-2">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="page_numbers">
-                <label class="form-check-label" for="page_numbers">Show page numbers</label>
-              </div>
+              <label for="page_size">Page size</label>
+              <select class="form-select" id="page_size" aria-label="Page size">
+                <option value="a4">A4</option>
+                <option value="letter">Letter</option>
+              </select>
             </div>
 
           </div>

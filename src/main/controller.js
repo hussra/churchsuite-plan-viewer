@@ -302,6 +302,11 @@ export class Controller extends EventEmitter {
             },
             brand: brand,
             types: types,
+            settings: {
+                timings: this.getTemplateSetting('timings'),
+                time_format: this.getTemplateSetting('time_format'),
+                song_lyrics: this.getTemplateSetting('song_lyrics'),
+            }
         }
 
         // Render plan with selected template

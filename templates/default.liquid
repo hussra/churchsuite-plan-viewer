@@ -33,10 +33,19 @@
   {% for item in plan.items %}
     {% if item.type_id == types.heading.id %}
       <tr class="heading">
-        <td colspan="2">{{item.name}}</td>
+        {% if settings.timings %}
+          <td colspan="3">{{item.name}}</td>
+        {% else %}
+          <td colspan="2">{{item.name}}</td>
+        {% endif %}
       </tr>
     {% else %}
       <tr>
+        {% if settings.timings %}
+          <td>
+            {{item.date_time | date: settings.time_format}}
+          </td>
+        {% endif %}
         <td>
           {% if item.type == 'song' %}
             <strong>Song:</strong>

@@ -66,6 +66,8 @@ export class TemplateEngine {
                         page_size: (jsonData.page_size ? jsonData.page_size : this.#controller.getGlobalSetting(`templates.${basename}.page_size`)),
                         two_up: (jsonData.two_up ? jsonData.two_up : this.#controller.getGlobalSetting(`templates.${basename}.two_up`)),
                         page_numbers: (jsonData.page_numbers ? jsonData.page_numbers : this.#controller.getGlobalSetting(`templates.${basename}.page_numbers`)),
+                        timings: (jsonData.timings ? jsonData.timings : this.#controller.getGlobalSetting(`templates.${basename}.timings`)),
+                        time_format: (jsonData.time_format ? jsonData.time_format : this.#controller.getGlobalSetting(`templates.${basename}.time_format`)),
                     }
 
                     this.#controller.setGlobalSetting(`templates.${basename}`, tmpl)
@@ -205,7 +207,9 @@ export class TemplateEngine {
                 song_lyrics: existingTemplate.song_lyrics,
                 page_size: existingTemplate.page_size,
                 two_up: existingTemplate.two_up,
-                page_numbers: existingTemplate.page_numbers
+                page_numbers: existingTemplate.page_numbers,
+                timings: existingTemplate.timings,
+                time_format: existingTemplate.time_format,
             }
         }
 
