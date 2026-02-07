@@ -21,7 +21,9 @@ The template editor window is divided into three sections:
   when the program suggests a name for the exported PDF file - for example, the "Full Service Order" template
   uses a suffix of "-full", so suggesting filenames like `02-11-2025-1100-full.pdf`.
 * In the middle, you control how the template displays your service plan - see below.
-* At the bottom are controls to save the current template and to duplicate, export, import and delete templates.
+* Bottom left is a field which allows you to hide certain template settings which do not make sense with
+  a particular template.
+* And at the bottom right are controls to save the current template and to duplicate, export, import and delete templates.
 
 *The default templates are not editable.* So, to get started, pick a template you want to start customising, and
 click **Duplicate**.
