@@ -92,27 +92,34 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
 
 
-        <div class="w-100">
-            <div class="form-group mt-3 text-end">
-                <button class="btn btn-secondary" type="button" id="exportButton" title="Export Template">
-                    <i class="bi bi-box-arrow-up"></i> Export
-                </button>
+        <div class="w-100 container-fluid" id="bottomControls">
+            <div class="row align-items-end">
+                <div class="col mt-3">
+                    <label for="hide_settings" class="form-label d-block mt-2">Template settings to hide in main window (comma-separated list)</label>
+                    <input type="text" class="form-control" id="hide_settings" placeholder="e.g. song_lyrics,timings,time_format,name_style">
+                </div>
 
-                <button class="btn btn-secondary" type="button" id="importButton" title="Import Template">
-                    <i class="bi bi-box-arrow-in-down"></i> Import
-                </button>
+                <div class="col mt-3 form-group text-end">
+                    <button class="btn btn-secondary" type="button" id="exportButton" title="Export Template">
+                        <i class="bi bi-box-arrow-up"></i> Export
+                    </button>
 
-                <button class="btn btn-secondary" type="button" id="deleteButton" title="Delete Template">
-                    <i class="bi bi-file-earmark-x"></i> Delete
-                </button>
+                    <button class="btn btn-secondary" type="button" id="importButton" title="Import Template">
+                        <i class="bi bi-box-arrow-in-down"></i> Import
+                    </button>
 
-                <button class="btn btn-secondary" type="button" id="duplicateButton" title="Duplicate Template">
-                    <i class="bi bi-copy"></i> Duplicate
-                </button>
+                    <button class="btn btn-secondary" type="button" id="deleteButton" title="Delete Template">
+                        <i class="bi bi-file-earmark-x"></i> Delete
+                    </button>
 
-                <button class="btn btn-primary ms-3" type="button" id="saveButton" title="Save Template">
-                    <i class="bi bi-floppy-fill"></i> Save
-                </button>
+                    <button class="btn btn-secondary" type="button" id="duplicateButton" title="Duplicate Template">
+                        <i class="bi bi-copy"></i> Duplicate
+                    </button>
+
+                    <button class="btn btn-primary ms-3" type="button" id="saveButton" title="Save Template">
+                        <i class="bi bi-floppy-fill"></i> Save
+                    </button>
+                </div>
             </div>
         </div>
 

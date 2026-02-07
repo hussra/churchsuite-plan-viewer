@@ -59,6 +59,7 @@ export class TemplateEngine {
                         filenameSuffix: jsonData.filenameSuffix,
                         liquid: this.#getTemplateLiquidFromDisk(basename),
                         css: this.#getTemplateCSSFromDisk(basename),
+                        hide_settings: jsonData.hide_settings,
                         editable: false,
                         font_size: (jsonData.font_size ? jsonData.font_size : this.#controller.getGlobalSetting(`templates.${basename}.font_size`)),
                         name_style: (jsonData.name_style ? jsonData.name_style : this.#controller.getGlobalSetting(`templates.${basename}.name_style`)),

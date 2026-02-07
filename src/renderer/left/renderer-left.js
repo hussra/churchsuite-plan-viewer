@@ -121,7 +121,7 @@ const loadSettings = async () => {
     document.getElementById('client_id').value = client_id
 }
 
-const showHideSettings = (connected) => {
+const showHideControls = (connected) => {
     if (connected) {
         document.getElementById('mainControlsTop').classList.remove('d-none')
         document.getElementById('mainControlsBottom').classList.remove('d-none')
@@ -142,7 +142,7 @@ const refresh = () => {
 }
 
 window.electronAPI.onSetConnected((connected) => {
-    showHideSettings(connected)
+    showHideControls(connected)
 })
 
 window.electronAPI.onSetPlans((plans) => {
@@ -185,6 +185,12 @@ window.electronAPI.onSetTemplate(async(templateId) => {
 
     const page_numbers = await window.electronAPI.getTemplateSetting('page_numbers')
     document.getElementById('page_numbers').checked = page_numbers
+
+    const hide_settings = await window.electronAPI.getTemplateSetting('hide_settings')
+    showHideSetting('song_lyrics', !(hide_settings?.includes('song_lyrics')))
+    showHideSetting('timings', !(hide_settings?.includes('timings')))
+    showHideSetting('time_format', !(hide_settings?.includes('time_format')))
+    showHideSetting('name_style', !(hide_settings?.includes('name_style')))
 })
 
 const load = async () => {
@@ -263,6 +269,16 @@ const load = async () => {
     await loadSettings()
 
     window.electronAPI.leftRendererStartupComplete()
+}
+
+// Show or hide settings based on the selected template's "hide_settings" property
+const showHideSetting = (settingId, show) => {
+    const element = document.getElementById(settingId).closest('.form-group')
+    if (show) {
+        element.classList.remove('d-none')
+    } else {
+        element.classList.add('d-none')
+    }
 }
 
 load()

@@ -41,6 +41,7 @@ export const TEMPLATE_SCHEMA = {
         filenameSuffix: { type: 'string', default: '' },
         liquid: { type: 'string' },
         css: { type: 'string' },
+        hide_settings: { type: 'string', default: '' }, // Comma-separated list of settings to hide when this template is selected (e.g. "song_lyrics,timings")
         font_size: { type: 'number', minimum: 10, maximum: 24, default: 16 },
         name_style: { type: 'string', enum: ['first', 'first_initial', 'first_last'], default: 'first'},
         song_lyrics: { type: 'boolean', default: false },

@@ -54,12 +54,14 @@ const populateForm = (template) => {
         document.getElementById('filenameSuffix').value = ''
         document.getElementById('liquid').value = ''
         document.getElementById('css').value = ''
+        document.getElementById('hide_settings').value = ''
         document.getElementById('duplicateButton').setAttribute('disabled', 'disabled')        
     } else {
         document.getElementById('name').value = template.name
         document.getElementById('filenameSuffix').value = template.filenameSuffix
         document.getElementById('liquid').value = template.liquid
         document.getElementById('css').value = template.css
+        document.getElementById('hide_settings').value = template.hide_settings
         document.getElementById('duplicateButton').removeAttribute('disabled')
     }
 
@@ -68,6 +70,7 @@ const populateForm = (template) => {
         document.getElementById('filenameSuffix').setAttribute('disabled', 'disabled')
         document.getElementById('liquid').setAttribute('disabled', 'disabled')
         document.getElementById('css').setAttribute('disabled', 'disabled')
+        document.getElementById('hide_settings').setAttribute('disabled', 'disabled')
         document.getElementById('deleteButton').setAttribute('disabled', 'disabled')
         document.getElementById('saveButton').setAttribute('disabled', 'disabled')
         document.getElementById('exportButton').setAttribute('disabled', 'disabled')
@@ -76,6 +79,7 @@ const populateForm = (template) => {
         document.getElementById('filenameSuffix').removeAttribute('disabled')
         document.getElementById('liquid').removeAttribute('disabled')
         document.getElementById('css').removeAttribute('disabled')
+        document.getElementById('hide_settings').removeAttribute('disabled')
         document.getElementById('deleteButton').removeAttribute('disabled')
         document.getElementById('saveButton').removeAttribute('disabled')
         document.getElementById('exportButton').removeAttribute('disabled')
@@ -119,6 +123,7 @@ const load = async () => {
             filenameSuffix: document.getElementById('filenameSuffix').value,
             liquid: document.getElementById('liquid').value,
             css: document.getElementById('css').value,
+            hide_settings: document.getElementById('hide_settings').value,
             editable: true
         }
         await window.electronAPI.saveTemplate(template)

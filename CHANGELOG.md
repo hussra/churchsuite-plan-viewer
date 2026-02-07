@@ -15,7 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New settings for showing timings in outline and full service order templates, and 
   preferred time format
 - If plan includes a notes category named "People", supplied templates now show those
-  notes alongside the people for each item.
+  notes alongside the people for each item
+- Add ability for a template to hide irrelevant settings in the main window
 
 ### Changed
 
