@@ -9,9 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- New "Song Lyrics" template.
+- New "Song Lyrics" template
 - Add option for showing song lyrics in full service order template
 - New settings for base font size, including song lyrics, and showing page numbers
+- New settings for showing timings in outline and full service order templates, and 
+  preferred time format
 - If plan includes a notes category named "People", supplied templates now show those
   notes alongside the people for each item.
 
