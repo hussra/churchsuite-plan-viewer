@@ -344,7 +344,7 @@ export class TemplateEngine {
                         credits += ` (Admin. ${item.song.administration})`
                     }
                     const ccli_licence = this.#controller.getGlobalSetting('ccli_licence')
-                    if (ccli_licence && (ccli_licence > 1)) {
+                    if (ccli_licence && (ccli_licence > 1) && item.song.ccli && (item.song.ccli != '')) {
                         credits += ` Used by permission. CCLI Licence No. ${ccli_licence}`
                     }
                 }
