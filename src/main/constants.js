@@ -33,6 +33,8 @@ export const OLD_TEMPLATE_SCHEMA = {
     required: ['id', 'name', 'liquid', 'css'],
 }
 
+export const OLD_SETTINGS_TO_DELETE = ['font_size', 'name_style', 'song_lyrics', 'page_size', 'two_up', 'page_numbers', 'custom_templates']
+
 // New (v1.3) template storage
 export const TEMPLATE_SCHEMA = {
     type: 'object',

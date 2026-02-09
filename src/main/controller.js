@@ -20,7 +20,7 @@ import Store from 'electron-store'
 import { request } from 'undici'
 import toValidIdentifier from 'to-valid-identifier'
 
-import { SETTINGS_SCHEMA } from './constants'
+import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE } from './constants'
 import { TemplateEngine } from './template-engine'
 import { ChartEngine } from './chart-engine'
 
@@ -35,7 +35,7 @@ export class Controller extends EventEmitter {
 		        console.log(`[main-config] migrate from ${context.fromVersion} to ${context.toVersion}`);
 	        },
             migrations: {
-                '1.3.0-dev': (store) => {
+                '1.3.0': (store) => {
                     console.log('[main-config] running migration for version 1.3.0: migrating custom template storage to new format')
                     const customTemplates = store.get('custom_templates')
 
@@ -45,11 +45,9 @@ export class Controller extends EventEmitter {
                             delete template.id
                             store.set(`templates.${id}`, template)
                         })
-                        // const keysToDelete = ['font_size', 'name_style', 'song_lyrics', 'page_size', 'two_up', 'page_numbers', 'custom_templates']
-                        // keysToDelete.forEach(key => store.delete(key))
                     }
 
-                    store.delete('custom_templates')
+                    OLD_SETTINGS_TO_DELETE.forEach(key => store.delete(key))
                 }
             }
         })
