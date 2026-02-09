@@ -69,14 +69,11 @@ The **Default name style** drop-down lets you choose how you would like names to
 
 ![Choosing how to display names](assets/images/usage6.png)
 
-The **Show song lyrics** option does not apply to all templates - it would not make sense to include this with the
-**Outline Running Order** template, for example.
-
-And the **show timings** option, likewise, does not apply to all templates - it would not make sense to include this
-with the **Song Lyrics** template.
-
 You can choose the base font size, the output page size, select whether you would like two copies per sheet (we use this to create
 A5 orders of service using the "outline running order" template), and whether page numbers should be included.
+
+Some templates will hide settings that are not relevant when those templates are being used - for example, the **Show song lyrics**
+option will be hidden if you are using the **Outline Running Order** template.
 
 Then click the **Create PDF** button to save and open a PDF file showing the selected service, using your chosen template and other options.
 
