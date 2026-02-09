@@ -21,7 +21,9 @@ The template editor window is divided into three sections:
   when the program suggests a name for the exported PDF file - for example, the "Full Service Order" template
   uses a suffix of "-full", so suggesting filenames like `02-11-2025-1100-full.pdf`.
 * In the middle, you control how the template displays your service plan - see below.
-* At the bottom are controls to save the current template and to duplicate, export, import and delete templates.
+* Bottom left is a field which allows you to hide certain template settings which do not make sense with
+  a particular template.
+* And at the bottom right are controls to save the current template and to duplicate, export, import and delete templates.
 
 *The default templates are not editable.* So, to get started, pick a template you want to start customising, and
 click **Duplicate**.
@@ -53,6 +55,11 @@ There are three top-level objects:
   * `plan.items` is an array of objects, each representing an item in the service plan as a
     [PlanItem model](https://developer.churchsuite.com/planning#model/planitem) with one addition, the `date_time` property which
     represents the plan item's start date and time as a JavaScript Date object.
+  * If **Show song lyrics** is selected, and a service item represents a song, the item will additionally have an `arrangement` property
+    which is a [SongArrangement model](https://developer.churchsuite.com/planning#model/songarrangement), and a `song` property which
+    is a [Song model](https://developer.churchsuite.com/planning#model/song). The `arrangement` property is in turn augmented with a
+    `stanzas` property which is an array of objects, each representing a stanza of the song chart. Each stanza has a `name` property
+    (e.g. `Verse 1`, and an array of strings representing the lines of that stanza.)
 * `brand` represents your account's default branding as a [Brand model](https://developer.churchsuite.com/account#model/brand),
   allowing you to display your logo and use the default brand colour. In addition, a `logo.data_url` property is added giving your
   logo as a data: URL for easier display within your template.
@@ -79,6 +86,8 @@ In addition to the standard LiquidJS [tags](https://liquidjs.com/tags/overview.h
 * `markdown`, which converts Markdown text (using the [CommonMark specification](https://spec.commonmark.org/0.31.2/)) to HTML
 * `personName`, which takes a person and formats their name according to the user's chosen **Default name style** setting.
 * `songKey`, which takes a song item and displays the song's key.
+* `songCredits`, which takes a song item and displays its copyright information, including your CCLI Licence number if configured
+  in the global settings.
 
 Examples of using all of these can be found in the default templates.
 
