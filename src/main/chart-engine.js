@@ -52,8 +52,14 @@ export class ChartEngine {
 
         // Remove empty stanzas if they are in the ignore list
         for (const [i, stanza] of stanzas.entries()) {
-            if ((this.#isIgnoreEmptyStanza(stanza.name)) && (stanza.lines.length === 0)) {
+            if ( (stanza.lines.length === 0) && (this.#isIgnoreEmptyStanza(stanza.name))) {
                 stanzas.splice(i, 1)
+            } else {
+                // Find a previous stanza with the same name
+                const previousStanza = stanzas.slice(0, i).find(s => s.name === stanza.name)
+                if (previousStanza) {
+                    stanza.lines.push(previousStanza.lines[0] + ' ...')
+                }
             }
         }
 
