@@ -1,7 +1,7 @@
 {
   "name": "churchsuite-plan-viewer",
   "productName": "Churchsuite Plan Viewer",
-  "version": "1.3.0",
+  "version": "1.4.0-dev",
   "description": "A simple app to allow viewing and printing of ChurchSuite service plans",
   "main": ".webpack/main",
   "scripts": {
