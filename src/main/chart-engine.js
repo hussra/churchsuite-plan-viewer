@@ -42,6 +42,11 @@ export class ChartEngine {
                 // Skip empty lines
             } else if (stanzas.length > 0) {
                 stanzas[stanzas.length - 1].lines.push(line)
+            } else {
+                stanzas.push({
+                    name: 'UNKNOWN',
+                    lines: [line]
+                })
             }
         }
 
