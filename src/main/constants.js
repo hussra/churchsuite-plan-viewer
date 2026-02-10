@@ -197,7 +197,8 @@ export const STANZA_TYPES = [
     'PRE-CHORUS',
     'BRIDGE',
     'OUTRO',
-    'TAG'
+    'TAG',
+    'ENDING'
 ]
 
 export const IGNORE_EMPTY_STANZA_TYPES = [
