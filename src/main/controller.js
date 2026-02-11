@@ -66,6 +66,7 @@ export class Controller extends EventEmitter {
 
     #defaultBrand = null
     #types = null
+    #cache = {}
 
     #allPlans = [];                          // All available plans for selection
     #showPlanView = false;                   // Is currently selected plan available for viewing?
@@ -220,6 +221,7 @@ export class Controller extends EventEmitter {
         await this.#getDefaultBrand(true)
         await this.#getTypes(true)
         await this.loadPlans()
+        this.#cache = {}
 
         this.emit('templatesChanged')
     }
@@ -355,10 +357,16 @@ export class Controller extends EventEmitter {
 
     // Make an API call to ChurchSuite and return the body as a JSON object
     async #makeApiCall(url) {
+
+        if (this.#cache[url]) {
+            return this.#cache[url]
+        }
+
         let authToken = await this.#getAuthToken()
 
         if (authToken == null) {
             this.connected = false
+            delete this.#cache[url]
             return {}
         }
 
@@ -379,13 +387,17 @@ export class Controller extends EventEmitter {
 
             if (retryStatusCode != 200) {
                 this.connected = false
+                delete this.#cache[url]
                 return {}
             }
 
             body = retryBody
         }
+
         this.connected = true
-        return await body.json()
+        const jsonResponse = await body.json()
+        this.#cache[url] = jsonResponse 
+        return jsonResponse
     }
 
 
