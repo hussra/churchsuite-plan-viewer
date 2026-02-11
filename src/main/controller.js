@@ -196,7 +196,7 @@ export class Controller extends EventEmitter {
             (this.#selectedTemplate == '') ||
             (this.#selectedPlanId == '') ||
             (this.#selectedPlanId == 0)) {
-
+            
             this.#showPlanView = false
             this.#selectedPlanHtml = ''
             this.#selectedPlanCss = ''
@@ -538,9 +538,7 @@ export class Controller extends EventEmitter {
     }
 
     appStartupComplete() {
-        // this.#configChanged()
-        this.emit('configChanged', this.isConfigured() && this.#isConnected)
-        this.reload()
+        this.#configChanged()
     }
 
 }
