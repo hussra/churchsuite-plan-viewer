@@ -246,7 +246,7 @@ export class Controller extends EventEmitter {
         if (this.getGlobalSetting('past_plans')) {
             this.#allPlans = allPlans.sort(({ timestamp: a }, { timestamp: b }) => b - a)
         } else {
-            this.#allPlans = allPlans
+            this.#allPlans = allPlans.sort(({ timestamp: a }, { timestamp: b }) => a - b)
         }
 
         this.emit('plansChanged')
