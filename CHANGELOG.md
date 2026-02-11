@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+## [v1.3.1] - 2026-02-11
+
+### Added
+
 - Handle stanzas named "Ending"
 
 ### Changed
@@ -92,6 +98,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial version of Companion Plan Viewer for the needs of Elmdon Church
 
 [Unreleased]: https://github.com/hussra/churchsuite-plan-viewer/compare/v1.3.0...HEAD
+[v1.3.1]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.3.1
 [v1.3.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.3.0
 [v1.2.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.2.0
 [v1.1.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.1.0
