@@ -9,7 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Handle stanzas named "Ending"
+
 ### Changed
+
+- When including draft plans, show all plans in date order, rather than published plans coming first
+- Reduce HTTP requests to ChurchSuite by simplifying app startup and introducing a cache
 
 ## [v1.3.0] - 2026-02-09
 
