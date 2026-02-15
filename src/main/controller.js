@@ -227,26 +227,43 @@ export class Controller extends EventEmitter {
     }
 
     async loadPlans() {
-        const planData = await this.#getPlans()
 
-        let allPlans = []
-        if (planData.data) {
-            allPlans = await Promise.all(planData.data.map(async (plan) => {
-                const timestamp = Date.parse(plan.date + " " + plan.time)
-                return {
-                    id: plan.id,
-                    date: plan.date,
-                    timestamp: timestamp,
-                    name: await this.#templateEngine.renderPlanTitleShort(new Date(timestamp), plan.name)
-                }
-            }))
-        }
+        if (this.getGlobalSetting('show_templates')) {
+            const templateData = await this.#getPlanTemplates()
+            let allPlanTemplates = []
+            if (templateData.data) {
+                allPlanTemplates = await Promise.all(templateData.data.map(async (planTemplate) => {
+                    return {
+                        id: planTemplate.id,
+                        name: planTemplate.name
+                    }
+                }))
+            }
+            this.#allPlans = allPlanTemplates
 
-        // For past plans, sort in reverse date order (most recent first)
-        if (this.getGlobalSetting('past_plans')) {
-            this.#allPlans = allPlans.sort(({ timestamp: a }, { timestamp: b }) => b - a)
         } else {
-            this.#allPlans = allPlans.sort(({ timestamp: a }, { timestamp: b }) => a - b)
+            // Load plans, rather than plan templates
+            const planData = await this.#getPlans()
+
+            let allPlans = []
+            if (planData.data) {
+                allPlans = await Promise.all(planData.data.map(async (plan) => {
+                    const timestamp = Date.parse(plan.date + " " + plan.time)
+                    return {
+                        id: plan.id,
+                        date: plan.date,
+                        timestamp: timestamp,
+                        name: await this.#templateEngine.renderPlanTitleShort(new Date(timestamp), plan.name)
+                    }
+                }))
+            }
+
+            // For past plans, sort in reverse date order (most recent first)
+            if (this.getGlobalSetting('past_plans')) {
+                this.#allPlans = allPlans.sort(({ timestamp: a }, { timestamp: b }) => b - a)
+            } else {
+                this.#allPlans = allPlans.sort(({ timestamp: a }, { timestamp: b }) => a - b)
+            }
         }
 
         this.emit('plansChanged')
@@ -258,6 +275,11 @@ export class Controller extends EventEmitter {
         const items = (await this.#getPlanItems(this.#selectedPlanId)).data
         const brand = (await this.#getDefaultBrand()).data
         const types = (await this.#getTypes())
+
+        const showTemplates = this.getGlobalSetting('show_templates')
+        if (showTemplates) {
+            detail.date = '1970-01-01'
+        }
 
         // Calculate plan start time
         const startTimestamp = Date.parse(detail.date + " " + detail.time)
@@ -396,7 +418,7 @@ export class Controller extends EventEmitter {
 
         this.connected = true
         const jsonResponse = await body.json()
-        this.#cache[url] = jsonResponse 
+        this.#cache[url] = jsonResponse
         return jsonResponse
     }
 
@@ -442,15 +464,35 @@ export class Controller extends EventEmitter {
     }
 
 
-    // Get the detail of a plan, by ID
-    async #getPlanDetail(planId) {
-        return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/plans/${planId}`)
+    // Get plan templates
+    async #getPlanTemplates() {
+
+        let url = 'https://api.churchsuite.com/v2/planning/templates'
+
+        const limit = this.getGlobalSetting('plans_quantity')
+        url = url + `?per_page=${limit}`
+
+        return await this.#makeApiCall(url)
     }
 
 
-    // Get the items for a plan, by ID
+    // Get the detail of a plan or plan template, by ID
+    async #getPlanDetail(planId) {
+        if (this.getGlobalSetting('show_templates')) {
+            return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/templates/${planId}`)
+        } else {
+            return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/plans/${planId}`)
+        }
+    }
+
+
+    // Get the items for a plan or plan template, by ID
     async #getPlanItems(planId) {
-        return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/plan_items?plan_ids%5B%5D=${planId}`)
+        if (this.getGlobalSetting('show_templates')) {
+            return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/template_items?template_ids%5B%5D=${planId}`)
+        } else {
+            return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/plan_items?plan_ids%5B%5D=${planId}`)
+        }
     }
 
 

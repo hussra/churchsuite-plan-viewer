@@ -20,7 +20,11 @@
     <div class="col-8">
       <h2>
         {{plan.detail.name}}<br />
-        {{plan.detail.date_time | date: "%A %e %b %Y, %l.%M%P"}}
+        {% if plan.detail.date == "1970-01-01" %}Undated template,
+          {{plan.detail.date_time | date: "%l.%M%P"}}
+        {% else %}
+          {{plan.detail.date_time | date: "%A %e %b %Y, %l.%M%P"}}
+        {% endif %}
       </h2>
     </div>
     <div class="col-4">
@@ -48,7 +52,9 @@
         {% endif %}
         <td>
           {% if item.type == 'song' %}
-            <strong>Song:</strong>
+            <strong>Song
+              {%- if item.arrangement_id%}:{%endif%}
+            </strong>
           {% endif %}
           {% if item.type_id == types.video.id %}
             <strong>Video:</strong>

@@ -77,6 +77,10 @@ export const SETTINGS_SCHEMA = {
     },
 
     // Global settings
+    show_templates: {
+        type: 'boolean',
+        default: false
+    },
     past_plans: {
         type: 'boolean',
         default: false

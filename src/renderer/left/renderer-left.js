@@ -101,6 +101,11 @@ const selectTemplate = (event) => {
 
 const loadSettings = async () => {
     // Global settings
+    const show_templates = await window.electronAPI.getGlobalSetting('show_templates')
+    document.getElementById('show_templates').checked = show_templates
+    document.getElementById('past_plans').closest('.form-group').classList.toggle('d-none', show_templates)
+    document.getElementById('draft_plans').closest('.form-group').classList.toggle('d-none', show_templates)
+
     const past_plans = await window.electronAPI.getGlobalSetting('past_plans')
     document.getElementById('past_plans').checked = past_plans
 
@@ -203,6 +208,13 @@ const load = async () => {
     document.getElementById('editButton').addEventListener('click', editTemplates)
 
     // Global settings
+    document.getElementById('show_templates').addEventListener('change', async () => {
+        const showTemplates = document.getElementById('show_templates').checked
+        await window.electronAPI.setGlobalSetting('show_templates', showTemplates)
+        document.getElementById('past_plans').closest('.form-group').classList.toggle('d-none', showTemplates)
+        document.getElementById('draft_plans').closest('.form-group').classList.toggle('d-none', showTemplates)
+        refresh()
+    })
     document.getElementById('past_plans').addEventListener('change', async () => {
         await window.electronAPI.setGlobalSetting('past_plans', document.getElementById('past_plans').checked)
         refresh()

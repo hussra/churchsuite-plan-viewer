@@ -274,7 +274,11 @@ export class TemplateEngine {
     }
 
     async renderPlanTitle(plan) {
-        return await this.#liquidEngine.parseAndRender('{{plan.detail.date_time | date: "%A %e %b %Y, %l.%M%P"}} - {{plan.detail.name}}', plan)
+        if (this.#controller.getGlobalSetting('show_templates')) {
+            return await this.#liquidEngine.parseAndRender('Undated template - {{plan.detail.name}}', plan)
+        } else {
+            return await this.#liquidEngine.parseAndRender('{{plan.detail.date_time | date: "%A %e %b %Y, %l.%M%P"}} - {{plan.detail.name}}', plan)
+        }
     }
 
     async renderPlanDateTimeShort(date_time) {
