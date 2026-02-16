@@ -1637,6 +1637,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ajv@npm:^8.18.0":
+  version: 8.18.0
+  resolution: "ajv@npm:8.18.0"
+  dependencies:
+    fast-deep-equal: "npm:^3.1.3"
+    fast-uri: "npm:^3.0.1"
+    json-schema-traverse: "npm:^1.0.0"
+    require-from-string: "npm:^2.0.2"
+  checksum: 10c0/e7517c426173513a07391be951879932bdf3348feaebd2199f5b901c20f99d60db8cd1591502d4d551dc82f594e82a05c4fe1c70139b15b8937f7afeaed9532f
+  languageName: node
+  linkType: hard
+
 "ansi-escapes@npm:^4.3.2":
   version: 4.3.2
   resolution: "ansi-escapes@npm:4.3.2"
@@ -2140,7 +2152,7 @@ __metadata:
     "@electron/fuses": "npm:^2.0.0"
     "@popperjs/core": "npm:^2.11.8"
     "@vercel/webpack-asset-relocator-loader": "npm:1.7.3"
-    ajv: "npm:^8.17.1"
+    ajv: "npm:^8.18.0"
     bootstrap: "npm:^5.3.8"
     bootstrap-icons: "npm:^1.13.1"
     coherentpdf: "npm:^2.5.5"
@@ -2148,7 +2160,7 @@ __metadata:
     copy-webpack-plugin: "npm:^13.0.1"
     css-loader: "npm:^7.1.3"
     dompurify: "npm:^3.3.1"
-    electron: "npm:^40.2.1"
+    electron: "npm:^40.4.1"
     electron-squirrel-startup: "npm:^1.0.1"
     electron-store: "npm:^11.0.2"
     html-loader: "npm:^5.1.0"
@@ -2158,8 +2170,8 @@ __metadata:
     node-loader: "npm:^2.1.0"
     style-loader: "npm:^4.0.0"
     to-valid-identifier: "npm:^1.0.0"
-    undici: "npm:^7.21.0"
-    webpack: "npm:^5.105.0"
+    undici: "npm:^7.22.0"
+    webpack: "npm:^5.105.2"
   languageName: unknown
   linkType: soft
 
@@ -2943,16 +2955,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^40.2.1":
-  version: 40.2.1
-  resolution: "electron@npm:40.2.1"
+"electron@npm:^40.4.1":
+  version: 40.4.1
+  resolution: "electron@npm:40.4.1"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^24.9.0"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10c0/2964ba273a8e880a2c6a27dcd553a13d0d3c5af8b8bda510999034fbe52326ed181dc7edc803923bc0fac4aee5e7f5edf0bf8dca941aa7e20389f05d2bc44376
+  checksum: 10c0/3298a6ff8b2b20e144a158c72c80697dc0f352b5a78e4911089f928d0cb175f2f90b6cf11b8b9d98e6024e1df7860024ca78fb72ca949de907f1fd4c33904e75
   languageName: node
   linkType: hard
 
@@ -7286,10 +7298,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^7.21.0":
-  version: 7.21.0
-  resolution: "undici@npm:7.21.0"
-  checksum: 10c0/ec5d7524125ac9c392a8a67b84fe4f9301936ca6b2afd7be12e73ab98726e55761dc9624ac10361d2f346e6fdaf66043381a62f7d0b565facd61bbfda975a586
+"undici@npm:^7.22.0":
+  version: 7.22.0
+  resolution: "undici@npm:7.22.0"
+  checksum: 10c0/09777c06f3f18f761f03e3a4c9c04fd9fcca8ad02ccea43602ee4adf73fcba082806f1afb637f6ea714ef6279c5323c25b16d435814c63db720f63bfc20d316b
   languageName: node
   linkType: hard
 
@@ -7576,9 +7588,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.105.0":
-  version: 5.105.0
-  resolution: "webpack@npm:5.105.0"
+"webpack@npm:^5.105.2":
+  version: 5.105.2
+  resolution: "webpack@npm:5.105.2"
   dependencies:
     "@types/eslint-scope": "npm:^3.7.7"
     "@types/estree": "npm:^1.0.8"
@@ -7610,7 +7622,7 @@ __metadata:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: 10c0/4aea6b976485b5364e122f301c08f48efa84ddb2c0cb5d09f27445d1f2da0b9875cd889e41b58cac3ff05618a9c965be716df52586d151b5f52a7bbed7662174
+  checksum: 10c0/565df8072c00d72e0a22e136971862b7eac7beb8b8d39a2ae4ab00838941ea58acc5b49dd7ea268e3d839810756cb86ba5c272b3a25904f6db7807cfa8ed0b29
   languageName: node
   linkType: hard
 
