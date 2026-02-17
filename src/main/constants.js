@@ -49,7 +49,7 @@ export const TEMPLATE_SCHEMA = {
         song_lyrics: { type: 'boolean', default: false },
         timings: { type: 'boolean', default: false },
         time_format: { type: 'string', enum: ['%l.%M%P', '%H:%M', '%H:%M:%S'], default: '%H:%M' },
-        page_size: { type: 'string', enum: ['a4', 'letter'], default: 'a4' },
+        page_size: { type: 'string', enum: ['a4', 'a5', 'letter'], default: 'a4' },
         two_up: { type: 'boolean', default: false },
         page_numbers: { type: 'boolean', default: false },
     },
