@@ -54,7 +54,7 @@ export class ChartEngine {
         for (const [i, stanza] of stanzas.entries()) {
             if ( (stanza.lines.length === 0) && (this.#isIgnoreEmptyStanza(stanza.name))) {
                 stanzas.splice(i, 1)
-            } else {
+            } else if (stanza.lines.length === 0) {
                 // Find a previous stanza with the same name
                 const previousStanza = stanzas.slice(0, i).find(s => s.name === stanza.name)
                 if (previousStanza) {
