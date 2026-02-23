@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fix for bug involving multiple stanzas with the same name in a song
+- In song sheet template, show song name rather than arrangement name
 - Dependencies updated
 
 ## [v1.3.1] - 2026-02-11
