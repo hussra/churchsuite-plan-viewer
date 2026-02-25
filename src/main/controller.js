@@ -580,6 +580,8 @@ export class Controller extends EventEmitter {
     }
 
     appStartupComplete() {
+        // Force reconnection
+        this.#isConnected = false
         this.#configChanged()
     }
 
