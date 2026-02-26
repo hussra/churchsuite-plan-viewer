@@ -19,14 +19,14 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <head>
     <meta charset="UTF-8" />
-    <title>ChurchSuite Plan Viewer - Template Editor</title>
+    <title>ChurchSuite Plan Viewer - Layout Editor</title>
 </head>
 
 <body>
     <div class="d-flex flex-column h-100">
 
         <div class="w-100">
-            <h1>Template Editor</h1>
+            <h1>Layout Editor</h1>
         </div>
 
 
@@ -34,14 +34,14 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
 
             <div class="row align-items-start">
                 <div class="col mb-3">
-                    <label for="plan" class="form-label">Select template to edit</label>
-                    <select class="form-select" id="template" aria-label="Select a template">
-                        <option value="">--Select template--</option>
+                    <label for="plan" class="form-label">Select layout to edit</label>
+                    <select class="form-select" id="template" aria-label="Select a layout">
+                        <option value="">--Select layout--</option>
                     </select>
                 </div>
 
                 <div class="col mb-3">
-                    <label for="name" class="form-label">Template Name</label>
+                    <label for="name" class="form-label">Layout Name</label>
                     <input type="text" class="form-control" id="name">
                 </div>
 
@@ -95,28 +95,28 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
         <div class="w-100 container-fluid" id="bottomControls">
             <div class="row align-items-end">
                 <div class="col mt-3">
-                    <label for="hide_settings" class="form-label d-block mt-2">Template settings to hide in main window (comma-separated list)</label>
+                    <label for="hide_settings" class="form-label d-block mt-2">Layout settings to hide in main window (comma-separated list)</label>
                     <input type="text" class="form-control" id="hide_settings" placeholder="e.g. song_lyrics,timings,time_format,name_style">
                 </div>
 
                 <div class="col mt-3 form-group text-end">
-                    <button class="btn btn-secondary" type="button" id="exportButton" title="Export Template">
+                    <button class="btn btn-secondary" type="button" id="exportButton" title="Export Layout">
                         <i class="bi bi-box-arrow-up"></i> Export
                     </button>
 
-                    <button class="btn btn-secondary" type="button" id="importButton" title="Import Template">
+                    <button class="btn btn-secondary" type="button" id="importButton" title="Import Layout">
                         <i class="bi bi-box-arrow-in-down"></i> Import
                     </button>
 
-                    <button class="btn btn-secondary" type="button" id="deleteButton" title="Delete Template">
+                    <button class="btn btn-secondary" type="button" id="deleteButton" title="Delete Layout">
                         <i class="bi bi-file-earmark-x"></i> Delete
                     </button>
 
-                    <button class="btn btn-secondary" type="button" id="duplicateButton" title="Duplicate Template">
+                    <button class="btn btn-secondary" type="button" id="duplicateButton" title="Duplicate Layout">
                         <i class="bi bi-copy"></i> Duplicate
                     </button>
 
-                    <button class="btn btn-primary ms-3" type="button" id="saveButton" title="Save Template">
+                    <button class="btn btn-primary ms-3" type="button" id="saveButton" title="Save Layout">
                         <i class="bi bi-floppy-fill"></i> Save
                     </button>
                 </div>
