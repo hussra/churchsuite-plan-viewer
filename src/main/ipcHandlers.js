@@ -76,8 +76,8 @@ export async function addIpcHandlers(controller, mainWindow) {
         controller.selectedPlanId = planId
     })
 
-    ipcMain.handle('selectTemplate', (event, templateId) => {
-        controller.selectedTemplateId = templateId
+    ipcMain.handle('selectTemplate', (event, layoutId) => {
+        controller.selectedLayoutId = layoutId
     })
 
     // Called when "Export PDF" clicked in left pane

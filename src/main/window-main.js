@@ -121,7 +121,7 @@ export class MainWindow {
         })
 
         this.#controller.on('templateChanged', () => {
-            this.#leftView.webContents.send('setTemplate', this.#controller.selectedTemplateId)
+            this.#leftView.webContents.send('setTemplate', this.#controller.selectedLayoutId)
         })
 
         this.#win.show()

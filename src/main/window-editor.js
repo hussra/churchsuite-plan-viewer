@@ -70,7 +70,7 @@ export class EditorWindow {
                 }).then(
                     ({ response: ans }) => {
                         if (ans === 0) {
-                            this.#controller.selectedTemplateId = newLayout
+                            this.#controller.selectedLayoutId = newLayout
                         }
                     }
                 )
@@ -79,7 +79,7 @@ export class EditorWindow {
 
         this.#controller.on('templateChanged', () => {
             if (!this.isDestroyed()) {
-                this.#win.webContents.send('setTemplate', this.#controller.selectedTemplateId)
+                this.#win.webContents.send('setTemplate', this.#controller.selectedLayoutId)
             }
         })
 
@@ -246,7 +246,7 @@ export class EditorWindow {
                 }).then(
                     ({ response: ans }) => {
                         if (ans === 0) {
-                            this.#controller.selectedTemplateId = newLayout
+                            this.#controller.selectedLayoutId = newLayout
                         }
                     }
                 )

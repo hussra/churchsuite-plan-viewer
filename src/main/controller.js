@@ -79,19 +79,19 @@ export class Controller extends EventEmitter {
     #selectedPlanCss = '';
 
     #layoutEngine
-    #selectedTemplate = ''
+    #selectedLayout = ''
 
     #chartEngine
 
-    set selectedTemplateId(templateId) {
-        this.#selectedTemplate = templateId
-        this.setGlobalSetting('template', templateId)
-        this.emit('templateChanged', templateId)
+    set selectedLayoutId(layoutId) {
+        this.#selectedLayout = layoutId
+        this.setGlobalSetting('template', layoutId)
+        this.emit('templateChanged', layoutId)
         this.#planIdOrTemplateIdChanged()
     }
 
-    get selectedTemplateId() {
-        return this.#selectedTemplate
+    get selectedLayoutId() {
+        return this.#selectedLayout
     }
 
     set selectedPlanId(planId) {
@@ -153,7 +153,7 @@ export class Controller extends EventEmitter {
     }
 
     get template() {
-        return this.#layoutEngine.getLayoutById(this.#selectedTemplate)
+        return this.#layoutEngine.getLayoutById(this.#selectedLayout)
     }
 
     getGlobalSetting(key) {
@@ -184,16 +184,16 @@ export class Controller extends EventEmitter {
     }
 
     getTemplateSetting(key) {
-        return this.getGlobalSetting(`templates.${this.#selectedTemplate}.${key}`)
+        return this.getGlobalSetting(`templates.${this.#selectedLayout}.${key}`)
     }
 
     setTemplateSetting(key, value) {
-        this.setGlobalSetting(`templates.${this.#selectedTemplate}.${key}`, value)
+        this.setGlobalSetting(`templates.${this.#selectedLayout}.${key}`, value)
     }
 
     #planIdOrTemplateIdChanged() {
-        if ((this.#selectedTemplate == null) ||
-            (this.#selectedTemplate == '') ||
+        if ((this.#selectedLayout == null) ||
+            (this.#selectedLayout == '') ||
             (this.#selectedPlanId == '') ||
             (this.#selectedPlanId == 0)) {
             

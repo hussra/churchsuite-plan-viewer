@@ -230,7 +230,7 @@ export class LayoutEngine {
 
         this.#controller.deleteGlobalSetting(`templates.${id}`)
 
-        this.#controller.selectedTemplateId = ''
+        this.#controller.selectedLayoutId = ''
         this.#controller.emit('templatesChanged')
     }
 
