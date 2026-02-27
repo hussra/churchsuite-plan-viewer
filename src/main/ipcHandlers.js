@@ -51,8 +51,8 @@ export async function addIpcHandlers(controller, mainWindow) {
         return controller.layoutEngine.duplicateLayout(id)
     })
 
-    ipcMain.handle('saveLayout', (event, template) => {
-        controller.layoutEngine.saveLayout(template)
+    ipcMain.handle('saveLayout', (event, layout) => {
+        controller.layoutEngine.saveLayout(layout)
     })
 
     ipcMain.handle('deleteLayout', (event, id) => {
