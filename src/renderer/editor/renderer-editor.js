@@ -140,7 +140,7 @@ const load = async () => {
 
     document.getElementById('exportButton').addEventListener('click', async(event) => {
         const templateId = document.getElementById('template').value
-        await window.electronAPI.exportTemplate(templateId)
+        await window.electronAPI.exportLayout(templateId)
     })
 
     document.getElementById('importButton').addEventListener('click', async (event) => {

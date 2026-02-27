@@ -59,7 +59,7 @@ export async function addIpcHandlers(controller, mainWindow) {
         globalThis.editorWindow?.deleteLayout(id)
     })
 
-    ipcMain.handle('exportTemplate', (event, id) => {
+    ipcMain.handle('exportLayout', (event, id) => {
        globalThis.editorWindow?.exportLayout(id)
     })
 
