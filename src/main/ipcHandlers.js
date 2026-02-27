@@ -43,7 +43,7 @@ export async function addIpcHandlers(controller, mainWindow) {
         return controller.layoutEngine.allLayouts
     })
 
-    ipcMain.handle('getTemplate', (event, id) => {
+    ipcMain.handle('getLayout', (event, id) => {
         return controller.layoutEngine.getLayoutById(id)
     })
 

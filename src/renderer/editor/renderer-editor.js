@@ -94,7 +94,7 @@ window.electronAPI.onSetTemplates(async (templates, newTemplateId) => {
 
 window.electronAPI.onSetTemplate(async (templateId) => {
     document.getElementById('template').value = templateId
-    populateForm(await window.electronAPI.getTemplate(templateId))
+    populateForm(await window.electronAPI.getLayout(templateId))
 })
 
 
@@ -111,7 +111,7 @@ const load = async () => {
 
     document.getElementById('template').addEventListener('change', async (event) => {
         const templateId = event.target.value
-        populateForm(await window.electronAPI.getTemplate(templateId))
+        populateForm(await window.electronAPI.getLayout(templateId))
         await window.electronAPI.selectLayout(templateId)
     })
 
