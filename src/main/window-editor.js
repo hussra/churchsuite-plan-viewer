@@ -136,7 +136,6 @@ export class EditorWindow {
     }
 
     async exportLayout(id) {
-        console.log(id)
         const layout = this.#controller.layoutEngine.getLayoutById(id)
         const now = new Date()
         const date = now.toISOString().split('T')[0]
