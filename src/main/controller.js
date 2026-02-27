@@ -313,7 +313,7 @@ export class Controller extends EventEmitter {
             }
         }
 
-        // Build object to send to template engine
+        // Build object to send to layout engine
         this.#selectedPlan = {
             plan: {
                 detail: {
@@ -331,14 +331,14 @@ export class Controller extends EventEmitter {
             }
         }
 
-        // Render plan with selected template
-        const template = this.getGlobalSetting('template')
+        // Render plan with selected layout
+        const layout = this.getGlobalSetting('template')
         try {
-            this.#selectedPlanHtml = await this.#layoutEngine.renderPlanHTML(template, this.#selectedPlan)
+            this.#selectedPlanHtml = await this.#layoutEngine.renderPlanHTML(layout, this.#selectedPlan)
             this.#selectedPlanTitle = await this.#layoutEngine.renderPlanTitle(this.#selectedPlan)
-            this.#selectedPlanCss = this.#layoutEngine.renderPlanCSS(template, this.#selectedPlan)
+            this.#selectedPlanCss = this.#layoutEngine.renderPlanCSS(layout, this.#selectedPlan)
         } catch (e) {
-            this.#selectedPlanHtml = `<h1>Error</h1><div style="error">Error rendering plan with selected template:<br />${e.message}</div>`
+            this.#selectedPlanHtml = `<h1>Error</h1><div style="error">Error rendering plan with selected layout:<br />${e.message}</div>`
             this.#selectedPlanTitle = 'Error'
             this.#selectedPlanCss = ''
         }
