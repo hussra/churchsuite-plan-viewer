@@ -25,7 +25,7 @@ export async function addIpcHandlers(controller, mainWindow) {
         controller.reload()
     })
 
-    ipcMain.handle('editTemplates', () => {
+    ipcMain.handle('editLayouts', () => {
         if (!globalThis.editorWindow) {
             // First time an editor window has been created
             globalThis.editorWindow = new EditorWindow(controller)

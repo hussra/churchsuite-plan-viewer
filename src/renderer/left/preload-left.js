@@ -22,7 +22,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     selectTemplate: (templateId) => ipcRenderer.invoke('selectTemplate', templateId),
     exportPDF: () => ipcRenderer.invoke('exportPDF'),
     refresh: () => ipcRenderer.invoke('refresh'),
-    editTemplates: () => ipcRenderer.invoke('editTemplates'),
+    editLayouts: () => ipcRenderer.invoke('editLayouts'),
     getTemplates: () => ipcRenderer.invoke('getTemplates'),
     leftRendererStartupComplete: () => ipcRenderer.invoke('leftRendererStartupComplete'),
 

@@ -85,8 +85,8 @@ const exportPDF = () => {
     window.electronAPI.exportPDF()
 }
 
-const editTemplates = () => {
-    window.electronAPI.editTemplates()
+const editLayouts = () => {
+    window.electronAPI.editLayouts()
 }
 
 const selectPlan = (event) => {
@@ -205,7 +205,7 @@ const load = async () => {
     document.getElementById('plan').addEventListener('change', selectPlan)
     document.getElementById('refreshButton').addEventListener('click', refresh)
     document.getElementById('template').addEventListener('change', selectTemplate)
-    document.getElementById('editButton').addEventListener('click', editTemplates)
+    document.getElementById('editButton').addEventListener('click', editLayouts)
 
     // Global settings
     document.getElementById('show_templates').addEventListener('change', async () => {
