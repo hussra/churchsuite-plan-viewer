@@ -40,31 +40,31 @@ export async function addIpcHandlers(controller, mainWindow) {
     })
 
     ipcMain.handle('getAllTemplates', () => {
-        return controller.templateEngine.allTemplates
+        return controller.layoutEngine.allLayouts
     })
 
     ipcMain.handle('getTemplate', (event, id) => {
-        return controller.templateEngine.getTemplateById(id)
+        return controller.layoutEngine.getLayoutById(id)
     })
 
     ipcMain.handle('duplicateTemplate', (event, id) => {
-        return controller.templateEngine.duplicateTemplate(id)
+        return controller.layoutEngine.duplicateLayout(id)
     })
 
     ipcMain.handle('saveTemplate', (event, template) => {
-        controller.templateEngine.saveTemplate(template)
+        controller.layoutEngine.saveLayout(template)
     })
 
     ipcMain.handle('deleteTemplate', (event, id) => {
-        globalThis.editorWindow?.deleteTemplate(id)
+        globalThis.editorWindow?.deleteLayout(id)
     })
 
     ipcMain.handle('exportTemplate', (event, id) => {
-       globalThis.editorWindow?.exportTemplate(id)
+       globalThis.editorWindow?.exportLayout(id)
     })
 
     ipcMain.handle('importTemplate', (event) => {
-       globalThis.editorWindow?.importTemplate()
+       globalThis.editorWindow?.importLayout()
     })
 
     ipcMain.handle('isConfigured', async () => {

@@ -31,7 +31,7 @@ export class EditorWindow {
         this.#win = new BrowserWindow({
             width: defaultWindowSize.width,
             height: defaultWindowSize.height,
-            title: app.getName() + ' - Template Editor',
+            title: app.getName() + ' - Layout Editor',
             modal: true,
             show: false,
             webPreferences: {
@@ -56,21 +56,21 @@ export class EditorWindow {
             })
         }
 
-        this.#controller.on('templatesChanged', (newTemplate) => {
+        this.#controller.on('templatesChanged', (newLayout) => {
             if (!this.isDestroyed()) {
-                this.#win.webContents.send('setTemplates', this.#controller.allTemplates, newTemplate)
+                this.#win.webContents.send('setTemplates', this.#controller.allTemplates, newLayout)
 
-                if (!newTemplate) return
+                if (!newLayout) return
                 
                 dialog.showMessageBox(this.#win, {
                     type: 'question',
-                    title: 'Template Duplicated',
-                    message: 'Do you want to edit the new template?',
+                    title: 'Layout Duplicated',
+                    message: 'Do you want to edit the new layout?',
                     buttons: ['Yes', 'No'],
                 }).then(
                     ({ response: ans }) => {
                         if (ans === 0) {
-                            this.#controller.selectedTemplateId = newTemplate
+                            this.#controller.selectedTemplateId = newLayout
                         }
                     }
                 )
@@ -120,30 +120,31 @@ export class EditorWindow {
         }
     }
 
-    async deleteTemplate(id) {
+    async deleteLayout(id) {
         dialog.showMessageBox(this.#win, {
             type: 'question',
-            title: 'Delete Template?',
-            message: 'Are you sure you want to delete this template? This action cannot be undone.',
+            title: 'Delete Layout?',
+            message: 'Are you sure you want to delete this layout? This action cannot be undone.',
             buttons: ['Yes', 'No'],
         }).then(
             ({ response: ans }) => {
                 if (ans === 0) {
-                    this.#controller.templateEngine.deleteTemplate(id)
+                    this.#controller.layoutEngine.deleteLayout(id)
                 }
             }
         )
     }
 
-    async exportTemplate(id) {
-        const template = this.#controller.templateEngine.getTemplateById(id)
+    async exportLayout(id) {
+        console.log(id)
+        const layout = this.#controller.layoutEngine.getLayoutById(id)
         const now = new Date()
         const date = now.toISOString().split('T')[0]
         const time = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0')
 
         const defaultFilename = path.join(
             app.getPath('downloads'),
-            template.name + ' ' + date + ' ' + time + '.plantemplate'
+            layout.name + ' ' + date + ' ' + time + '.plantemplate'
         )
 
         dialog.showSaveDialog(this.#win, {
@@ -152,7 +153,7 @@ export class EditorWindow {
             if (result.canceled) return
             
             try {
-                fs.writeFileSync(result.filePath, JSON.stringify(template, null, 2))
+                fs.writeFileSync(result.filePath, JSON.stringify(layout, null, 2))
                 shell.showItemInFolder(result.filePath)
             } catch(err) {
                 dialog.showMessageBox(this.#win, {
@@ -164,7 +165,7 @@ export class EditorWindow {
         })
     }
 
-    async importTemplate() {
+    async importLayout() {
         dialog.showOpenDialog(this.#win, {
             filters: [
                 { name: 'Plan Templates', extensions: ['plantemplate']}
@@ -219,7 +220,8 @@ export class EditorWindow {
                     return
                 }
 
-                const idExists = this.#controller.templateEngine.templateExists(templateData.id)
+                const idExists = this.#controller.layoutEngine.layoutExists(templateData.id)
+                let newLayout
                 if (idExists) {
                     const ans = dialog.showMessageBoxSync(this.#win, {
                         type: 'question',
@@ -229,13 +231,26 @@ export class EditorWindow {
                         noLink: true,
                     })
                     if (ans == 0) {
-                        this.#controller.templateEngine.importTemplate(templateData, true)
+                        newLayout = this.#controller.layoutEngine.importLayout(templateData, true)
                     } else {
-                        this.#controller.templateEngine.importTemplate(templateData, false)
+                        newLayout = this.#controller.layoutEngine.importLayout(templateData, false)
                     }
                 } else {
-                    this.#controller.templateEngine.importTemplate(templateData, false)
+                    newLayout = this.#controller.layoutEngine.importLayout(templateData, false)
                 }
+
+                dialog.showMessageBox(this.#win, {
+                    type: 'question',
+                    title: 'Layout Imported',
+                    message: 'Do you want to edit the new layout?',
+                    buttons: ['Yes', 'No'],
+                }).then(
+                    ({ response: ans }) => {
+                        if (ans === 0) {
+                            this.#controller.selectedTemplateId = newLayout
+                        }
+                    }
+                )
             })
         })
     }

@@ -55,7 +55,7 @@ export class Controller extends EventEmitter {
             this.#configChanged()
         })
 
-        this.#templateEngine = new LayoutEngine(this)
+        this.#layoutEngine = new LayoutEngine(this)
         this.#chartEngine = new ChartEngine(this)
     }
 
@@ -78,7 +78,7 @@ export class Controller extends EventEmitter {
     #selectedPlanTitle = '';
     #selectedPlanCss = '';
 
-    #templateEngine
+    #layoutEngine
     #selectedTemplate = ''
 
     #chartEngine
@@ -124,12 +124,12 @@ export class Controller extends EventEmitter {
         return this.#allPlans
     }
 
-    get templateEngine() {
-        return this.#templateEngine
+    get layoutEngine() {
+        return this.#layoutEngine
     }
 
     get allTemplates() {
-        return this.#templateEngine.allTemplates
+        return this.#layoutEngine.allLayouts
     }
 
     get selectedPlanId() {
@@ -153,7 +153,7 @@ export class Controller extends EventEmitter {
     }
 
     get template() {
-        return this.#templateEngine.getTemplateById(this.#selectedTemplate)
+        return this.#layoutEngine.getLayoutById(this.#selectedTemplate)
     }
 
     getGlobalSetting(key) {
@@ -253,7 +253,7 @@ export class Controller extends EventEmitter {
                         id: plan.id,
                         date: plan.date,
                         timestamp: timestamp,
-                        name: await this.#templateEngine.renderPlanTitleShort(new Date(timestamp), plan.name)
+                        name: await this.#layoutEngine.renderPlanTitleShort(new Date(timestamp), plan.name)
                     }
                 }))
             }
@@ -334,9 +334,9 @@ export class Controller extends EventEmitter {
         // Render plan with selected template
         const template = this.getGlobalSetting('template')
         try {
-            this.#selectedPlanHtml = await this.#templateEngine.renderPlanHTML(template, this.#selectedPlan)
-            this.#selectedPlanTitle = await this.#templateEngine.renderPlanTitle(this.#selectedPlan)
-            this.#selectedPlanCss = this.#templateEngine.renderPlanCSS(template, this.#selectedPlan)
+            this.#selectedPlanHtml = await this.#layoutEngine.renderPlanHTML(template, this.#selectedPlan)
+            this.#selectedPlanTitle = await this.#layoutEngine.renderPlanTitle(this.#selectedPlan)
+            this.#selectedPlanCss = this.#layoutEngine.renderPlanCSS(template, this.#selectedPlan)
         } catch (e) {
             this.#selectedPlanHtml = `<h1>Error</h1><div style="error">Error rendering plan with selected template:<br />${e.message}</div>`
             this.#selectedPlanTitle = 'Error'
@@ -556,7 +556,7 @@ export class Controller extends EventEmitter {
     }
 
     async suggestFilename() {
-        return (await this.#templateEngine.renderPlanDateTimeShort(
+        return (await this.#layoutEngine.renderPlanDateTimeShort(
                     this.#selectedPlan.plan.detail.date_time,
                     this.#selectedPlan.plan.detail.name
                 ))

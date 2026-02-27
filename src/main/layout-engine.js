@@ -29,25 +29,25 @@ export class LayoutEngine {
 
     constructor(controller) {
         this.#controller = controller
-        this.#buildTemplateList()
+        this.#buildLayoutList()
         this.#buildLiquidEngine()
     }
 
     #controller
     #liquidEngine
 
-    #buildTemplateList() {
+    #buildLayoutList() {
         
-        const templatesDir = this.templatesDir
+        const layoutsDir = this.layoutDir
 
         // Find .liquid files in this directory which also have corresponding .css and .json files
-        let files = fs.readdirSync(templatesDir, { withFileTypes: true })
+        let files = fs.readdirSync(layoutsDir, { withFileTypes: true })
         files.forEach(file => {
             if (file.isFile() && (path.extname(file.name) === '.liquid')) {
                 let basename = path.basename(file.name, '.liquid')
 
-                const cssFile = path.resolve(templatesDir, basename + '.css')
-                const jsonFile = path.resolve(templatesDir, basename + '.json')
+                const cssFile = path.resolve(layoutsDir, basename + '.css')
+                const jsonFile = path.resolve(layoutsDir, basename + '.json')
                 try {
                     fs.accessSync(cssFile, fs.constants.R_OK)
                     fs.accessSync(jsonFile, fs.constants.R_OK)
@@ -57,8 +57,8 @@ export class LayoutEngine {
                     const tmpl = {
                         name: jsonData.name,
                         filenameSuffix: jsonData.filenameSuffix,
-                        liquid: this.#getTemplateLiquidFromDisk(basename),
-                        css: this.#getTemplateCSSFromDisk(basename),
+                        liquid: this.#getLayoutLiquidFromDisk(basename),
+                        css: this.#getLayoutCSSFromDisk(basename),
                         hide_settings: jsonData.hide_settings,
                         editable: false,
                         font_size: (jsonData.font_size ? jsonData.font_size : this.#controller.getGlobalSetting(`templates.${basename}.font_size`)),
@@ -73,7 +73,7 @@ export class LayoutEngine {
 
                     this.#controller.setGlobalSetting(`templates.${basename}`, tmpl)
                 } catch (err) {
-                    console.warn('Skipping template ' + basename + ' due to ' + err.message)
+                    console.warn('Skipping layout ' + basename + ' due to ' + err.message)
                 }
             }
         })
@@ -84,19 +84,19 @@ export class LayoutEngine {
             jsTruthy: true,
             fs: {
                 readFile: (filePath) => {
-                    return this.getTemplateById(filePath).liquid
+                    return this.getLayoutById(filePath).liquid
                 },
                 readFileSync: (filePath) => {
-                    return this.getTemplateById(filePath).liquid
+                    return this.getLayoutById(filePath).liquid
                 },
                 exists: (filePath) => {
-                    return this.templateExists(filePath)
+                    return this.layoutExists(filePath)
                 },
                 existsSync: (filePath) => {
-                    return this.templateExists(filePath)
+                    return this.layoutExists(filePath)
                 },
                 contains: (filePath) => {
-                    return this.templateExists(filePath)
+                    return this.layoutExists(filePath)
                 },
                 resolve: (root, file, ext) => {
                     return file
@@ -114,54 +114,54 @@ export class LayoutEngine {
         this.#liquidEngine.registerFilter('songCredits', this.#songCreditsFilter.bind(this))
     }
 
-    // Directory containing pre-defined plan templates
-    get templatesDir() {
+    // Directory containing pre-defined plan layouts
+    get layoutDir() {
         return app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", "templates") : "templates"
     }
 
-    // Get array of template IDs and names
-    get allTemplates() {
+    // Get array of layout IDs and names
+    get allLayouts() {
         return Object.entries(this.#controller.getGlobalSetting('templates'))
-            .map(([key, template]) => ({
+            .map(([key, layout]) => ({
                 id: key,
-                name: template.name,
-                editable: template.editable
+                name: layout.name,
+                editable: layout.editable
             }))
             .sort((a, b) => 
-                // Out-of-the-box templates (editable: false) before user templates (editable: true),
+                // Out-of-the-box layouts (editable: false) before user layouts (editable: true),
                 // then sorted alphabetically by name within those groups
                 ((a.editable === b.editable) ? 0 : a.editable ? 1 : -1) || a.name.localeCompare(b.name)
             )
     }
 
-    templateExists(id) {
-        return (this.getTemplateById(id) !== undefined)
+    layoutExists(id) {
+        return (this.getLayoutById(id) !== undefined)
     }
 
-    getTemplateById(id) {
-        const template = this.#controller.getGlobalSetting(`templates.${id}`)
-        return (template ? { ...template, id: id } : undefined)
+    getLayoutById(id) {
+        const layout = this.#controller.getGlobalSetting(`templates.${id}`)
+        return (layout ? { ...layout, id: id } : undefined)
     }
 
-    duplicateTemplate(id) {
-        if (!(this.templateExists(id))) {
-            throw new Error('Template does not exist')
+    duplicateLayout(id) {
+        if (!(this.layoutExists(id))) {
+            throw new Error('Layout does not exist')
         }
 
-        let newTemplate = Object.assign({}, this.getTemplateById(id))
+        let newLayout = Object.assign({}, this.getLayoutById(id))
         const newId = nanoid()
-        delete newTemplate.id
-        newTemplate.name = newTemplate.name + ' (Copy)'
+        delete newLayout.id
+        newLayout.name = newLayout.name + ' (Copy)'
 
-        // If copying an out-of-the-box template, strip out any GPL licence at the start of the template
-        if (!newTemplate.editable) {
-            newTemplate.liquid = this.#stripGPL(newTemplate.liquid, '{% comment %}', '{% endcomment %}')
-            newTemplate.css = this.#stripGPL(newTemplate.css, '/*', '*/')
+        // If copying an out-of-the-box layout, strip out any GPL licence at the start of the layout
+        if (!newLayout.editable) {
+            newLayout.liquid = this.#stripGPL(newLayout.liquid, '{% comment %}', '{% endcomment %}')
+            newLayout.css = this.#stripGPL(newLayout.css, '/*', '*/')
         }
-        newTemplate.editable = true
+        newLayout.editable = true
 
         // Save to settings
-        this.#controller.setGlobalSetting(`templates.${newId}`, newTemplate)
+        this.#controller.setGlobalSetting(`templates.${newId}`, newLayout)
 
         this.#controller.emit('templatesChanged', newId)
         return newId
@@ -178,54 +178,54 @@ export class LayoutEngine {
         return text
     }
 
-    importTemplate(template, generateNewId) {
-        const id = (generateNewId ? nanoid() : template.id)
-        delete template.id
-        template.editable = true
+    importLayout(layout, generateNewId) {
+        const id = (generateNewId ? nanoid() : layout.id)
+        delete layout.id
+        layout.editable = true
 
-        this.#controller.setGlobalSetting(`templates.${id}`, template)
+        this.#controller.setGlobalSetting(`templates.${id}`, layout)
         this.#controller.emit('templatesChanged')
         return id
     }
 
-    saveTemplate(template) {
-        const id = template.id
-        if (!(this.templateExists(template.id))) {
-            throw new Error('Template does not exist')
+    saveLayout(layout) {
+        const id = layout.id
+        if (!(this.layoutExists(layout.id))) {
+            throw new Error('Layout does not exist')
         }
-        if (!this.getTemplateById(id).editable) {
-            throw new Error('Template is not editable')
+        if (!this.getLayoutById(id).editable) {
+            throw new Error('Layout is not editable')
         }
-        delete template.id
+        delete layout.id
 
-        // Augment template from editor with missing per-template properties from the existing template before saving
-        const existingTemplate = this.#controller.templateEngine.getTemplateById(id)
-        if (existingTemplate) {
-            template = {
-                ...template,
-                font_size: existingTemplate.font_size,
-                name_style: existingTemplate.name_style,
-                song_lyrics: existingTemplate.song_lyrics,
-                page_size: existingTemplate.page_size,
-                two_up: existingTemplate.two_up,
-                page_numbers: existingTemplate.page_numbers,
-                timings: existingTemplate.timings,
-                time_format: existingTemplate.time_format,
+        // Augment layout from editor with missing per-layout properties from the existing layout before saving
+        const existingLayout = this.getLayoutById(id)
+        if (existingLayout) {
+            layout = {
+                ...layout,
+                font_size: existingLayout.font_size,
+                name_style: existingLayout.name_style,
+                song_lyrics: existingLayout.song_lyrics,
+                page_size: existingLayout.page_size,
+                two_up: existingLayout.two_up,
+                page_numbers: existingLayout.page_numbers,
+                timings: existingLayout.timings,
+                time_format: existingLayout.time_format,
             }
         }
 
-        this.#controller.setGlobalSetting(`templates.${id}`, template)
+        this.#controller.setGlobalSetting(`templates.${id}`, layout)
         this.#controller.emit('templatesChanged')
     }
 
-    deleteTemplate(id) {
-        if (!(this.templateExists(id))) {
-            throw new Error('Template does not exist')
+    deleteLayout(id) {
+        if (!(this.layoutExists(id))) {
+            throw new Error('Layout does not exist')
         }
 
-        const template = this.getTemplateById(id)
-        if (!template.editable) {
-            throw new Error('Template is not editable')
+        const layout = this.getLayoutById(id)
+        if (!layout.editable) {
+            throw new Error('Layout is not editable')
         }
 
         this.#controller.deleteGlobalSetting(`templates.${id}`)
@@ -234,14 +234,14 @@ export class LayoutEngine {
         this.#controller.emit('templatesChanged')
     }
 
-    #getTemplateCSSFromDisk(id) {
+    #getLayoutCSSFromDisk(id) {
         const cssFile = path.resolve(__dirname, 'templates/', id + '.css')
         return fs.readFileSync(cssFile, "UTF-8")
     }
 
     renderPlanCSS(id, plan) {
-        if (!(this.templateExists(id))) {
-            throw new Error('Template does not exist')
+        if (!(this.layoutExists(id))) {
+            throw new Error('Layout does not exist')
         }
 
         const baseFontSize = this.#controller.getTemplateSetting('font_size')
@@ -251,17 +251,17 @@ export class LayoutEngine {
             --primary-color: ${primaryColor};
         }\n\n`
 
-        return topCSS + this.getTemplateById(id).css
+        return topCSS + this.getLayoutById(id).css
     }
 
-    #getTemplateLiquidFromDisk(id) {
+    #getLayoutLiquidFromDisk(id) {
         const liquidFile = path.resolve(__dirname, 'templates/', id + '.liquid')
         return fs.readFileSync(liquidFile, "UTF-8")
     }
 
     async renderPlanHTML(id, plan) {
-        if (!(this.templateExists(id))) {
-            throw new Error('Template does not exist')
+        if (!(this.layoutExists(id))) {
+            throw new Error('Layout does not exist')
         }
         const rawHtml = await this.#liquidEngine.renderFile(
             id,
