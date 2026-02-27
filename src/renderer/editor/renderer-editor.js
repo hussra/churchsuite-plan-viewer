@@ -135,7 +135,7 @@ const load = async () => {
 
     document.getElementById('duplicateButton').addEventListener('click', async (event) => {
         const templateId = document.getElementById('template').value
-        const newTemplateId = await window.electronAPI.duplicateTemplate(templateId)
+        const newTemplateId = await window.electronAPI.duplicateLayout(templateId)
     })
 
     document.getElementById('exportButton').addEventListener('click', async(event) => {
