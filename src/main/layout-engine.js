@@ -163,7 +163,7 @@ export class LayoutEngine {
         // Save to settings
         this.#controller.setGlobalSetting(`templates.${newId}`, newLayout)
 
-        this.#controller.emit('templatesChanged', newId)
+        this.#controller.emit('layoutsChanged', newId)
         return newId
     }
 
@@ -184,7 +184,7 @@ export class LayoutEngine {
         layout.editable = true
 
         this.#controller.setGlobalSetting(`templates.${id}`, layout)
-        this.#controller.emit('templatesChanged')
+        this.#controller.emit('layoutsChanged')
         return id
     }
 
@@ -215,7 +215,7 @@ export class LayoutEngine {
         }
 
         this.#controller.setGlobalSetting(`templates.${id}`, layout)
-        this.#controller.emit('templatesChanged')
+        this.#controller.emit('layoutsChanged')
     }
 
     deleteLayout(id) {
@@ -231,7 +231,7 @@ export class LayoutEngine {
         this.#controller.deleteGlobalSetting(`templates.${id}`)
 
         this.#controller.selectedLayoutId = ''
-        this.#controller.emit('templatesChanged')
+        this.#controller.emit('layoutsChanged')
     }
 
     #getLayoutCSSFromDisk(id) {

@@ -56,7 +56,7 @@ export class EditorWindow {
             })
         }
 
-        this.#controller.on('templatesChanged', (newLayout) => {
+        this.#controller.on('layoutsChanged', (newLayout) => {
             if (!this.isDestroyed()) {
                 this.#win.webContents.send('setTemplates', this.#controller.allLayouts, newLayout)
 
@@ -77,7 +77,7 @@ export class EditorWindow {
             }
         })
 
-        this.#controller.on('templateChanged', () => {
+        this.#controller.on('layoutChanged', () => {
             if (!this.isDestroyed()) {
                 this.#win.webContents.send('setTemplate', this.#controller.selectedLayoutId)
             }

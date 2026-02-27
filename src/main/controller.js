@@ -86,7 +86,7 @@ export class Controller extends EventEmitter {
     set selectedLayoutId(layoutId) {
         this.#selectedLayout = layoutId
         this.setGlobalSetting('template', layoutId)
-        this.emit('templateChanged', layoutId)
+        this.emit('layoutChanged', layoutId)
         this.#planIdOrLayoutIdChanged()
     }
 
@@ -223,7 +223,7 @@ export class Controller extends EventEmitter {
         await this.loadPlans()
         this.#cache = {}
 
-        this.emit('templatesChanged')
+        this.emit('layoutsChanged')
     }
 
     async loadPlans() {
