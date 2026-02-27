@@ -144,7 +144,7 @@ const load = async () => {
     })
 
     document.getElementById('importButton').addEventListener('click', async (event) => {
-        await window.electronAPI.importTemplate()
+        await window.electronAPI.importLayout()
     })
 
     populateForm(null)
