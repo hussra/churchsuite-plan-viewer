@@ -130,7 +130,7 @@ const load = async () => {
 
     document.getElementById('deleteButton').addEventListener('click', async (event) => {
         const templateId = document.getElementById('template').value
-        await window.electronAPI.deleteTemplate(templateId)
+        await window.electronAPI.deleteLayout(templateId)
     })
 
     document.getElementById('duplicateButton').addEventListener('click', async (event) => {

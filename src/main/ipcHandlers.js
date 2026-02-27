@@ -55,7 +55,7 @@ export async function addIpcHandlers(controller, mainWindow) {
         controller.layoutEngine.saveLayout(template)
     })
 
-    ipcMain.handle('deleteTemplate', (event, id) => {
+    ipcMain.handle('deleteLayout', (event, id) => {
         globalThis.editorWindow?.deleteLayout(id)
     })
 

@@ -16,7 +16,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getLayout: (id) => ipcRenderer.invoke('getLayout', id),
     duplicateLayout: (id) => ipcRenderer.invoke('duplicateLayout', id),
     saveLayout: (template) => ipcRenderer.invoke('saveLayout', template),
-    deleteTemplate: (id) => ipcRenderer.invoke('deleteTemplate', id),
+    deleteLayout: (id) => ipcRenderer.invoke('deleteLayout', id),
     exportTemplate: (id) => ipcRenderer.invoke('exportTemplate', id),
     importTemplate: () => ipcRenderer.invoke('importTemplate'),
 
