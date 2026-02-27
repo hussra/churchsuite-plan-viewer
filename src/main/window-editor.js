@@ -58,7 +58,7 @@ export class EditorWindow {
 
         this.#controller.on('layoutsChanged', (newLayout) => {
             if (!this.isDestroyed()) {
-                this.#win.webContents.send('setTemplates', this.#controller.allLayouts, newLayout)
+                this.#win.webContents.send('setLayouts', this.#controller.allLayouts, newLayout)
 
                 if (!newLayout) return
                 

@@ -117,7 +117,7 @@ export class MainWindow {
         })
 
         this.#controller.on('layoutsChanged', (newTemplate) => {
-            this.#leftView.webContents.send('setTemplates', this.#controller.allLayouts, newTemplate)
+            this.#leftView.webContents.send('setLayouts', this.#controller.allLayouts, newTemplate)
         })
 
         this.#controller.on('layoutChanged', () => {

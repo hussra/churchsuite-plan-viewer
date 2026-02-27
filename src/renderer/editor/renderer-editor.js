@@ -87,7 +87,7 @@ const populateForm = (template) => {
 }
 
 
-window.electronAPI.onSetTemplates(async (templates, newTemplateId) => {
+window.electronAPI.onsetLayouts(async (templates, newTemplateId) => {
     populateTemplates(templates, newTemplateId)
 })
 

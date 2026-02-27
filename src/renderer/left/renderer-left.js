@@ -154,7 +154,7 @@ window.electronAPI.onSetPlans((plans) => {
     populatePlans(plans)
 })
 
-window.electronAPI.onSetTemplates((templates) => {
+window.electronAPI.onsetLayouts((templates) => {
     populateTemplates(templates)
 })
 
@@ -234,33 +234,33 @@ const load = async () => {
 
     // Template settings
     document.getElementById('font_size').addEventListener('change', async () => {
-        await window.electronAPI.setTemplateSetting('font_size', parseInt(document.getElementById('font_size').value))
+        await window.electronAPI.setLayoutSetting('font_size', parseInt(document.getElementById('font_size').value))
         refresh()
     })
     document.getElementById('name_style').addEventListener('change', async () => {
-        await window.electronAPI.setTemplateSetting('name_style', document.getElementById('name_style').value)
+        await window.electronAPI.setLayoutSetting('name_style', document.getElementById('name_style').value)
         refresh()
     })
     document.getElementById('song_lyrics').addEventListener('change', async () => {
-        await window.electronAPI.setTemplateSetting('song_lyrics', document.getElementById('song_lyrics').checked)
+        await window.electronAPI.setLayoutSetting('song_lyrics', document.getElementById('song_lyrics').checked)
         refresh()
     })
     document.getElementById('timings').addEventListener('change', async () => {
-        await window.electronAPI.setTemplateSetting('timings', document.getElementById('timings').checked)
+        await window.electronAPI.setLayoutSetting('timings', document.getElementById('timings').checked)
         refresh()
     })
     document.getElementById('time_format').addEventListener('change', async () => {
-        await window.electronAPI.setTemplateSetting('time_format', document.getElementById('time_format').value)
+        await window.electronAPI.setLayoutSetting('time_format', document.getElementById('time_format').value)
         refresh()
     })
     document.getElementById('page_size').addEventListener('change', async () => {
-        await window.electronAPI.setTemplateSetting('page_size', document.getElementById('page_size').value)
+        await window.electronAPI.setLayoutSetting('page_size', document.getElementById('page_size').value)
     })
     document.getElementById('two_up').addEventListener('change', async () => {
-        await window.electronAPI.setTemplateSetting('two_up', document.getElementById('two_up').checked)
+        await window.electronAPI.setLayoutSetting('two_up', document.getElementById('two_up').checked)
     })
     document.getElementById('page_numbers').addEventListener('change', async () => {
-        await window.electronAPI.setTemplateSetting('page_numbers', document.getElementById('page_numbers').checked)
+        await window.electronAPI.setLayoutSetting('page_numbers', document.getElementById('page_numbers').checked)
         refresh()
     })
 
