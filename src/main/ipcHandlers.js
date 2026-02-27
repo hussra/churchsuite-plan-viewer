@@ -76,7 +76,7 @@ export async function addIpcHandlers(controller, mainWindow) {
         controller.selectedPlanId = planId
     })
 
-    ipcMain.handle('selectTemplate', (event, layoutId) => {
+    ipcMain.handle('selectLayout', (event, layoutId) => {
         controller.selectedLayoutId = layoutId
     })
 

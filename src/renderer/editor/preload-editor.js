@@ -11,7 +11,7 @@ import { contextBridge, ipcRenderer } from 'electron'
 contextBridge.exposeInMainWorld('electronAPI', {
     // Messages from editor renderer to main process
     getGlobalSetting: (key) => ipcRenderer.invoke('getGlobalSetting', key),
-    selectTemplate: (templateId) => ipcRenderer.invoke('selectTemplate', templateId),
+    selectLayout: (templateId) => ipcRenderer.invoke('selectLayout', templateId),
     getAllLayouts: () => ipcRenderer.invoke('getAllLayouts'),
     getTemplate: (id) => ipcRenderer.invoke('getTemplate', id),
     duplicateTemplate: (id) => ipcRenderer.invoke('duplicateTemplate', id),

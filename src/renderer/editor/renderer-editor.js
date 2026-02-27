@@ -112,7 +112,7 @@ const load = async () => {
     document.getElementById('template').addEventListener('change', async (event) => {
         const templateId = event.target.value
         populateForm(await window.electronAPI.getTemplate(templateId))
-        await window.electronAPI.selectTemplate(templateId)
+        await window.electronAPI.selectLayout(templateId)
     })
 
     document.getElementById('saveButton').addEventListener('click', async (event) => {

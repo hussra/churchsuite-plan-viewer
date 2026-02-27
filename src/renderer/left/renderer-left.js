@@ -77,7 +77,7 @@ const populateTemplates = async (templates) => {
     }
 
     if (templateSelect.value != selectedTemplate) {
-        selectTemplate()
+        selectLayout()
     }
 }
 
@@ -94,9 +94,9 @@ const selectPlan = (event) => {
     window.electronAPI.selectPlan(planId)
 }
 
-const selectTemplate = (event) => {
+const selectLayout = (event) => {
     const templateId = document.getElementById('template').value
-    window.electronAPI.selectTemplate(templateId)
+    window.electronAPI.selectLayout(templateId)
 }
 
 const loadSettings = async () => {
@@ -204,7 +204,7 @@ const load = async () => {
     // Plan and template selection
     document.getElementById('plan').addEventListener('change', selectPlan)
     document.getElementById('refreshButton').addEventListener('click', refresh)
-    document.getElementById('template').addEventListener('change', selectTemplate)
+    document.getElementById('template').addEventListener('change', selectLayout)
     document.getElementById('editButton').addEventListener('click', editLayouts)
 
     // Global settings
