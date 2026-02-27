@@ -125,7 +125,7 @@ const load = async () => {
             hide_settings: document.getElementById('hide_settings').value,
             editable: true
         }
-        await window.electronAPI.saveTemplate(template)
+        await window.electronAPI.saveLayout(template)
     })
 
     document.getElementById('deleteButton').addEventListener('click', async (event) => {
