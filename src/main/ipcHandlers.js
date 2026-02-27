@@ -95,12 +95,12 @@ export async function addIpcHandlers(controller, mainWindow) {
         controller.setGlobalSetting(key, value)
     })
 
-    ipcMain.handle('getTemplateSetting', (event, key) => {
-        return controller.getTemplateSetting(key)
+    ipcMain.handle('getLayoutSetting', (event, key) => {
+        return controller.getLayoutSetting(key)
     })
 
-    ipcMain.handle('setTemplateSetting', (event, key, value) => {
-        controller.setTemplateSetting(key, value)
+    ipcMain.handle('setLayoutSetting', (event, key, value) => {
+        controller.setLayoutSetting(key, value)
     })
 
     ipcMain.handle('openAuthHelpLink', async () => {

@@ -183,11 +183,11 @@ export class Controller extends EventEmitter {
         this.#store.delete(key)
     }
 
-    getTemplateSetting(key) {
+    getLayoutSetting(key) {
         return this.getGlobalSetting(`templates.${this.#selectedLayout}.${key}`)
     }
 
-    setTemplateSetting(key, value) {
+    setLayoutSetting(key, value) {
         this.setGlobalSetting(`templates.${this.#selectedLayout}.${key}`, value)
     }
 
@@ -299,7 +299,7 @@ export class Controller extends EventEmitter {
                 }
 
                 // Handle songs
-                if ((this.getTemplateSetting('song_lyrics')) && (item.type == 'song') && (item.arrangement_id != null)) {
+                if ((this.getLayoutSetting('song_lyrics')) && (item.type == 'song') && (item.arrangement_id != null)) {
                     let arrangement = (await this.#getSongArrangement(item.arrangement_id)).data
                     if (arrangement?.song_id) {
                         let song = (await this.#getSong(arrangement.song_id)).data
@@ -325,9 +325,9 @@ export class Controller extends EventEmitter {
             brand: brand,
             types: types,
             settings: {
-                timings: this.getTemplateSetting('timings'),
-                time_format: this.getTemplateSetting('time_format'),
-                song_lyrics: this.getTemplateSetting('song_lyrics'),
+                timings: this.getLayoutSetting('timings'),
+                time_format: this.getLayoutSetting('time_format'),
+                song_lyrics: this.getLayoutSetting('song_lyrics'),
             }
         }
 
@@ -562,8 +562,8 @@ export class Controller extends EventEmitter {
                 ))
             .replace(/\s/g, '-')
             .replace(/:/g, '') +
-            this.getTemplateSetting('filenameSuffix') +
-            (this.getTemplateSetting('two_up') ? '-2up' : '') + '.pdf'
+            this.getLayoutSetting('filenameSuffix') +
+            (this.getLayoutSetting('two_up') ? '-2up' : '') + '.pdf'
     }
 
     /**

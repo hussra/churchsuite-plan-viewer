@@ -244,7 +244,7 @@ export class LayoutEngine {
             throw new Error('Layout does not exist')
         }
 
-        const baseFontSize = this.#controller.getTemplateSetting('font_size')
+        const baseFontSize = this.#controller.getLayoutSetting('font_size')
         const primaryColor = plan.brand.color
         const topCSS = `:root {
             font-size: ${baseFontSize}px;
@@ -309,7 +309,7 @@ export class LayoutEngine {
         return writer.render(parsed)
     }
 
-    #personNameFilter(person, style = this.#controller.getTemplateSetting('name_style')) {
+    #personNameFilter(person, style = this.#controller.getLayoutSetting('name_style')) {
         switch(style) {
             case 'first':
                 return person.first_name

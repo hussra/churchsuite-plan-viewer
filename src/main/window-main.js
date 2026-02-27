@@ -230,7 +230,7 @@ export class MainWindow {
 
     async exportPDF() {
         const layout = this.#controller.layout
-        const twoUp = this.#controller.getTemplateSetting('two_up')
+        const twoUp = this.#controller.getLayoutSetting('two_up')
 
         const defaultFilename = path.join(
             app.getPath('downloads'),
@@ -247,8 +247,8 @@ export class MainWindow {
 
             const options = {
                 printBackground: true,
-                pageSize: this.#controller.getTemplateSetting('page_size'),
-                ...(this.#controller.getTemplateSetting('page_numbers')) ? { 
+                pageSize: this.#controller.getLayoutSetting('page_size'),
+                ...(this.#controller.getLayoutSetting('page_numbers')) ? { 
                     displayHeaderFooter: true,
                     headerTemplate: '<div></div>',
                     footerTemplate: '<div style="font-size:16px; width: 100%; text-align: center;"><span class="pageNumber"></span></div>',

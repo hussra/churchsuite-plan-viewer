@@ -161,37 +161,37 @@ window.electronAPI.onSetTemplates((templates) => {
 window.electronAPI.onSetTemplate(async(templateId) => {
     document.getElementById('template').value = templateId
 
-    const font_size = await window.electronAPI.getTemplateSetting('font_size')
+    const font_size = await window.electronAPI.getLayoutSetting('font_size')
     document.getElementById('font_size').value = font_size
 
-    const name_style = await window.electronAPI.getTemplateSetting('name_style')
+    const name_style = await window.electronAPI.getLayoutSetting('name_style')
     document.getElementById('name_style').value = name_style
 
-    const song_lyrics = await window.electronAPI.getTemplateSetting('song_lyrics')
+    const song_lyrics = await window.electronAPI.getLayoutSetting('song_lyrics')
     document.getElementById('song_lyrics').checked = song_lyrics
 
-    const timings = await window.electronAPI.getTemplateSetting('timings')
+    const timings = await window.electronAPI.getLayoutSetting('timings')
     document.getElementById('timings').checked = timings
 
-    const time_format = await window.electronAPI.getTemplateSetting('time_format')
+    const time_format = await window.electronAPI.getLayoutSetting('time_format')
     const timeFormatOption = document.querySelector('#time_format option[value=' + CSS.escape(time_format)/*.replaceAll('%', '\\%').replaceAll(':', '\\:')*/ + ']')
     if (timeFormatOption) {
         timeFormatOption.selected = true
     }
 
-    const page_size = await window.electronAPI.getTemplateSetting('page_size')
+    const page_size = await window.electronAPI.getLayoutSetting('page_size')
     const pageSizeOption = document.querySelector('#page_size option[value=' + page_size + ']')
     if (pageSizeOption) {
         pageSizeOption.selected = true
     }
 
-    const two_up = await window.electronAPI.getTemplateSetting('two_up')
+    const two_up = await window.electronAPI.getLayoutSetting('two_up')
     document.getElementById('two_up').checked = two_up
 
-    const page_numbers = await window.electronAPI.getTemplateSetting('page_numbers')
+    const page_numbers = await window.electronAPI.getLayoutSetting('page_numbers')
     document.getElementById('page_numbers').checked = page_numbers
 
-    const hide_settings = await window.electronAPI.getTemplateSetting('hide_settings')
+    const hide_settings = await window.electronAPI.getLayoutSetting('hide_settings')
     showHideSetting('song_lyrics', !(hide_settings?.includes('song_lyrics')))
     showHideSetting('timings', !(hide_settings?.includes('timings')))
     showHideSetting('time_format', !(hide_settings?.includes('time_format')))

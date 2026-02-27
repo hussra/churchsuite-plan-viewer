@@ -31,8 +31,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
     openAuthHelpLink: () => ipcRenderer.invoke('openAuthHelpLink'),
 
-    getTemplateSetting: (key) => ipcRenderer.invoke('getTemplateSetting', key),
-    setTemplateSetting: (key, value) => ipcRenderer.invoke('setTemplateSetting', key, value),
+    getLayoutSetting: (key) => ipcRenderer.invoke('getLayoutSetting', key),
+    setLayoutSetting: (key, value) => ipcRenderer.invoke('setLayoutSetting', key, value),
 
     // Messages from main process to left renderer
     onSetConnected: (callback) => ipcRenderer.on('setConnected', (_event, value) => callback(value)),
