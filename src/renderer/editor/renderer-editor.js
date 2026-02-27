@@ -102,12 +102,11 @@ window.electronAPI.onSetPlan((plan) => {
     const viewer = document.getElementById('json')
     viewer.data = plan
     viewer.expand('plan')
-    // viewer.expand('plan.items')
 })
 
 
 const load = async () => {
-    let templates = await window.electronAPI.getAllTemplates()
+    let templates = await window.electronAPI.getAllLayouts()
     populateTemplates(templates)
 
     document.getElementById('template').addEventListener('change', async (event) => {

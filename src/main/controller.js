@@ -128,7 +128,7 @@ export class Controller extends EventEmitter {
         return this.#layoutEngine
     }
 
-    get allTemplates() {
+    get allLayouts() {
         return this.#layoutEngine.allLayouts
     }
 
