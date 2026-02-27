@@ -87,7 +87,7 @@ export class Controller extends EventEmitter {
         this.#selectedLayout = layoutId
         this.setGlobalSetting('template', layoutId)
         this.emit('templateChanged', layoutId)
-        this.#planIdOrTemplateIdChanged()
+        this.#planIdOrLayoutIdChanged()
     }
 
     get selectedLayoutId() {
@@ -97,7 +97,7 @@ export class Controller extends EventEmitter {
     set selectedPlanId(planId) {
         this.#selectedPlanId = planId
         this.emit('planChanged', planId)
-        this.#planIdOrTemplateIdChanged()
+        this.#planIdOrLayoutIdChanged()
     }
 
     get selectedPlan() {
@@ -152,7 +152,7 @@ export class Controller extends EventEmitter {
         return this.#selectedPlanCss
     }
 
-    get template() {
+    get layout() {
         return this.#layoutEngine.getLayoutById(this.#selectedLayout)
     }
 
@@ -191,7 +191,7 @@ export class Controller extends EventEmitter {
         this.setGlobalSetting(`templates.${this.#selectedLayout}.${key}`, value)
     }
 
-    #planIdOrTemplateIdChanged() {
+    #planIdOrLayoutIdChanged() {
         if ((this.#selectedLayout == null) ||
             (this.#selectedLayout == '') ||
             (this.#selectedPlanId == '') ||

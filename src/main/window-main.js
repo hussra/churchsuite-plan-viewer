@@ -229,7 +229,7 @@ export class MainWindow {
 
 
     async exportPDF() {
-        const template = this.#controller.template
+        const layout = this.#controller.layout
         const twoUp = this.#controller.getTemplateSetting('two_up')
 
         const defaultFilename = path.join(
