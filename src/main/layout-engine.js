@@ -25,7 +25,7 @@ import { nanoid } from 'nanoid'
 
 import { BOOK_MAPPING } from './constants'
 
-export class TemplateEngine {
+export class LayoutEngine {
 
     constructor(controller) {
         this.#controller = controller

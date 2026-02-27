@@ -21,7 +21,7 @@ import { request } from 'undici'
 import toValidIdentifier from 'to-valid-identifier'
 
 import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE } from './constants'
-import { TemplateEngine } from './template-engine'
+import { LayoutEngine } from './layout-engine'
 import { ChartEngine } from './chart-engine'
 
 export class Controller extends EventEmitter {
@@ -55,7 +55,7 @@ export class Controller extends EventEmitter {
             this.#configChanged()
         })
 
-        this.#templateEngine = new TemplateEngine(this)
+        this.#templateEngine = new LayoutEngine(this)
         this.#chartEngine = new ChartEngine(this)
     }
 
