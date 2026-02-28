@@ -79,7 +79,7 @@ export class EditorWindow {
 
         this.#controller.on('layoutChanged', () => {
             if (!this.isDestroyed()) {
-                this.#win.webContents.send('setTemplate', this.#controller.selectedLayoutId)
+                this.#win.webContents.send('setLayout', this.#controller.selectedLayoutId)
             }
         })
 

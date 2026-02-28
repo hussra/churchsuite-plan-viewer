@@ -158,8 +158,8 @@ window.electronAPI.onsetLayouts((templates) => {
     populateTemplates(templates)
 })
 
-window.electronAPI.onSetTemplate(async(templateId) => {
-    document.getElementById('template').value = templateId
+window.electronAPI.onSetLayout(async(layoutId) => {
+    document.getElementById('template').value = layoutId
 
     const font_size = await window.electronAPI.getLayoutSetting('font_size')
     document.getElementById('font_size').value = font_size

@@ -22,6 +22,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
     // Messages from main process to editor renderer
     onsetLayouts: (callback) => ipcRenderer.on('setLayouts', (_event, templates, newTemplate) => callback(templates, newTemplate)),
-    onSetTemplate: (callback) => ipcRenderer.on('setTemplate', (_event, value) => callback(value)),
+    onSetLayout: (callback) => ipcRenderer.on('setLayout', (_event, value) => callback(value)),
     onSetPlan: (callback) => ipcRenderer.on('setPlan', (_event, value) => callback(value)),
 })

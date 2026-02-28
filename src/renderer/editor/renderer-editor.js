@@ -92,9 +92,9 @@ window.electronAPI.onsetLayouts(async (templates, newTemplateId) => {
 })
 
 
-window.electronAPI.onSetTemplate(async (templateId) => {
-    document.getElementById('template').value = templateId
-    populateForm(await window.electronAPI.getLayout(templateId))
+window.electronAPI.onSetLayout(async (layoutId) => {
+    document.getElementById('template').value = layoutId
+    populateForm(await window.electronAPI.getLayout(layoutId))
 })
 
 
