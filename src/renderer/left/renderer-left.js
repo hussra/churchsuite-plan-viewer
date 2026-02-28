@@ -49,34 +49,34 @@ const populatePlans = async (plans) => {
     selectPlan()
 }
 
-const populateTemplates = async (templates) => {
+const populateLayouts = async (layouts) => {
 
-    const templateSelect = document.getElementById('template')
-    const selectedTemplate = templateSelect.value
+    const layoutSelect = document.getElementById('layout')
+    const selectedLayout = layoutSelect.value
 
     // Remove all but '--Select plan--'
-    for (const el of document.querySelectorAll('#template option')) {
+    for (const el of document.querySelectorAll('#layout option')) {
         if (el.value !== '') {
             el.remove()
         }
     }
 
     let haveSelected = false
-    for (let i in templates) {
+    for (let i in layouts) {
         let option = document.createElement('option')
-        option.innerHTML = templates[i].name
-        option.setAttribute('value', templates[i].id)
-        templateSelect.append(option)
-        if (templates[i].id == selectedTemplate) {
-            templateSelect.value = selectedTemplate
+        option.innerHTML = layouts[i].name
+        option.setAttribute('value', layouts[i].id)
+        layoutSelect.append(option)
+        if (layouts[i].id == selectedLayout) {
+            layoutSelect.value = selectedLayout
             haveSelected = true
         }
     }
-    if ((!haveSelected) && (templates.length > 0)) {
-        templateSelect.value = await window.electronAPI.getGlobalSetting('template')
+    if ((!haveSelected) && (layouts.length > 0)) {
+        layoutSelect.value = await window.electronAPI.getGlobalSetting('template')
     }
 
-    if (templateSelect.value != selectedTemplate) {
+    if (layoutSelect.value != selectedLayout) {
         selectLayout()
     }
 }
@@ -95,8 +95,8 @@ const selectPlan = (event) => {
 }
 
 const selectLayout = (event) => {
-    const templateId = document.getElementById('template').value
-    window.electronAPI.selectLayout(templateId)
+    const layoutId = document.getElementById('layout').value
+    window.electronAPI.selectLayout(layoutId)
 }
 
 const loadSettings = async () => {
@@ -131,13 +131,13 @@ const showHideControls = (connected) => {
         document.getElementById('mainControlsTop').classList.remove('d-none')
         document.getElementById('mainControlsBottom').classList.remove('d-none')
         document.getElementById('globalSettingsAccordionItem').classList.remove('d-none')
-        document.getElementById('templateSettingsAccordionItem').classList.remove('d-none')
+        document.getElementById('layoutSettingsAccordionItem').classList.remove('d-none')
         document.getElementById('authenticationSettings').classList.remove('show')
     } else {
         document.getElementById('mainControlsTop').classList.add('d-none')
         document.getElementById('mainControlsBottom').classList.add('d-none')
         document.getElementById('globalSettingsAccordionItem').classList.add('d-none')
-        document.getElementById('templateSettingsAccordionItem').classList.add('d-none')
+        document.getElementById('layoutSettingsAccordionItem').classList.add('d-none')
         document.getElementById('authenticationSettings').classList.add('show')
     }
 }
@@ -154,12 +154,12 @@ window.electronAPI.onSetPlans((plans) => {
     populatePlans(plans)
 })
 
-window.electronAPI.onsetLayouts((templates) => {
-    populateTemplates(templates)
+window.electronAPI.onsetLayouts((layouts) => {
+    populateLayouts(layouts)
 })
 
 window.electronAPI.onSetLayout(async(layoutId) => {
-    document.getElementById('template').value = layoutId
+    document.getElementById('layout').value = layoutId
 
     const font_size = await window.electronAPI.getLayoutSetting('font_size')
     document.getElementById('font_size').value = font_size
@@ -201,10 +201,10 @@ window.electronAPI.onSetLayout(async(layoutId) => {
 const load = async () => {
     // Set up event handlers
 
-    // Plan and template selection
+    // Plan and layout selection
     document.getElementById('plan').addEventListener('change', selectPlan)
     document.getElementById('refreshButton').addEventListener('click', refresh)
-    document.getElementById('template').addEventListener('change', selectLayout)
+    document.getElementById('layout').addEventListener('change', selectLayout)
     document.getElementById('editButton').addEventListener('click', editLayouts)
 
     // Global settings
@@ -232,7 +232,7 @@ const load = async () => {
         refresh()
     })
 
-    // Template settings
+    // Layout settings
     document.getElementById('font_size').addEventListener('change', async () => {
         await window.electronAPI.setLayoutSetting('font_size', parseInt(document.getElementById('font_size').value))
         refresh()
@@ -283,7 +283,7 @@ const load = async () => {
     window.electronAPI.leftRendererStartupComplete()
 }
 
-// Show or hide settings based on the selected template's "hide_settings" property
+// Show or hide settings based on the selected layout's "hide_settings" property
 const showHideSetting = (settingId, show) => {
     const element = document.getElementById(settingId).closest('.form-group')
     if (show) {
