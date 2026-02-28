@@ -20,36 +20,36 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.min.css'
 import '@alenaksu/json-viewer'
 
-const populateTemplates = async (templates, newTemplateId) => {
+const populateLayouts = async (layouts, newLayoutId) => {
 
-    const templateSelect = document.getElementById('template')
-    const selectedTemplate = templateSelect.value
+    const layoutSelect = document.getElementById('layout')
+    const selectedLayout = layoutSelect.value
 
     // Remove all but '--Select plan--'
-    for (const el of document.querySelectorAll('#template option')) {
+    for (const el of document.querySelectorAll('#layout option')) {
         if (el.value !== '') {
             el.remove()
         }
     }
 
-    for (let i in templates) {
+    for (let i in layouts) {
         let option = document.createElement('option')
-        option.innerHTML = templates[i].name
-        option.setAttribute('value', templates[i].id)
-        templateSelect.append(option)
-        if (templates[i].id == selectedTemplate) {
-            templateSelect.value = selectedTemplate
+        option.innerHTML = layouts[i].name
+        option.setAttribute('value', layouts[i].id)
+        layoutSelect.append(option)
+        if (layouts[i].id == selectedLayout) {
+            layoutSelect.value = selectedLayout
         }
     }
 
-    templateSelect.value = await window.electronAPI.getGlobalSetting('template')
+    layoutSelect.value = await window.electronAPI.getGlobalSetting('template')
 
-    templateSelect.dispatchEvent(new Event('change'))
+    layoutSelect.dispatchEvent(new Event('change'))
 }
 
 
-const populateForm = (template) => {
-    if (template == null) {
+const populateForm = (layout) => {
+    if (layout == null) {
         document.getElementById('name').value = ''
         document.getElementById('filenameSuffix').value = ''
         document.getElementById('liquid').value = ''
@@ -57,15 +57,15 @@ const populateForm = (template) => {
         document.getElementById('hide_settings').value = ''
         document.getElementById('duplicateButton').setAttribute('disabled', 'disabled')        
     } else {
-        document.getElementById('name').value = template.name
-        document.getElementById('filenameSuffix').value = template.filenameSuffix
-        document.getElementById('liquid').value = template.liquid
-        document.getElementById('css').value = template.css
-        document.getElementById('hide_settings').value = template.hide_settings
+        document.getElementById('name').value = layout.name
+        document.getElementById('filenameSuffix').value = layout.filenameSuffix
+        document.getElementById('liquid').value = layout.liquid
+        document.getElementById('css').value = layout.css
+        document.getElementById('hide_settings').value = layout.hide_settings
         document.getElementById('duplicateButton').removeAttribute('disabled')
     }
 
-    if (template == null || !template.editable) {
+    if (layout == null || !layout.editable) {
         document.getElementById('name').setAttribute('disabled', 'disabled')
         document.getElementById('filenameSuffix').setAttribute('disabled', 'disabled')
         document.getElementById('liquid').setAttribute('disabled', 'disabled')
@@ -87,13 +87,13 @@ const populateForm = (template) => {
 }
 
 
-window.electronAPI.onsetLayouts(async (templates, newTemplateId) => {
-    populateTemplates(templates, newTemplateId)
+window.electronAPI.onsetLayouts(async (layouts, newLayoutId) => {
+    populateLayouts(layouts, newLayoutId)
 })
 
 
 window.electronAPI.onSetLayout(async (layoutId) => {
-    document.getElementById('template').value = layoutId
+    document.getElementById('layout').value = layoutId
     populateForm(await window.electronAPI.getLayout(layoutId))
 })
 
@@ -106,18 +106,18 @@ window.electronAPI.onSetPlan((plan) => {
 
 
 const load = async () => {
-    let templates = await window.electronAPI.getAllLayouts()
-    populateTemplates(templates)
+    let layouts = await window.electronAPI.getAllLayouts()
+    populateLayouts(layouts)
 
-    document.getElementById('template').addEventListener('change', async (event) => {
-        const templateId = event.target.value
-        populateForm(await window.electronAPI.getLayout(templateId))
-        await window.electronAPI.selectLayout(templateId)
+    document.getElementById('layout').addEventListener('change', async (event) => {
+        const layoutId = event.target.value
+        populateForm(await window.electronAPI.getLayout(layoutId))
+        await window.electronAPI.selectLayout(layoutId)
     })
 
     document.getElementById('saveButton').addEventListener('click', async (event) => {
-        const template = {
-            id: document.getElementById('template').value,
+        const layout = {
+            id: document.getElementById('layout').value,
             name: document.getElementById('name').value,
             filenameSuffix: document.getElementById('filenameSuffix').value,
             liquid: document.getElementById('liquid').value,
@@ -125,22 +125,22 @@ const load = async () => {
             hide_settings: document.getElementById('hide_settings').value,
             editable: true
         }
-        await window.electronAPI.saveLayout(template)
+        await window.electronAPI.saveLayout(layout)
     })
 
     document.getElementById('deleteButton').addEventListener('click', async (event) => {
-        const templateId = document.getElementById('template').value
-        await window.electronAPI.deleteLayout(templateId)
+        const layoutId = document.getElementById('layout').value
+        await window.electronAPI.deleteLayout(layoutId)
     })
 
     document.getElementById('duplicateButton').addEventListener('click', async (event) => {
-        const templateId = document.getElementById('template').value
-        const newTemplateId = await window.electronAPI.duplicateLayout(templateId)
+        const layoutId = document.getElementById('layout').value
+        await window.electronAPI.duplicateLayout(layoutId)
     })
 
     document.getElementById('exportButton').addEventListener('click', async(event) => {
-        const templateId = document.getElementById('template').value
-        await window.electronAPI.exportLayout(templateId)
+        const layoutId = document.getElementById('layout').value
+        await window.electronAPI.exportLayout(layoutId)
     })
 
     document.getElementById('importButton').addEventListener('click', async (event) => {

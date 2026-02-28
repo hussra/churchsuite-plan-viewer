@@ -11,17 +11,17 @@ import { contextBridge, ipcRenderer } from 'electron'
 contextBridge.exposeInMainWorld('electronAPI', {
     // Messages from editor renderer to main process
     getGlobalSetting: (key) => ipcRenderer.invoke('getGlobalSetting', key),
-    selectLayout: (templateId) => ipcRenderer.invoke('selectLayout', templateId),
+    selectLayout: (layoutId) => ipcRenderer.invoke('selectLayout', layoutId),
     getAllLayouts: () => ipcRenderer.invoke('getAllLayouts'),
     getLayout: (id) => ipcRenderer.invoke('getLayout', id),
     duplicateLayout: (id) => ipcRenderer.invoke('duplicateLayout', id),
-    saveLayout: (template) => ipcRenderer.invoke('saveLayout', template),
+    saveLayout: (layout) => ipcRenderer.invoke('saveLayout', layout),
     deleteLayout: (id) => ipcRenderer.invoke('deleteLayout', id),
     exportLayout: (id) => ipcRenderer.invoke('exportLayout', id),
     importLayout: () => ipcRenderer.invoke('importLayout'),
 
     // Messages from main process to editor renderer
-    onsetLayouts: (callback) => ipcRenderer.on('setLayouts', (_event, templates, newTemplate) => callback(templates, newTemplate)),
+    onsetLayouts: (callback) => ipcRenderer.on('setLayouts', (_event, layouts, newLayout) => callback(layouts, newLayout)),
     onSetLayout: (callback) => ipcRenderer.on('setLayout', (_event, value) => callback(value)),
     onSetPlan: (callback) => ipcRenderer.on('setPlan', (_event, value) => callback(value)),
 })
