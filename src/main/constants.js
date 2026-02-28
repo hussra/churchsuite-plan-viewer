@@ -19,21 +19,8 @@ export const WINDOW_HEIGHT = 800
 export const LEFT_PANEL_WIDTH = 300
 export const BAR_WIDTH = 2
 
-// Old (pre-v1.3) custom templates
-// Will be removed in a future release, but kept for now to allow migration of old templates to the new storage format
-export const OLD_TEMPLATE_SCHEMA = {
-    type: 'object',
-    properties: {
-        id: { type: 'string' },
-        name: { type: 'string' },
-        filenameSuffix: { type: 'string', default: '' },
-        liquid: { type: 'string' },
-        css: { type: 'string' },
-    },
-    required: ['id', 'name', 'liquid', 'css'],
-}
-
-export const OLD_SETTINGS_TO_DELETE_1_3 = ['font_size', 'name_style', 'song_lyrics', 'page_size', 'two_up', 'page_numbers', 'custom_templates']
+export const OLD_SETTINGS_TO_DELETE_1_3 = ['font_size', 'name_style', 'song_lyrics', 'page_size', 'two_up', 'page_numbers']
+export const OLD_SETTINGS_TO_DELETE_1_4 = ['custom_templates']
 
 // New (v1.3) template storage
 export const LAYOUT_SCHEMA = {
@@ -101,28 +88,36 @@ export const SETTINGS_SCHEMA = {
         default: 1
     },
 
-    // Selected template
+    // Selected template (pre-1.4)
     template: {
         type: 'string',
         default: 'default'
     },
 
-    // Old (pre-v1.3) custom templates
-    // Will be removed in a future release, but kept for now to allow migration of old templates to the new storage format
-    custom_templates: {
-        type: 'array',
-        items: OLD_TEMPLATE_SCHEMA,
-        default: []
+    // Selected layout (1.4)
+    layout: {
+        type: 'string',
+        default: 'default'
     },
 
-    // New (v1.3) template storage
+    // Template storage (1.3)
     templates: {
         type: 'object',
         patternProperties: {
             '^[a-zA-Z0-9_-]+$': LAYOUT_SCHEMA
         },
         default: {}
+    },
+
+    // v1.4 layout storage
+    layouts: {
+        type: 'object',
+        patternProperties: {
+            '^[a-zA-Z0-9_-]+$': LAYOUT_SCHEMA
+        },
+        default: {}
     }
+
 }
 
 export const BOOK_MAPPING = {

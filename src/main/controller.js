@@ -20,7 +20,7 @@ import Store from 'electron-store'
 import { request } from 'undici'
 import toValidIdentifier from 'to-valid-identifier'
 
-import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3 } from './constants'
+import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4 } from './constants'
 import { LayoutEngine } from './layout-engine'
 import { ChartEngine } from './chart-engine'
 
@@ -48,6 +48,13 @@ export class Controller extends EventEmitter {
                     }
 
                     OLD_SETTINGS_TO_DELETE_1_3.forEach(key => store.delete(key))
+                },
+                '1.4.0-dev': (store) => {
+                    console.log('[main-config] running migration for version 1.4.0: migrating templates to layouts')
+                    store.set('layout', store.get('template'))
+                    store.set('layouts', store.get('templates'))
+                    store.set('templates', {})
+                    OLD_SETTINGS_TO_DELETE_1_4.forEach(key => store.delete(key))
                 }
             }
         })
@@ -85,7 +92,7 @@ export class Controller extends EventEmitter {
 
     set selectedLayoutId(layoutId) {
         this.#selectedLayout = layoutId
-        this.setGlobalSetting('template', layoutId)
+        this.setGlobalSetting('layout', layoutId)
         this.emit('layoutChanged', layoutId)
         this.#planIdOrLayoutIdChanged()
     }
@@ -184,11 +191,11 @@ export class Controller extends EventEmitter {
     }
 
     getLayoutSetting(key) {
-        return this.getGlobalSetting(`templates.${this.#selectedLayout}.${key}`)
+        return this.getGlobalSetting(`layouts.${this.#selectedLayout}.${key}`)
     }
 
     setLayoutSetting(key, value) {
-        this.setGlobalSetting(`templates.${this.#selectedLayout}.${key}`, value)
+        this.setGlobalSetting(`layouts.${this.#selectedLayout}.${key}`, value)
     }
 
     #planIdOrLayoutIdChanged() {
@@ -332,7 +339,7 @@ export class Controller extends EventEmitter {
         }
 
         // Render plan with selected layout
-        const layout = this.getGlobalSetting('template')
+        const layout = this.getGlobalSetting('layout')
         try {
             this.#selectedPlanHtml = await this.#layoutEngine.renderPlanHTML(layout, this.#selectedPlan)
             this.#selectedPlanTitle = await this.#layoutEngine.renderPlanTitle(this.#selectedPlan)

@@ -42,7 +42,7 @@ const populateLayouts = async (layouts, newLayoutId) => {
         }
     }
 
-    layoutSelect.value = await window.electronAPI.getGlobalSetting('template')
+    layoutSelect.value = await window.electronAPI.getGlobalSetting('layout')
 
     layoutSelect.dispatchEvent(new Event('change'))
 }

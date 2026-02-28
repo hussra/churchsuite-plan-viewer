@@ -61,17 +61,17 @@ export class LayoutEngine {
                         css: this.#getLayoutCSSFromDisk(basename),
                         hide_settings: jsonData.hide_settings,
                         editable: false,
-                        font_size: (jsonData.font_size ? jsonData.font_size : this.#controller.getGlobalSetting(`templates.${basename}.font_size`)),
-                        name_style: (jsonData.name_style ? jsonData.name_style : this.#controller.getGlobalSetting(`templates.${basename}.name_style`)),
-                        song_lyrics: (jsonData.song_lyrics ? jsonData.song_lyrics : this.#controller.getGlobalSetting(`templates.${basename}.song_lyrics`)),
-                        page_size: (jsonData.page_size ? jsonData.page_size : this.#controller.getGlobalSetting(`templates.${basename}.page_size`)),
-                        two_up: (jsonData.two_up ? jsonData.two_up : this.#controller.getGlobalSetting(`templates.${basename}.two_up`)),
-                        page_numbers: (jsonData.page_numbers ? jsonData.page_numbers : this.#controller.getGlobalSetting(`templates.${basename}.page_numbers`)),
-                        timings: (jsonData.timings ? jsonData.timings : this.#controller.getGlobalSetting(`templates.${basename}.timings`)),
-                        time_format: (jsonData.time_format ? jsonData.time_format : this.#controller.getGlobalSetting(`templates.${basename}.time_format`)),
+                        font_size: (jsonData.font_size ? jsonData.font_size : this.#controller.getGlobalSetting(`layouts.${basename}.font_size`)),
+                        name_style: (jsonData.name_style ? jsonData.name_style : this.#controller.getGlobalSetting(`layouts.${basename}.name_style`)),
+                        song_lyrics: (jsonData.song_lyrics ? jsonData.song_lyrics : this.#controller.getGlobalSetting(`layouts.${basename}.song_lyrics`)),
+                        page_size: (jsonData.page_size ? jsonData.page_size : this.#controller.getGlobalSetting(`layouts.${basename}.page_size`)),
+                        two_up: (jsonData.two_up ? jsonData.two_up : this.#controller.getGlobalSetting(`layouts.${basename}.two_up`)),
+                        page_numbers: (jsonData.page_numbers ? jsonData.page_numbers : this.#controller.getGlobalSetting(`layouts.${basename}.page_numbers`)),
+                        timings: (jsonData.timings ? jsonData.timings : this.#controller.getGlobalSetting(`layouts.${basename}.timings`)),
+                        time_format: (jsonData.time_format ? jsonData.time_format : this.#controller.getGlobalSetting(`layouts.${basename}.time_format`)),
                     }
 
-                    this.#controller.setGlobalSetting(`templates.${basename}`, tmpl)
+                    this.#controller.setGlobalSetting(`layouts.${basename}`, tmpl)
                 } catch (err) {
                     console.warn('Skipping layout ' + basename + ' due to ' + err.message)
                 }
@@ -121,7 +121,7 @@ export class LayoutEngine {
 
     // Get array of layout IDs and names
     get allLayouts() {
-        return Object.entries(this.#controller.getGlobalSetting('templates'))
+        return Object.entries(this.#controller.getGlobalSetting('layouts'))
             .map(([key, layout]) => ({
                 id: key,
                 name: layout.name,
@@ -139,7 +139,7 @@ export class LayoutEngine {
     }
 
     getLayoutById(id) {
-        const layout = this.#controller.getGlobalSetting(`templates.${id}`)
+        const layout = this.#controller.getGlobalSetting(`layouts.${id}`)
         return (layout ? { ...layout, id: id } : undefined)
     }
 
@@ -161,7 +161,7 @@ export class LayoutEngine {
         newLayout.editable = true
 
         // Save to settings
-        this.#controller.setGlobalSetting(`templates.${newId}`, newLayout)
+        this.#controller.setGlobalSetting(`layouts.${newId}`, newLayout)
 
         this.#controller.emit('layoutsChanged', newId)
         return newId
@@ -183,7 +183,7 @@ export class LayoutEngine {
         delete layout.id
         layout.editable = true
 
-        this.#controller.setGlobalSetting(`templates.${id}`, layout)
+        this.#controller.setGlobalSetting(`layouts.${id}`, layout)
         this.#controller.emit('layoutsChanged')
         return id
     }
@@ -214,7 +214,7 @@ export class LayoutEngine {
             }
         }
 
-        this.#controller.setGlobalSetting(`templates.${id}`, layout)
+        this.#controller.setGlobalSetting(`layouts.${id}`, layout)
         this.#controller.emit('layoutsChanged')
     }
 
@@ -228,7 +228,7 @@ export class LayoutEngine {
             throw new Error('Layout is not editable')
         }
 
-        this.#controller.deleteGlobalSetting(`templates.${id}`)
+        this.#controller.deleteGlobalSetting(`layouts.${id}`)
 
         this.#controller.selectedLayoutId = ''
         this.#controller.emit('layoutsChanged')

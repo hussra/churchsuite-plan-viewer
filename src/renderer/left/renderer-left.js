@@ -73,7 +73,7 @@ const populateLayouts = async (layouts) => {
         }
     }
     if ((!haveSelected) && (layouts.length > 0)) {
-        layoutSelect.value = await window.electronAPI.getGlobalSetting('template')
+        layoutSelect.value = await window.electronAPI.getGlobalSetting('layout')
     }
 
     if (layoutSelect.value != selectedLayout) {
