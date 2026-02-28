@@ -143,7 +143,7 @@ export class EditorWindow {
 
         const defaultFilename = path.join(
             app.getPath('downloads'),
-            layout.name + ' ' + date + ' ' + time + '.plantemplate'
+            layout.name + ' ' + date + ' ' + time + '.planlayout'
         )
 
         dialog.showSaveDialog(this.#win, {
@@ -167,7 +167,7 @@ export class EditorWindow {
     async importLayout() {
         dialog.showOpenDialog(this.#win, {
             filters: [
-                { name: 'Plan Layouts', extensions: ['plantemplate']}
+                { name: 'Plan Layouts', extensions: [ 'plantemplate', 'planlayout' ] }
             ],
             properties: ['openFile']
         }).then(result => {
