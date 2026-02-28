@@ -20,7 +20,7 @@ import Store from 'electron-store'
 import { request } from 'undici'
 import toValidIdentifier from 'to-valid-identifier'
 
-import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE } from './constants'
+import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3 } from './constants'
 import { LayoutEngine } from './layout-engine'
 import { ChartEngine } from './chart-engine'
 
@@ -47,7 +47,7 @@ export class Controller extends EventEmitter {
                         })
                     }
 
-                    OLD_SETTINGS_TO_DELETE.forEach(key => store.delete(key))
+                    OLD_SETTINGS_TO_DELETE_1_3.forEach(key => store.delete(key))
                 }
             }
         })

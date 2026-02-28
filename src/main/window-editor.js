@@ -19,7 +19,7 @@ import * as fs from 'fs'
 import { app, BrowserWindow, dialog, Menu, screen, shell } from 'electron'
 import Ajv from 'ajv'
 
-import { WINDOW_WIDTH, WINDOW_HEIGHT, TEMPLATE_SCHEMA_FILE } from './constants'
+import { WINDOW_WIDTH, WINDOW_HEIGHT, LAYOUT_SCHEMA_FILE } from './constants'
 
 export class EditorWindow {
 
@@ -205,7 +205,7 @@ export class EditorWindow {
 
                 const ajv = new Ajv()
 
-                const isDataValid = ajv.validate(TEMPLATE_SCHEMA_FILE, layoutData)
+                const isDataValid = ajv.validate(LAYOUT_SCHEMA_FILE, layoutData)
                 if (!isDataValid) {
                     console.error('JSON data does not match schema:', ajv.errors)
                     dialog.showMessageBox(this.#win,

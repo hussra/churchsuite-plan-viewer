@@ -33,10 +33,10 @@ export const OLD_TEMPLATE_SCHEMA = {
     required: ['id', 'name', 'liquid', 'css'],
 }
 
-export const OLD_SETTINGS_TO_DELETE = ['font_size', 'name_style', 'song_lyrics', 'page_size', 'two_up', 'page_numbers', 'custom_templates']
+export const OLD_SETTINGS_TO_DELETE_1_3 = ['font_size', 'name_style', 'song_lyrics', 'page_size', 'two_up', 'page_numbers', 'custom_templates']
 
 // New (v1.3) template storage
-export const TEMPLATE_SCHEMA = {
+export const LAYOUT_SCHEMA = {
     type: 'object',
     properties: {
         name: { type: 'string' },
@@ -56,10 +56,10 @@ export const TEMPLATE_SCHEMA = {
     required: ['name', 'liquid', 'css', 'font_size', 'name_style', 'song_lyrics', 'timings', 'time_format', 'page_size', 'two_up', 'page_numbers'],
 }
 
-export const TEMPLATE_SCHEMA_FILE = {
+export const LAYOUT_SCHEMA_FILE = {
     type: 'object',
     properties: {
-        ...TEMPLATE_SCHEMA.properties,
+        ...LAYOUT_SCHEMA.properties,
         id: { type: 'string' }
     },
     required: ['id', 'name', 'liquid', 'css']
@@ -119,7 +119,7 @@ export const SETTINGS_SCHEMA = {
     templates: {
         type: 'object',
         patternProperties: {
-            '^[a-zA-Z0-9_-]+$': TEMPLATE_SCHEMA
+            '^[a-zA-Z0-9_-]+$': LAYOUT_SCHEMA
         },
         default: {}
     }
