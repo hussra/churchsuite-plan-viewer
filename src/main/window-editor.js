@@ -167,7 +167,7 @@ export class EditorWindow {
     async importLayout() {
         dialog.showOpenDialog(this.#win, {
             filters: [
-                { name: 'Plan Templates', extensions: ['plantemplate']}
+                { name: 'Plan Layouts', extensions: ['plantemplate']}
             ],
             properties: ['openFile']
         }).then(result => {
@@ -187,9 +187,9 @@ export class EditorWindow {
                     return
                 }
 
-                let templateData
+                let layoutData
                 try {
-                    templateData = JSON.parse(data)
+                    layoutData = JSON.parse(data)
                 } catch (parseError) {
                     console.error('Error parsing JSON data:', parseError)
                     dialog.showMessageBox(this.#win,
@@ -205,7 +205,7 @@ export class EditorWindow {
 
                 const ajv = new Ajv()
 
-                const isDataValid = ajv.validate(TEMPLATE_SCHEMA_FILE, templateData)
+                const isDataValid = ajv.validate(TEMPLATE_SCHEMA_FILE, layoutData)
                 if (!isDataValid) {
                     console.error('JSON data does not match schema:', ajv.errors)
                     dialog.showMessageBox(this.#win,
@@ -219,23 +219,23 @@ export class EditorWindow {
                     return
                 }
 
-                const idExists = this.#controller.layoutEngine.layoutExists(templateData.id)
+                const idExists = this.#controller.layoutEngine.layoutExists(layoutData.id)
                 let newLayout
                 if (idExists) {
                     const ans = dialog.showMessageBoxSync(this.#win, {
                         type: 'question',
-                        title: 'Overwrite existing template?',
-                        message: 'A template with the same ID already exists. Do you want to overwrite it, or import this as a new template?',
-                        buttons: ['New template','Overwrite'],
+                        title: 'Overwrite existing layout?',
+                        message: 'A layout with the same ID already exists. Do you want to overwrite it, or import this as a new layout?',
+                        buttons: ['New layout','Overwrite'],
                         noLink: true,
                     })
                     if (ans == 0) {
-                        newLayout = this.#controller.layoutEngine.importLayout(templateData, true)
+                        newLayout = this.#controller.layoutEngine.importLayout(layoutData, true)
                     } else {
-                        newLayout = this.#controller.layoutEngine.importLayout(templateData, false)
+                        newLayout = this.#controller.layoutEngine.importLayout(layoutData, false)
                     }
                 } else {
-                    newLayout = this.#controller.layoutEngine.importLayout(templateData, false)
+                    newLayout = this.#controller.layoutEngine.importLayout(layoutData, false)
                 }
 
                 dialog.showMessageBox(this.#win, {

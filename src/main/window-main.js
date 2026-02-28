@@ -116,8 +116,8 @@ export class MainWindow {
             this.#leftView.webContents.send('setPlans', this.#controller.allPlans)
         })
 
-        this.#controller.on('layoutsChanged', (newTemplate) => {
-            this.#leftView.webContents.send('setLayouts', this.#controller.allLayouts, newTemplate)
+        this.#controller.on('layoutsChanged', (newLayout) => {
+            this.#leftView.webContents.send('setLayouts', this.#controller.allLayouts, newLayout)
         })
 
         this.#controller.on('layoutChanged', () => {
