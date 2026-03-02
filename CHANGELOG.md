@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Renamed templates to layouts
 - Ability to view and print plan templates, not just dated plans
 - A5 page size
 
