@@ -16,10 +16,25 @@
   this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+body, html {
+  height: 100%;
+}
+
 body {
   margin: auto;
   max-width: 38rem;
+}
+
+#leftmain {
   padding: 1rem;
+}
+
+#dragbar {
+  background-color:#8f8f8f;
+  min-height:100%;
+  float: right;
+  width: 4px;
+  cursor: col-resize;
 }
 
 h1 {

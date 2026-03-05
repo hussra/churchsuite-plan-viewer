@@ -19,17 +19,21 @@ import path from 'path'
 import { app, BaseWindow, BrowserWindow, dialog, Menu, nativeImage, screen, shell, WebContentsView } from 'electron'
 import coherentpdf from 'coherentpdf'
 
-import { WINDOW_WIDTH, WINDOW_HEIGHT, LEFT_PANEL_WIDTH, BAR_WIDTH } from './constants'
+import { DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, DEFAULT_LEFT_PANEL_WIDTH, DRAGBAR_WIDTH, MINIMUM_WINDOW_WIDTH, MINIMUM_WINDOW_HEIGHT } from './constants'
 
 export class MainWindow {
 
     constructor(controller) {
         this.#controller = controller
 
+        this.#dragbarPosition = controller.getGlobalSetting('sidebar_width')
+
         const defaultWindowSize = this.#getDefaultWindowSize()
         this.#win = new BaseWindow({
             width: defaultWindowSize.width,
             height: defaultWindowSize.height,
+            minWidth: MINIMUM_WINDOW_WIDTH,
+            minHeight: MINIMUM_WINDOW_HEIGHT,
             backgroundColor: 'silver',
             title: 'ChurchSuite Plan Viewer'
         })
@@ -83,10 +87,10 @@ export class MainWindow {
         this.#rightView.webContents.on('context-menu', (e, params) => {
             rightContextMenu.popup()
         })
-
-        this.#win.on('resized', () => { this.resizePanes() })
-        this.#win.on('maximize', () => { this.resizePanes() })
-        this.#win.on('unmaximize', () => { this.resizePanes() })
+        this.#win.on('resize', () => {
+            this.resizePanes()
+            this.#leftView.webContents.send('setWidth', this.#win.getBounds().width)
+        })
 
         this.#win.on('close', () => {
             if (globalThis.editorWindow && !globalThis.editorWindow.isDestroyed()) {
@@ -138,6 +142,16 @@ export class MainWindow {
     #rightView
     #win
     #css = ''
+    #dragbarPosition = DEFAULT_LEFT_PANEL_WIDTH
+
+
+    dragbarMoved(width, finished) {
+        this.#dragbarPosition = width
+        if (finished) {
+            this.#controller.setGlobalSetting('sidebar_width', width)
+        }
+        this.resizePanes()
+    }
 
 
     resizePanes() {
@@ -146,16 +160,21 @@ export class MainWindow {
         this.#leftView.setBounds({
             x: 0,
             y: 0,
-            width: LEFT_PANEL_WIDTH,
+            width: this.#dragbarPosition + DRAGBAR_WIDTH,
             height: height
         })
 
         this.#rightView.setBounds({
-            x: LEFT_PANEL_WIDTH + BAR_WIDTH,
+            x: this.#dragbarPosition + DRAGBAR_WIDTH,
             y: 0,
-            width: width - LEFT_PANEL_WIDTH - BAR_WIDTH,
+            width: width - this.#dragbarPosition - DRAGBAR_WIDTH,
             height: height
         })
+    }
+
+
+    getWidth() {
+        return this.#win.getBounds().width
     }
 
 
@@ -164,8 +183,8 @@ export class MainWindow {
         const { width: displayWidth, height: displayHeight } = primaryDisplay.workAreaSize
 
         return {
-            width: Math.min(WINDOW_WIDTH, displayWidth),
-            height: Math.min(WINDOW_HEIGHT, displayHeight)
+            width: Math.max(Math.min(DEFAULT_WINDOW_WIDTH, displayWidth), MINIMUM_WINDOW_WIDTH),
+            height: Math.max(Math.min(DEFAULT_WINDOW_HEIGHT, displayHeight), MINIMUM_WINDOW_HEIGHT)
         }
     }
 

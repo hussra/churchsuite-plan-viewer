@@ -116,4 +116,12 @@ export async function addIpcHandlers(controller, mainWindow) {
         return app.getVersion()
     })
 
+    ipcMain.handle('dragbarMoved', (event, width, finished) => {
+        mainWindow.dragbarMoved(width, finished)
+    })
+
+    ipcMain.handle('getWindowWidth', () => {
+        return mainWindow.getWidth()
+    })
+
 }

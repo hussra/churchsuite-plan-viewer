@@ -14,10 +14,12 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export const WINDOW_WIDTH = 1200
-export const WINDOW_HEIGHT = 800
-export const LEFT_PANEL_WIDTH = 300
-export const BAR_WIDTH = 2
+export const DEFAULT_WINDOW_WIDTH = 1200
+export const DEFAULT_WINDOW_HEIGHT = 800
+export const MINIMUM_WINDOW_WIDTH = 800
+export const MINIMUM_WINDOW_HEIGHT = 600
+export const DEFAULT_LEFT_PANEL_WIDTH = 300
+export const DRAGBAR_WIDTH = 4
 
 export const OLD_SETTINGS_TO_DELETE_1_3 = ['font_size', 'name_style', 'song_lyrics', 'page_size', 'two_up', 'page_numbers']
 export const OLD_SETTINGS_TO_DELETE_1_4 = ['custom_templates']
@@ -86,6 +88,12 @@ export const SETTINGS_SCHEMA = {
         type: 'number',
         minimum: 1,
         default: 1
+    },
+    sidebar_width: {
+        type: 'number',
+        minimum: 250,
+        maximum: 500,
+        default: 300
     },
 
     // Selected template (pre-1.4)

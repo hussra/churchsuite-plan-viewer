@@ -34,9 +34,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getLayoutSetting: (key) => ipcRenderer.invoke('getLayoutSetting', key),
     setLayoutSetting: (key, value) => ipcRenderer.invoke('setLayoutSetting', key, value),
 
+    dragbarMoved: (width, finished) => ipcRenderer.invoke('dragbarMoved', width, finished),
+    getWindowWidth: () => ipcRenderer.invoke('getWindowWidth'),
+
     // Messages from main process to left renderer
     onSetConnected: (callback) => ipcRenderer.on('setConnected', (_event, value) => callback(value)),
     onSetPlans: (callback) => ipcRenderer.on('setPlans', (_event, value) => callback(value)),
     onsetLayouts: (callback) => ipcRenderer.on('setLayouts', (_event, value) => callback(value)),
-    onSetLayout: (callback) => ipcRenderer.on('setLayout', (_event, value) => callback(value))
+    onSetLayout: (callback) => ipcRenderer.on('setLayout', (_event, value) => callback(value)),
+    onSetWidth: (callback) => ipcRenderer.on('setWidth', (_event, value) => callback(value))
 })

@@ -201,6 +201,41 @@ window.electronAPI.onSetLayout(async(layoutId) => {
 const load = async () => {
     // Set up event handlers
 
+    // Sidebar width adjustment
+    var dragging = false
+    var windowWidth = await window.electronAPI.getWindowWidth() 
+
+    window.electronAPI.onSetWidth((width) => {
+        windowWidth = width
+    })
+
+    const constrain = (x) => {
+        const minPos = 250
+        const maxPos = Math.min(windowWidth - 250, 500)
+        if (x < minPos) return minPos
+        if (x > maxPos) return maxPos
+        return x
+    }
+
+    var move = (e) => {
+        if (!dragging) return
+        window.electronAPI.dragbarMoved(constrain(e.pageX), false)
+    }
+
+    document.getElementById('dragbar').addEventListener('mousedown', (e) => {
+        e.preventDefault()
+        dragging = true
+        document.addEventListener('mousemove', move)
+    })
+
+    document.addEventListener('mouseup', (e) => {
+        if (dragging) {
+            document.removeEventListener('mousemove', move)
+            dragging = false
+            window.electronAPI.dragbarMoved(constrain(e.pageX), true)
+        }
+    })
+
     // Plan and layout selection
     document.getElementById('plan').addEventListener('change', selectPlan)
     document.getElementById('refreshButton').addEventListener('click', refresh)
