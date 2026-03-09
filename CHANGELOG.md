@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix for bug involving multiple stanzas with the same name in a song
 - In song sheet template, show song name rather than arrangement name
 - In song sheet template, adjust font and image sizes to fit long service names better
+- In song lyrics, ignore empty stanzas of type "Outro"
 - Dependencies updated
 
 ## [v1.3.1] - 2026-02-11

@@ -210,5 +210,6 @@ export const STANZA_TYPES = [
 
 export const IGNORE_EMPTY_STANZA_TYPES = [
     'INTRO',
-    'OUTRO'
+    'OUTRO',
+    'ENDING'
 ]
