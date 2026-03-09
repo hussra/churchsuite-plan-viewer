@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ability to view and print plan templates, not just dated plans
 - A5 page size
 - Made main window sidebar width adjustable
+- Made a subset of account properties available to layout templates
 
 ### Changed
 
