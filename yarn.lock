@@ -394,12 +394,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@electron/fuses@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@electron/fuses@npm:2.0.0"
+"@electron/fuses@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@electron/fuses@npm:2.1.0"
   bin:
     electron-fuses: dist/bin.js
-  checksum: 10c0/f735e589d9f785ea59bf156b8b8c579d61e145958fe67f6c555b6e1b65581fefd150a53ef355079922be7d2a19fb5f4fa4262bce067badb00a3d3f7a66aa4410
+  checksum: 10c0/a88f3ada0e93678589107d5782219dee2a6543b5889ce890fe5b33f443952f58670a679f337a65826553e9d937f430f751b9396240d1d0a6189e744816ad0ac9
   languageName: node
   linkType: hard
 
@@ -1551,6 +1551,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"acorn@npm:^8.16.0":
+  version: 8.16.0
+  resolution: "acorn@npm:8.16.0"
+  bin:
+    acorn: bin/acorn
+  checksum: 10c0/c9c52697227661b68d0debaf972222d4f622aa06b185824164e153438afa7b08273432ca43ea792cadb24dada1d46f6f6bb1ef8de9956979288cc1b96bf9914e
+  languageName: node
+  linkType: hard
+
 "agent-base@npm:6, agent-base@npm:^6.0.2":
   version: 6.0.2
   resolution: "agent-base@npm:6.0.2"
@@ -2149,7 +2158,7 @@ __metadata:
     "@electron-forge/plugin-auto-unpack-natives": "npm:^7.11.1"
     "@electron-forge/plugin-fuses": "npm:^7.11.1"
     "@electron-forge/plugin-webpack": "npm:^7.11.1"
-    "@electron/fuses": "npm:^2.0.0"
+    "@electron/fuses": "npm:^2.1.0"
     "@popperjs/core": "npm:^2.11.8"
     "@vercel/webpack-asset-relocator-loader": "npm:1.7.3"
     ajv: "npm:^8.18.0"
@@ -2157,21 +2166,21 @@ __metadata:
     bootstrap-icons: "npm:^1.13.1"
     coherentpdf: "npm:^2.5.5"
     commonmark: "npm:^0.31.2"
-    copy-webpack-plugin: "npm:^13.0.1"
+    copy-webpack-plugin: "npm:^14.0.0"
     css-loader: "npm:^7.1.4"
-    dompurify: "npm:^3.3.1"
-    electron: "npm:^40.6.0"
+    dompurify: "npm:^3.3.2"
+    electron: "npm:^40.8.0"
     electron-squirrel-startup: "npm:^1.0.1"
     electron-store: "npm:^11.0.2"
     html-loader: "npm:^5.1.0"
     jsdom: "npm:26.1.0"
-    liquidjs: "npm:^10.24.0"
+    liquidjs: "npm:^10.25.0"
     nanoid: "npm:^5.1.6"
     node-loader: "npm:^2.1.0"
     style-loader: "npm:^4.0.0"
     to-valid-identifier: "npm:^1.0.0"
     undici: "npm:^7.22.0"
-    webpack: "npm:^5.105.2"
+    webpack: "npm:^5.105.4"
   languageName: unknown
   linkType: soft
 
@@ -2459,18 +2468,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"copy-webpack-plugin@npm:^13.0.1":
-  version: 13.0.1
-  resolution: "copy-webpack-plugin@npm:13.0.1"
+"copy-webpack-plugin@npm:^14.0.0":
+  version: 14.0.0
+  resolution: "copy-webpack-plugin@npm:14.0.0"
   dependencies:
     glob-parent: "npm:^6.0.1"
     normalize-path: "npm:^3.0.0"
     schema-utils: "npm:^4.2.0"
-    serialize-javascript: "npm:^6.0.2"
+    serialize-javascript: "npm:^7.0.3"
     tinyglobby: "npm:^0.2.12"
   peerDependencies:
     webpack: ^5.1.0
-  checksum: 10c0/14299770d2b37833306b2b115312a100b456fb48d0c8f3d2ad3af893cf4da8cd34855481e20e7914c0471a5e74a93b4e5517b122341c49a1d7d7ea4863d48222
+  checksum: 10c0/1296bec96c9b7bb603c11aac95bc9580810e3f6be062044d2d4442c54d11ac5a0cd535e118fee6d65a83709a7a440e231686c0a2755f36df73061f7e4a0024d6
   languageName: node
   linkType: hard
 
@@ -2782,15 +2791,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:^3.3.1":
-  version: 3.3.1
-  resolution: "dompurify@npm:3.3.1"
+"dompurify@npm:^3.3.2":
+  version: 3.3.2
+  resolution: "dompurify@npm:3.3.2"
   dependencies:
     "@types/trusted-types": "npm:^2.0.7"
   dependenciesMeta:
     "@types/trusted-types":
       optional: true
-  checksum: 10c0/fa0a8c55a436ba0d54389195e3d2337e311f56de709a2fc9efc98dbbc7746fa53bb4b74b6ac043b77a279a8f2ebd8685f0ebaa6e58c9e32e92051d529bc0baf8
+  checksum: 10c0/8989525f003dd062e829137982b5412143421342991b2732bd621a1efd98b2c3cdc4f37547601d0727d3bc20f1d0eb2a0ecca287d3688f168cdb54ced867ca8f
   languageName: node
   linkType: hard
 
@@ -2955,16 +2964,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^40.6.0":
-  version: 40.6.0
-  resolution: "electron@npm:40.6.0"
+"electron@npm:^40.8.0":
+  version: 40.8.0
+  resolution: "electron@npm:40.8.0"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^24.9.0"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10c0/c97eccb9375d6704a3fc0c4b06496dfee52dec7fb5ac956907bd9afb3ecfa03cfeb026b3040f5f443e54c46905e3ba42dad266780ca235c838e937cf86457716
+  checksum: 10c0/95da8f43c8ca049ca631cea81e62166104bf6f49015d646922131dc4c2dcbfc762da8fc51e8bb5cf4289284a6ca1406c4e5fbae3d2b4a64e2d6dbade517cd8d1
   languageName: node
   linkType: hard
 
@@ -3031,13 +3040,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^5.19.0":
-  version: 5.19.0
-  resolution: "enhanced-resolve@npm:5.19.0"
+"enhanced-resolve@npm:^5.20.0":
+  version: 5.20.0
+  resolution: "enhanced-resolve@npm:5.20.0"
   dependencies:
     graceful-fs: "npm:^4.2.4"
     tapable: "npm:^2.3.0"
-  checksum: 10c0/966b1dffb82d5f6a4d6a86e904e812104a999066aa29f9223040aaa751e7c453b462a3f5ef91f8bd4408131ff6f7f90651dd1c804bdcb7944e2099a9c2e45ee2
+  checksum: 10c0/4ed5f38406fc9ad74c58a3d63b8215862243ab0ed6b0efc51ccdb72cdcedd3ac8638abe298680b279d7a83c3cb140e5eea7a5f8bd99696c74588f07ad89a95a7
   languageName: node
   linkType: hard
 
@@ -4638,15 +4647,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"liquidjs@npm:^10.24.0":
-  version: 10.24.0
-  resolution: "liquidjs@npm:10.24.0"
+"liquidjs@npm:^10.25.0":
+  version: 10.25.0
+  resolution: "liquidjs@npm:10.25.0"
   dependencies:
     commander: "npm:^10.0.0"
   bin:
     liquid: bin/liquid.js
     liquidjs: bin/liquid.js
-  checksum: 10c0/a3bbf856bf306236152ed3fba66bd39bd43d0e21736a8036892c1dfe0897cdc2afd07816fffe0822444cfb1885da9e3add52204265223eb09d618592711a2cb4
+  checksum: 10c0/0d31f774e6723a929c71454b9c71d3864c44750cc695ae7d831293ebc65df58217bb70a55448260f2b14640b71396493f4a471c9194e82207e42ffcb96d7f5a6
   languageName: node
   linkType: hard
 
@@ -6480,6 +6489,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"serialize-javascript@npm:^7.0.3":
+  version: 7.0.4
+  resolution: "serialize-javascript@npm:7.0.4"
+  checksum: 10c0/f3da6f994c41306fbfabb55eefe280a46da05592939a84b0d95c84e296c92ba9e6a3d86cf7bbd71e7a59e1cfcd8481745910af109bedbd3ed853b444d32f9ee9
+  languageName: node
+  linkType: hard
+
 "serve-index@npm:^1.9.1":
   version: 1.9.1
   resolution: "serve-index@npm:1.9.1"
@@ -7040,14 +7056,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser-webpack-plugin@npm:^5.3.16":
-  version: 5.3.16
-  resolution: "terser-webpack-plugin@npm:5.3.16"
+"terser-webpack-plugin@npm:^5.3.17":
+  version: 5.3.17
+  resolution: "terser-webpack-plugin@npm:5.3.17"
   dependencies:
     "@jridgewell/trace-mapping": "npm:^0.3.25"
     jest-worker: "npm:^27.4.5"
     schema-utils: "npm:^4.3.0"
-    serialize-javascript: "npm:^6.0.2"
     terser: "npm:^5.31.1"
   peerDependencies:
     webpack: ^5.1.0
@@ -7058,7 +7073,7 @@ __metadata:
       optional: true
     uglify-js:
       optional: true
-  checksum: 10c0/39e37c5b3015c1a5354a3633f77235677bfa06eac2608ce26d258b1d1a74070a99910319a6f2f2c437eb61dc321f66434febe01d78e73fa96b4d4393b813f4cf
+  checksum: 10c0/bfe08fbb3e5e5a8b2525dcc1705c370ca67f218051f0df241f86531ab0f1a93d5b290176ba09cff28cd5f774836684a7e436421d0641c0f4dfd07110d8d907bf
   languageName: node
   linkType: hard
 
@@ -7588,9 +7603,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.105.2":
-  version: 5.105.2
-  resolution: "webpack@npm:5.105.2"
+"webpack-sources@npm:^3.3.4":
+  version: 3.3.4
+  resolution: "webpack-sources@npm:3.3.4"
+  checksum: 10c0/94a42508531338eb41939cf1d48a4a8a6db97f3a47e5453cff2133a68d3169ca779d4bcbe9dfed072ce16611959eba1e16f085bc2dc56714e1a1c1783fd661a3
+  languageName: node
+  linkType: hard
+
+"webpack@npm:^5.105.4":
+  version: 5.105.4
+  resolution: "webpack@npm:5.105.4"
   dependencies:
     "@types/eslint-scope": "npm:^3.7.7"
     "@types/estree": "npm:^1.0.8"
@@ -7598,11 +7620,11 @@ __metadata:
     "@webassemblyjs/ast": "npm:^1.14.1"
     "@webassemblyjs/wasm-edit": "npm:^1.14.1"
     "@webassemblyjs/wasm-parser": "npm:^1.14.1"
-    acorn: "npm:^8.15.0"
+    acorn: "npm:^8.16.0"
     acorn-import-phases: "npm:^1.0.3"
     browserslist: "npm:^4.28.1"
     chrome-trace-event: "npm:^1.0.2"
-    enhanced-resolve: "npm:^5.19.0"
+    enhanced-resolve: "npm:^5.20.0"
     es-module-lexer: "npm:^2.0.0"
     eslint-scope: "npm:5.1.1"
     events: "npm:^3.2.0"
@@ -7614,15 +7636,15 @@ __metadata:
     neo-async: "npm:^2.6.2"
     schema-utils: "npm:^4.3.3"
     tapable: "npm:^2.3.0"
-    terser-webpack-plugin: "npm:^5.3.16"
+    terser-webpack-plugin: "npm:^5.3.17"
     watchpack: "npm:^2.5.1"
-    webpack-sources: "npm:^3.3.3"
+    webpack-sources: "npm:^3.3.4"
   peerDependenciesMeta:
     webpack-cli:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: 10c0/565df8072c00d72e0a22e136971862b7eac7beb8b8d39a2ae4ab00838941ea58acc5b49dd7ea268e3d839810756cb86ba5c272b3a25904f6db7807cfa8ed0b29
+  checksum: 10c0/e9896d20bac351b119d59942b7efae5b117056ecf203acc0d1a84ecbf0a5a9a80ca733735f96bd163e3530be6ab7f615cd67e5320bd3c47d709c9bfe376c3280
   languageName: node
   linkType: hard
 
