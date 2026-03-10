@@ -16,6 +16,10 @@
   this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#planContents #header {
+    page-break-after: avoid;
+}
+
 #planContents h3 + #planContents div.song {
     page-break-before: avoid;
 }
