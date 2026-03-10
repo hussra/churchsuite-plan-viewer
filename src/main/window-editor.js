@@ -19,7 +19,7 @@ import * as fs from 'fs'
 import { app, BrowserWindow, dialog, Menu, screen, shell } from 'electron'
 import Ajv from 'ajv'
 
-import { WINDOW_WIDTH, WINDOW_HEIGHT, LAYOUT_SCHEMA_FILE } from './constants'
+import { DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, LAYOUT_SCHEMA_FILE } from './constants'
 
 export class EditorWindow {
 
@@ -115,8 +115,8 @@ export class EditorWindow {
         const { width: displayWidth, height: displayHeight } = primaryDisplay.workAreaSize
 
         return {
-            width: Math.min(WINDOW_WIDTH, displayWidth),
-            height: Math.min(WINDOW_HEIGHT, displayHeight)
+            width: Math.min(DEFAULT_WINDOW_WIDTH, displayWidth),
+            height: Math.min(DEFAULT_WINDOW_HEIGHT, displayHeight)
         }
     }
 
