@@ -246,12 +246,15 @@ export class LayoutEngine {
 
         const baseFontSize = this.#controller.getLayoutSetting('font_size')
         const primaryColor = plan.brand.color
-        const topCSS = `:root {
+
+        return `:root {
             font-size: ${baseFontSize}px;
             --primary-color: ${primaryColor};
-        }\n\n`
-
-        return topCSS + this.getLayoutById(id).css
+        }
+            
+        #planContents {\n
+            ${this.getLayoutById(id).css}
+        }`
     }
 
     #getLayoutLiquidFromDisk(id) {

@@ -16,7 +16,11 @@
   this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#planContents h3 {
+#header {
+    page-break-after: avoid;
+}
+
+h3 {
     text-align: center;
     background-color: var(--primary-color);
     color: white; /* TODO: Once Chromium supports it, use color-contrast() */
@@ -25,31 +29,31 @@
     margin-bottom: 9px;
 }
 
-#planContents h4 + #planContents div.liturgy,
-#planContents p.comment,
-#planContents h3 + #planContents h4 {
+h4 + div.liturgy,
+p.comment,
+h3 + h4 {
     page-break-before: avoid;
 }
 
-#planContents div.item {
+div.item {
     page-break-inside: avoid;
 }
 
-#planContents h3 {
+h3 {
     page-break-after: avoid;
 }
 
-#planContents p.people {
+p.people {
     float: right;
     margin-bottom: 0;
 }
 
-#planContents div.liturgy p {
+div.liturgy p {
     page-break-inside: avoid;
     margin-left: 1.5rem;
 }
 
-#planContents p.comment {
+p.comment {
     margin-left: 1.5rem;
     font-style: italic;
 }
