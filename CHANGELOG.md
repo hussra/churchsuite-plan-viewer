@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - In song sheet template, adjust font and image sizes to fit long service names better
 - In song lyrics, ignore empty stanzas of type "Outro"
 - Avoid page break after header in songsheet template
+- Simplify CSS for layouts
 - Dependencies updated
 
 ## [v1.3.1] - 2026-02-11
