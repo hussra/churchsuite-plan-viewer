@@ -2168,18 +2168,18 @@ __metadata:
     commonmark: "npm:^0.31.2"
     copy-webpack-plugin: "npm:^14.0.0"
     css-loader: "npm:^7.1.4"
-    dompurify: "npm:^3.3.2"
-    electron: "npm:^40.8.0"
+    dompurify: "npm:^3.3.3"
+    electron: "npm:^41.0.3"
     electron-squirrel-startup: "npm:^1.0.1"
     electron-store: "npm:^11.0.2"
     html-loader: "npm:^5.1.0"
     jsdom: "npm:26.1.0"
     liquidjs: "npm:^10.25.0"
-    nanoid: "npm:^5.1.6"
+    nanoid: "npm:^5.1.7"
     node-loader: "npm:^2.1.0"
     style-loader: "npm:^4.0.0"
     to-valid-identifier: "npm:^1.0.0"
-    undici: "npm:^7.22.0"
+    undici: "npm:^7.24.4"
     webpack: "npm:^5.105.4"
   languageName: unknown
   linkType: soft
@@ -2791,15 +2791,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:^3.3.2":
-  version: 3.3.2
-  resolution: "dompurify@npm:3.3.2"
+"dompurify@npm:^3.3.3":
+  version: 3.3.3
+  resolution: "dompurify@npm:3.3.3"
   dependencies:
     "@types/trusted-types": "npm:^2.0.7"
   dependenciesMeta:
     "@types/trusted-types":
       optional: true
-  checksum: 10c0/8989525f003dd062e829137982b5412143421342991b2732bd621a1efd98b2c3cdc4f37547601d0727d3bc20f1d0eb2a0ecca287d3688f168cdb54ced867ca8f
+  checksum: 10c0/097c14a21a3f6cb95beded9ecd255f7c3512c42767b048390c747b0fe35736f6a71e02320fc50a9ac2be645834b463e4760915d595d502a56452daf339d0ea9c
   languageName: node
   linkType: hard
 
@@ -2964,16 +2964,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^40.8.0":
-  version: 40.8.0
-  resolution: "electron@npm:40.8.0"
+"electron@npm:^41.0.3":
+  version: 41.0.3
+  resolution: "electron@npm:41.0.3"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^24.9.0"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10c0/95da8f43c8ca049ca631cea81e62166104bf6f49015d646922131dc4c2dcbfc762da8fc51e8bb5cf4289284a6ca1406c4e5fbae3d2b4a64e2d6dbade517cd8d1
+  checksum: 10c0/3f9aea3394eac7576a658f26d7a69b0b2c5274d89f089d6c7538427d85652aa447b0e885556a7e2a6e0197b1b896a504d15bc695e2d173fe51a3c1b29f31b82a
   languageName: node
   linkType: hard
 
@@ -5247,12 +5247,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^5.1.6":
-  version: 5.1.6
-  resolution: "nanoid@npm:5.1.6"
+"nanoid@npm:^5.1.7":
+  version: 5.1.7
+  resolution: "nanoid@npm:5.1.7"
   bin:
     nanoid: bin/nanoid.js
-  checksum: 10c0/27b5b055ad8332cf4f0f9f6e2a494aa7e5ded89df4cab8c8490d4eabefe72c4423971d2745d22002868b1d50576a5e42b7b05214733b19f576382323282dd26e
+  checksum: 10c0/c5523bcb11031d2e8f4eb2ba96f99cd63cbe7f6776748035b4f292c6d524902b142b18a1bf0992e0039f9f925ef51154119bb19ee021766ec0a542d07dc51a82
   languageName: node
   linkType: hard
 
@@ -7313,10 +7313,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^7.22.0":
-  version: 7.22.0
-  resolution: "undici@npm:7.22.0"
-  checksum: 10c0/09777c06f3f18f761f03e3a4c9c04fd9fcca8ad02ccea43602ee4adf73fcba082806f1afb637f6ea714ef6279c5323c25b16d435814c63db720f63bfc20d316b
+"undici@npm:^7.24.4":
+  version: 7.24.4
+  resolution: "undici@npm:7.24.4"
+  checksum: 10c0/cb302e81fadb7f0b7946ab77595715c0961b46a025ccecae79ba599432d0bc8d1e3da4dfe7ff66bc74f115c1b8ff0f099bc4e9bf313db4562da23995872c6d17
   languageName: node
   linkType: hard
 
