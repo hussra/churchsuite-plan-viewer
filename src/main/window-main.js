@@ -20,6 +20,7 @@ import { app, BaseWindow, BrowserWindow, dialog, Menu, nativeImage, screen, shel
 import coherentpdf from 'coherentpdf'
 
 import { DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, DEFAULT_LEFT_PANEL_WIDTH, DRAGBAR_WIDTH, MINIMUM_WINDOW_WIDTH, MINIMUM_WINDOW_HEIGHT } from './constants'
+import { windowStateKeeper } from './windowStateKeeper'
 
 export class MainWindow {
 
@@ -28,15 +29,22 @@ export class MainWindow {
 
         this.#dragbarPosition = controller.getGlobalSetting('sidebar_width')
 
-        const defaultWindowSize = this.#getDefaultWindowSize()
+        const mainWindowStateKeeper = windowStateKeeper('main', controller, this.#getDefaultWindowSize())
+
         this.#win = new BaseWindow({
-            width: defaultWindowSize.width,
-            height: defaultWindowSize.height,
+            x: mainWindowStateKeeper.x,
+            y: mainWindowStateKeeper.y,
+            width: mainWindowStateKeeper.width,
+            height: mainWindowStateKeeper.height,
             minWidth: MINIMUM_WINDOW_WIDTH,
             minHeight: MINIMUM_WINDOW_HEIGHT,
             backgroundColor: 'silver',
             title: 'ChurchSuite Plan Viewer'
         })
+        if (mainWindowStateKeeper.isMaximized) {
+            this.#win.maximize()
+        }
+        mainWindowStateKeeper.track(this.#win)
 
         this.#win.setIcon(this.#getIcon())
         this.#win.setMenu(this.#createMenu())

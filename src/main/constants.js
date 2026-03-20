@@ -54,6 +54,17 @@ export const LAYOUT_SCHEMA_FILE = {
     required: ['id', 'name', 'liquid', 'css']
 }
 
+export const WINDOW_STATE_SCHEMA = {
+    type: 'object',
+    properties: {
+        x: { type: 'number' },
+        y: { type: 'number' },
+        width: { type: 'number' },
+        height: { type: 'number' },
+        isMaximized: { type: 'boolean', default: false },
+    }
+}
+
 export const SETTINGS_SCHEMA = {
     // Authentication
     client_secret: {
@@ -122,6 +133,14 @@ export const SETTINGS_SCHEMA = {
         type: 'object',
         patternProperties: {
             '^[a-zA-Z0-9_-]+$': LAYOUT_SCHEMA
+        },
+        default: {}
+    },
+
+    windowState: {
+        type: 'object',
+        patternProperties: {
+            '^[a-zA-Z0-9_-]+$': WINDOW_STATE_SCHEMA
         },
         default: {}
     }

@@ -20,17 +20,22 @@ import { app, BrowserWindow, dialog, Menu, screen, shell } from 'electron'
 import Ajv from 'ajv'
 
 import { DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, LAYOUT_SCHEMA_FILE } from './constants'
+import { windowStateKeeper } from './windowStateKeeper'
 
 export class EditorWindow {
 
     constructor(controller) {
         this.#controller = controller
 
-        const defaultWindowSize = this.#getDefaultWindowSize()
+        const editorWindowStateKeeper = windowStateKeeper('editor', controller, this.#getDefaultWindowSize())
 
         this.#win = new BrowserWindow({
-            width: defaultWindowSize.width,
-            height: defaultWindowSize.height,
+            x: editorWindowStateKeeper.x,
+            y: editorWindowStateKeeper.y,
+            width: editorWindowStateKeeper.width,
+            height: editorWindowStateKeeper.height,
+            minWidth: MINIMUM_WINDOW_WIDTH,
+            minHeight: MINIMUM_WINDOW_HEIGHT,
             title: app.getName() + ' - Layout Editor',
             modal: true,
             show: false,
@@ -38,6 +43,10 @@ export class EditorWindow {
                 preload: EDITOR_PRELOAD_WEBPACK_ENTRY,
             }
         })
+        if (editorWindowStateKeeper.isMaximized) {
+            this.#win.maximize()
+        }
+        editorWindowStateKeeper.track(this.#win)
 
         this.#win.menuBarVisible = false
 
