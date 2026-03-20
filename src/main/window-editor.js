@@ -19,7 +19,7 @@ import * as fs from 'fs'
 import { app, BrowserWindow, dialog, Menu, screen, shell } from 'electron'
 import Ajv from 'ajv'
 
-import { DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, LAYOUT_SCHEMA_FILE } from './constants'
+import { DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, MINIMUM_WINDOW_WIDTH, MINIMUM_WINDOW_HEIGHT, LAYOUT_SCHEMA_FILE } from './constants'
 import { windowStateKeeper } from './windowStateKeeper'
 
 export class EditorWindow {
