@@ -16,10 +16,10 @@ The main window of the program is divided into two areas.
 
 * On the left are key settings to help you to:
   * select a plan
-  * select a "template" that will be used to display the plan - different templates will show different
+  * select a "layout" that will be used to display the plan - different layouts will show different
     subsets of the information from ChurchSuite
   * configure aspects of how the plan will be formatted and save it as a PDF file.
-* On the right, you will see a preview of the selected plan, using the template you have chosen
+* On the right, you will see a preview of the selected plan, using the layout you have chosen
 
 ### Selecting a plan
 
@@ -37,44 +37,45 @@ within ChurchSuite.
 You can change which plans are shown using other controls which are accessed by clicking on
 the **Global settings** heading (3 in the screenshot), with the following additional options becoming available:
 
-* **Show past plans** (4)
-* **Include draft plans** (5), and
-* **Number of plans to show** (6).
+* **Show plan templates** (4) as opposed to dated plans
+* **Show past plans** (5)
+* **Include draft plans** (6), and
+* **Number of plans to show** (7).
 
 ![Further controls to help select a plan](assets/images/usage3.png)
 
-### Selecting a template
+### Selecting a layout
 
-The next important control is the **Select a template** drop-down.
+The next important control is the **Select a layout** drop-down.
 
-![The controls to select a template](assets/images/usage4.png)
+![The controls to select a layout](assets/images/usage4.png)
 
-The **Select a template** drop-down (7 in the screenshot above) will let you choose a template
-to view your service plan. ChurchSuite Plan Viewer comes with three templates out-of-the-box:
+The **Select a layout** drop-down (8 in the screenshot above) will let you choose a layout
+to view your service plan. ChurchSuite Plan Viewer comes with three layouts out-of-the-box:
 
 * **Outline Running Order** simply displays the name of each item in your plan, and the people associated with it
 * **Full Service Order** displays much fuller details of your plan, including the text of any liturgy and prayers.
 * **Song Lyrics** displays the lyrics of each song in your plan, and is intended to be useful for any church members
   who find it difficult to read these off projector screens.
 
-Next to the drop-down, the **Edit templates** button (8 in the screenhot) launches the [template editor](editor.md).
+Next to the drop-down, the **Edit layouts** button (9 in the screenhot) launches the [layout editor](editor.md).
 
 ### Additional options
 
-Within the **Template Settings** section are some further options to refine the program's output.
+Within the **Layout Settings** section are some further options to refine the program's output.
 
-![Opeions available within Template Settings](assets/images/usage5.png)
+![Opeions available within Layout Settings](assets/images/usage5.png)
 
 The **Default name style** drop-down lets you choose how you would like names to be displayed next to service items:
 
 ![Choosing how to display names](assets/images/usage6.png)
 
 You can choose the base font size, the output page size, select whether you would like two copies per sheet (we use this to create
-A5 orders of service using the "outline running order" template), and whether page numbers should be included.
+A5 orders of service using the "outline running order" layout), and whether page numbers should be included.
 
-Some templates will hide settings that are not relevant when those templates are being used - for example, the **Show song lyrics**
-option will be hidden if you are using the **Outline Running Order** template.
+Some layouts will hide settings that are not relevant when those layouts are being used - for example, the **Show song lyrics**
+option will be hidden if you are using the **Outline Running Order** layout.
 
-Then click the **Create PDF** button to save and open a PDF file showing the selected service, using your chosen template and other options.
+Then click the **Create PDF** button to save and open a PDF file showing the selected service, using your chosen layout and other options.
 
 ![Selecting page size, 2-up options, and creating PDF](assets/images/usage7.png)
