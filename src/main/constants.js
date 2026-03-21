@@ -24,6 +24,8 @@ export const DRAGBAR_WIDTH = 4
 export const OLD_SETTINGS_TO_DELETE_1_3 = ['font_size', 'name_style', 'song_lyrics', 'page_size', 'two_up', 'page_numbers']
 export const OLD_SETTINGS_TO_DELETE_1_4 = ['custom_templates']
 
+export const LAYOUTS_DIR = 'layouts'
+
 // New (v1.3) template storage
 export const LAYOUT_SCHEMA = {
     type: 'object',

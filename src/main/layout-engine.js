@@ -23,7 +23,7 @@ import { JSDOM } from 'jsdom'
 import { Liquid } from 'liquidjs'
 import { nanoid } from 'nanoid'
 
-import { BOOK_MAPPING } from './constants'
+import { BOOK_MAPPING, LAYOUTS_DIR } from './constants'
 
 export class LayoutEngine {
 
@@ -116,7 +116,7 @@ export class LayoutEngine {
 
     // Directory containing pre-defined plan layouts
     get layoutDir() {
-        return app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", "templates") : "templates"
+        return app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", LAYOUTS_DIR) : LAYOUTS_DIR
     }
 
     // Get array of layout IDs and names
@@ -235,7 +235,7 @@ export class LayoutEngine {
     }
 
     #getLayoutCSSFromDisk(id) {
-        const cssFile = path.resolve(__dirname, 'templates/', id + '.css')
+        const cssFile = path.resolve(this.layoutDir, `${id}.css`)
         return fs.readFileSync(cssFile, "UTF-8")
     }
 
@@ -258,7 +258,7 @@ export class LayoutEngine {
     }
 
     #getLayoutLiquidFromDisk(id) {
-        const liquidFile = path.resolve(__dirname, 'templates/', id + '.liquid')
+        const liquidFile = path.resolve(this.layoutDir, `${id}.liquid`)
         return fs.readFileSync(liquidFile, "UTF-8")
     }
 
