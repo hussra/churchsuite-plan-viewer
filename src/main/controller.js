@@ -49,7 +49,7 @@ export class Controller extends EventEmitter {
 
                     OLD_SETTINGS_TO_DELETE_1_3.forEach(key => store.delete(key))
                 },
-                '1.4.0-dev': (store) => {
+                '1.4.0': (store) => {
                     console.log('[main-config] running migration for version 1.4.0: migrating templates to layouts')
                     store.set('layout', store.get('template'))
                     store.set('layouts', store.get('templates'))
