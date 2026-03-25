@@ -54,6 +54,6 @@ Enter the Client Identifier and Client Secret you got from ChurchSuite above.
 ![Enter Client Identifier and Client Secret](assets/images/setup8.png)
 
 Once successfully connected, the **Authentication Settings** section will be hidden and you will see on the left a panel allowing you to select
-a plan, template and other settings, and on the right a preview of the selected plan.
+a plan, layout and other settings, and on the right a preview of the selected plan.
 
 ![The main window of ChurchSuite Plan Viewer](assets/images/setup9.png)
