@@ -225,6 +225,7 @@ export class Controller extends EventEmitter {
     }
 
     async reload() {
+        await this.#getAccount()
         await this.#getDefaultBrand(true)
         await this.#getTypes(true)
         await this.loadPlans()
@@ -392,7 +393,6 @@ export class Controller extends EventEmitter {
 
     // Make an API call to ChurchSuite and return the body as a JSON object
     async #makeApiCall(url) {
-
         if (this.#cache[url]) {
             return this.#cache[url]
         }
@@ -412,6 +412,9 @@ export class Controller extends EventEmitter {
         })
 
         if (statusCode != 200) {
+            console.log(`HTTP error retrieving ${url}`)
+            console.log(`Received HTTP status code: ${statusCode}`)
+            console.log(await body.text())
             // Retry once
             authToken = await this.#getAuthToken(true)
             const { statusCode: retryStatusCode, body: retryBody } = await request(url, {
@@ -421,6 +424,8 @@ export class Controller extends EventEmitter {
             })
 
             if (retryStatusCode != 200) {
+                console.log(`On retrying, received HTTP status code: ${retryStatusCode}`)
+                console.log(await retryBody.text())
                 this.connected = false
                 delete this.#cache[url]
                 return {}
