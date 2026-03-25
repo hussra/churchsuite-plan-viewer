@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+## [v1.4.0] - 2026-03-25
+
+### Added
+
 - Renamed templates to layouts
 - Ability to view and print plan templates, not just dated plans
 - A5 page size
@@ -112,7 +118,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial version of Companion Plan Viewer for the needs of Elmdon Church
 
-[Unreleased]: https://github.com/hussra/churchsuite-plan-viewer/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/hussra/churchsuite-plan-viewer/compare/v1.4.0...HEAD
+[v1.4.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.4.0
 [v1.3.1]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.3.1
 [v1.3.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.3.0
 [v1.2.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.2.0
