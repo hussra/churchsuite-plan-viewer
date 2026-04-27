@@ -1,7 +1,7 @@
 {
   "name": "churchsuite-plan-viewer",
   "productName": "Churchsuite Plan Viewer",
-  "version": "1.4.0",
+  "version": "1.5.0-dev",
   "description": "A simple app to allow viewing and printing of ChurchSuite service plans",
   "main": ".webpack/main",
   "scripts": {
@@ -26,32 +26,32 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.11.1",
     "@electron-forge/plugin-fuses": "^7.11.1",
     "@electron-forge/plugin-webpack": "^7.11.1",
-    "@electron/fuses": "^2.1.0",
+    "@electron/fuses": "^2.1.1",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
     "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^7.1.4",
-    "electron": "^41.0.3",
+    "electron": "^41.3.0",
     "node-loader": "^2.1.0",
     "style-loader": "^4.0.0",
-    "webpack": "^5.105.4"
+    "webpack": "^5.106.2"
   },
   "dependencies": {
     "@alenaksu/json-viewer": "^2.1.2",
     "@popperjs/core": "^2.11.8",
-    "ajv": "^8.18.0",
+    "ajv": "^8.20.0",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "coherentpdf": "^2.5.5",
     "commonmark": "^0.31.2",
-    "dompurify": "^3.3.3",
+    "dompurify": "^3.4.1",
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^11.0.2",
     "html-loader": "^5.1.0",
     "jsdom": "26.1.0",
-    "liquidjs": "^10.25.0",
-    "nanoid": "^5.1.7",
+    "liquidjs": "^10.25.7",
+    "nanoid": "^5.1.9",
     "to-valid-identifier": "^1.0.0",
-    "undici": "^7.24.4"
+    "undici": "^8.1.0"
   },
   "packageManager": "yarn@4.10.3"
 }
