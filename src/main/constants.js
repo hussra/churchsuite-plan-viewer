@@ -234,3 +234,5 @@ export const IGNORE_EMPTY_STANZA_TYPES = [
     'OUTRO',
     'ENDING'
 ]
+
+export const HIDDEN_ITEM_TYPE_NAME = 'hidden'

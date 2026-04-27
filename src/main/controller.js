@@ -20,7 +20,7 @@ import Store from 'electron-store'
 import { request } from 'undici'
 import toValidIdentifier from 'to-valid-identifier'
 
-import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4 } from './constants'
+import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4, HIDDEN_ITEM_TYPE_NAME } from './constants'
 import { LayoutEngine } from './layout-engine'
 import { ChartEngine } from './chart-engine'
 
@@ -326,6 +326,10 @@ export class Controller extends EventEmitter {
             }
         }
 
+        // Strip out items of type 'hidden'
+        const hiddenType = Object.values(types).find(type => type.name.toLowerCase() == HIDDEN_ITEM_TYPE_NAME)
+        const filteredItems = items.filter(item => item.type_id != hiddenType?.id)
+
         // Build object to send to layout engine
         this.#selectedPlan = {
             plan: {
@@ -333,7 +337,7 @@ export class Controller extends EventEmitter {
                     ...detail,
                     date_time: new Date(startTimestamp)
                 },
-                items: items,
+                items: filteredItems,
             },
             account: account,
             brand: brand,
