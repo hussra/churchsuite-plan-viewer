@@ -96,6 +96,11 @@ export class LayoutEngine {
                     return this.layoutExists(filePath)
                 },
                 contains: (filePath) => {
+                    if (filePath == '.') return true
+                    return this.layoutExists(filePath)
+                },
+                containsSync: (filePath) => {
+                    if (filePath == '.') return true
                     return this.layoutExists(filePath)
                 },
                 resolve: (root, file, ext) => {
