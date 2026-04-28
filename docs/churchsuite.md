@@ -19,6 +19,15 @@ call yours "heading", it will be picked up automatically by the default template
 For example, if you are belong to the Church of England you could insert heading items for
 "The Gathering", "The Liturgy of the Word", "The Liturgy of the Sacrament" and "The Dismissal".
 
+### Hidden plan items
+
+Sometimes it may be useful to have plan items that do not show when printed - we use this to link
+additional people to plans, e.g. sound desk operators, who do not need to be listed against any
+individual plan item, other than to be able to see the plan in *My ChurchSuite*.
+
+To do this, create a plan item type (under **Planning** > **Types**) called "Hidden", and items
+of that type will be automatically hidden when printing plans using this program.
+
 ### Liturgy formatting
 
 The provided "Full Service Order" template will let you add formatted text to "Liturgy" and
