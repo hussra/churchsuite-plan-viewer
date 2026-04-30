@@ -5,7 +5,17 @@ import { glob } from "original-fs";
 
 const defaultConfig = {
   plugins: { js },
-  rules: { 'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_(.+)', caughtErrorsIgnorePattern: '^_' }], },
+  rules: {
+    'no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_(.+)',
+        caughtErrorsIgnorePattern: '^_'
+      }
+    ],
+    'semi': [ 'error', 'never' ],
+  },
   extends: ["js/recommended"],
   languageOptions: { globals: globals.nodeBuiltin }  
 }
