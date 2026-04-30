@@ -32,7 +32,7 @@ export class Controller extends EventEmitter {
         this.#store = new Store({
             schema: SETTINGS_SCHEMA,
             beforeEachMigration: (store, context) => {
-		        console.log(`[main-config] migrate from ${context.fromVersion} to ${context.toVersion}`);
+		        console.log(`[main-config] migrate from ${context.fromVersion} to ${context.toVersion}`)
 	        },
             migrations: {
                 '1.3.0': (store) => {
@@ -75,15 +75,15 @@ export class Controller extends EventEmitter {
     #types = null
     #cache = {}
 
-    #allPlans = [];                          // All available plans for selection
-    #showPlanView = false;                   // Is currently selected plan available for viewing?
+    #allPlans = []                          // All available plans for selection
+    #showPlanView = false                   // Is currently selected plan available for viewing?
 
-    #selectedPlanId = 0;                     // Currently selected plan
+    #selectedPlanId = 0                     // Currently selected plan
 
     #selectedPlan
-    #selectedPlanHtml = '';
-    #selectedPlanTitle = '';
-    #selectedPlanCss = '';
+    #selectedPlanHtml = ''
+    #selectedPlanTitle = ''
+    #selectedPlanCss = ''
 
     #layoutEngine
     #selectedLayout = ''
@@ -383,7 +383,7 @@ export class Controller extends EventEmitter {
                     'Authorization': 'Basic ' + Buffer.from(this.getGlobalSetting('client_id') + ":" + this.getGlobalSetting('client_secret')).toString('base64'),
                 },
                 body: '{"grant_type": "client_credentials", "scope": "full_access"}',
-            });
+            })
 
         if (statusCode == 200) {
             this.#authToken = (await body.json()).access_token
@@ -448,9 +448,9 @@ export class Controller extends EventEmitter {
     // Get future plans
     async #getPlans() {
         let now = new Date()
-        const offset = now.getTimezoneOffset();
-        let todayDate = new Date(now.getTime() - (offset * 60 * 1000));
-        let yesterdayDate = new Date(now.getTime() - (offset * 60 * 1000) - 86400000);
+        const offset = now.getTimezoneOffset()
+        let todayDate = new Date(now.getTime() - (offset * 60 * 1000))
+        let yesterdayDate = new Date(now.getTime() - (offset * 60 * 1000) - 86400000)
         const today = todayDate.toISOString().split('T')[0]
         const yesterday = yesterdayDate.toISOString().split('T')[0]
 

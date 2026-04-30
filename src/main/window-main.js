@@ -232,9 +232,9 @@ export class MainWindow {
                             about.menuBarVisible = false
                             about.webContents.setWindowOpenHandler(({ url }) => {
                                 // Open urls with target="_blank" in a browser
-                                shell.openExternal(url);
-                                return { action: 'deny' };
-                            });
+                                shell.openExternal(url)
+                                return { action: 'deny' }
+                            })
                             about.loadURL(ABOUT_WEBPACK_ENTRY)
                             about.once('ready-to-show', () => {
                                 about.show()
@@ -250,7 +250,7 @@ export class MainWindow {
 
 
     #getIcon() {
-        const assetsPath = app.isPackaged ? path.join(process.resourcesPath, "app", "assets") : "assets";
+        const assetsPath = app.isPackaged ? path.join(process.resourcesPath, "app", "assets") : "assets"
         return nativeImage.createFromPath(path.join(assetsPath, 'icon.ico'))
     }
 
