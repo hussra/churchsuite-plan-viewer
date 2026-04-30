@@ -66,7 +66,7 @@ export class MainWindow {
                     click: async () => { this.#leftView.webContents.openDevTools({ mode: 'detach' }) }
                 }
             ])
-            this.#leftView.webContents.on('context-menu', (e, params) => {
+            this.#leftView.webContents.on('context-menu', (_e, _params) => {
                 leftContextMenu.popup()
             })
         }
@@ -92,7 +92,7 @@ export class MainWindow {
             })
         }
         const rightContextMenu = Menu.buildFromTemplate(rightContextMenuTemplate)
-        this.#rightView.webContents.on('context-menu', (e, params) => {
+        this.#rightView.webContents.on('context-menu', (_e, _params) => {
             rightContextMenu.popup()
         })
         this.#win.on('resize', () => {
@@ -256,7 +256,6 @@ export class MainWindow {
 
 
     async exportPDF() {
-        const layout = this.#controller.layout
         const twoUp = this.#controller.getLayoutSetting('two_up')
 
         const defaultFilename = path.join(
@@ -309,7 +308,7 @@ export class MainWindow {
                 }
 
                 shell.openPath(result.filePath)
-            }).catch((err) => {
+            }).catch((_err) => {
                 dialog.showMessageBox(this.#win, {
                     type: 'error',
                     title: 'Unable to save file',

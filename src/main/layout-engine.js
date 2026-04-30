@@ -103,11 +103,11 @@ export class LayoutEngine {
                     if (filePath == '.') return true
                     return this.layoutExists(filePath)
                 },
-                resolve: (root, file, ext) => {
+                resolve: (root, file, _ext) => {
                     return file
                 },
                 sep: '/',
-                dirname: (filePath) => {
+                dirname: (_filePath) => {
                     return ''
                 }
             }

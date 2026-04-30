@@ -60,7 +60,7 @@ export class EditorWindow {
                     click: async () => { this.#win.webContents.openDevTools({ mode: 'detach' }) }
                 }
             ])
-            this.#win.webContents.on('context-menu', (e, params) => {
+            this.#win.webContents.on('context-menu', (_e, _params) => {
                 aboutContextMenu.popup()
             })
         }
@@ -163,7 +163,7 @@ export class EditorWindow {
             try {
                 fs.writeFileSync(result.filePath, JSON.stringify(layout, null, 2))
                 shell.showItemInFolder(result.filePath)
-            } catch(err) {
+            } catch(_err) {
                 dialog.showMessageBox(this.#win, {
                     type: 'error',
                     title: 'Unable to save file',

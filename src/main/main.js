@@ -14,14 +14,16 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app } from 'electron'
+import { app, BrowserWindow } from 'electron'
 
 import { addIpcHandlers } from './ipcHandlers'
 import { Controller } from './controller'
 import { MainWindow } from './window-main'
 
+import started from 'electron-squirrel-startup'
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) {
+if (started) {
     app.quit()
 }
 

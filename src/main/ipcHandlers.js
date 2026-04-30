@@ -63,7 +63,7 @@ export async function addIpcHandlers(controller, mainWindow) {
        globalThis.editorWindow?.exportLayout(id)
     })
 
-    ipcMain.handle('importLayout', (event) => {
+    ipcMain.handle('importLayout', (_event) => {
        globalThis.editorWindow?.importLayout()
     })
 

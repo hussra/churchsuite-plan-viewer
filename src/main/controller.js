@@ -58,12 +58,12 @@ export class Controller extends EventEmitter {
                 }
             }
         })
-        this.#store.onDidAnyChange((newValue, oldValue) => {
+        this.#store.onDidAnyChange(( _newValue, _oldValue) => {
             this.#configChanged()
         })
 
         this.#layoutEngine = new LayoutEngine(this)
-        this.#chartEngine = new ChartEngine(this)
+        this.#chartEngine = new ChartEngine()
     }
 
     #store
@@ -471,8 +471,8 @@ export class Controller extends EventEmitter {
             url = url + '&status=draft'
             let draftPlans = await this.#makeApiCall(url)
 
-            if (draftPlans.hasOwnProperty('data') && Array.isArray(draftPlans.data)) {
-                if (!plans.hasOwnProperty('data') || !Array.isArray(plans.data)) {
+            if (Object.prototype.hasOwnProperty.call(draftPlans, 'data') && Array.isArray(draftPlans.data)) {
+                if (!Object.prototype.hasOwnProperty.call(plans, 'data') || !Array.isArray(plans.data)) {
                     plans.data = []
                 }
                 draftPlans.data.forEach((element) => {
@@ -537,7 +537,7 @@ export class Controller extends EventEmitter {
 
             let types = {}
             
-            if (typesFromAPI.hasOwnProperty('data') && Array.isArray(typesFromAPI.data)) {
+            if (Object.prototype.hasOwnProperty.call(typesFromAPI, 'data') && Array.isArray(typesFromAPI.data)) {
                 for (let type of typesFromAPI.data) {
                     const name = toValidIdentifier(type.name.toLowerCase().replace(/\s+/g, '_'))
                     types[name] = type

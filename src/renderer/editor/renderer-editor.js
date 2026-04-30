@@ -20,7 +20,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.min.css'
 import '@alenaksu/json-viewer'
 
-const populateLayouts = async (layouts, newLayoutId) => {
+const populateLayouts = async (layouts, _newLayoutId) => {
 
     const layoutSelect = document.getElementById('layout')
     const selectedLayout = layoutSelect.value
@@ -109,13 +109,13 @@ const load = async () => {
     let layouts = await window.electronAPI.getAllLayouts()
     populateLayouts(layouts)
 
-    document.getElementById('layout').addEventListener('change', async (event) => {
+    document.getElementById('layout').addEventListener('change', async (_event) => {
         const layoutId = event.target.value
         populateForm(await window.electronAPI.getLayout(layoutId))
         await window.electronAPI.selectLayout(layoutId)
     })
 
-    document.getElementById('saveButton').addEventListener('click', async (event) => {
+    document.getElementById('saveButton').addEventListener('click', async (_event) => {
         const layout = {
             id: document.getElementById('layout').value,
             name: document.getElementById('name').value,
@@ -128,22 +128,22 @@ const load = async () => {
         await window.electronAPI.saveLayout(layout)
     })
 
-    document.getElementById('deleteButton').addEventListener('click', async (event) => {
+    document.getElementById('deleteButton').addEventListener('click', async (_event) => {
         const layoutId = document.getElementById('layout').value
         await window.electronAPI.deleteLayout(layoutId)
     })
 
-    document.getElementById('duplicateButton').addEventListener('click', async (event) => {
+    document.getElementById('duplicateButton').addEventListener('click', async (_event) => {
         const layoutId = document.getElementById('layout').value
         await window.electronAPI.duplicateLayout(layoutId)
     })
 
-    document.getElementById('exportButton').addEventListener('click', async(event) => {
+    document.getElementById('exportButton').addEventListener('click', async(_event) => {
         const layoutId = document.getElementById('layout').value
         await window.electronAPI.exportLayout(layoutId)
     })
 
-    document.getElementById('importButton').addEventListener('click', async (event) => {
+    document.getElementById('importButton').addEventListener('click', async (_event) => {
         await window.electronAPI.importLayout()
     })
 

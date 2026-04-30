@@ -18,11 +18,8 @@ import { STANZA_TYPES, IGNORE_EMPTY_STANZA_TYPES } from "./constants"
 
 export class ChartEngine {
 
-    constructor(controller) {
-        this.#controller = controller
+    constructor() {
     }
-
-    #controller
 
     chartToStanzas(chart) {
         const stanzas = []

@@ -89,12 +89,12 @@ const editLayouts = () => {
     window.electronAPI.editLayouts()
 }
 
-const selectPlan = (event) => {
+const selectPlan = (_event) => {
     const planId = document.getElementById('plan').value
     window.electronAPI.selectPlan(planId)
 }
 
-const selectLayout = (event) => {
+const selectLayout = (_event) => {
     const layoutId = document.getElementById('layout').value
     window.electronAPI.selectLayout(layoutId)
 }
