@@ -79,6 +79,16 @@ export class MainWindow {
         })
         this.#rightView.webContents.loadURL(RIGHT_PANE_WEBPACK_ENTRY)
         this.#win.contentView.addChildView(this.#rightView)
+
+        // Right view - open links in browser
+        this.#rightView.webContents.on('will-navigate', (event, url) => {
+            let requestedHost = new URL(url).host;
+            let currentHost = new URL(this.#rightView.webContents.getURL()).host;
+            if (requestedHost && requestedHost !== currentHost) {
+                event.preventDefault()
+                shell.openExternal(url)
+            }
+        })
         
         // Right context menu
         const rightContextMenuTemplate = [
@@ -95,6 +105,7 @@ export class MainWindow {
         this.#rightView.webContents.on('context-menu', (_e, _params) => {
             rightContextMenu.popup()
         })
+
         this.#win.on('resize', () => {
             this.resizePanes()
             this.#leftView.webContents.send('setWidth', this.#win.getBounds().width)
