@@ -82,8 +82,8 @@ export class MainWindow {
 
         // Right view - open links in browser
         this.#rightView.webContents.on('will-navigate', (event, url) => {
-            let requestedHost = new URL(url).host;
-            let currentHost = new URL(this.#rightView.webContents.getURL()).host;
+            let requestedHost = new URL(url).host
+            let currentHost = new URL(this.#rightView.webContents.getURL()).host
             if (requestedHost && requestedHost !== currentHost) {
                 event.preventDefault()
                 shell.openExternal(url)
