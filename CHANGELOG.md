@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - If your ChurchSuite account contains a plan item category named "hidden", hide items
   of that category
 - Links within layouts will open in the default browser
+- Layout CSS can now use contrast-color() to provide a colour contrasting with your
+  ChurchSuite default brand colour
 
 ### Changed
 
