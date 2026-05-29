@@ -48,13 +48,19 @@ export class Controller extends EventEmitter {
                     }
 
                     OLD_SETTINGS_TO_DELETE_1_3.forEach(key => store.delete(key))
+                    console.log('[main-config] migration for version 1.3.0 complete')
                 },
                 '1.4.0': (store) => {
                     console.log('[main-config] running migration for version 1.4.0: migrating templates to layouts')
-                    store.set('layout', store.get('template'))
-                    store.set('layouts', store.get('templates'))
+                    if (store.has('template')) {
+                        store.set('layout', store.get('template'))
+                    }
+                    if (store.has('templates')) {
+                        store.set('layouts', store.get('templates'))
+                    }
                     store.set('templates', {})
                     OLD_SETTINGS_TO_DELETE_1_4.forEach(key => store.delete(key))
+                    console.log('[main-config] migration for version 1.4.0 complete')
                 }
             }
         })
