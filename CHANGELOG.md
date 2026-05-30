@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fix broken migration script that would prevent the program working for new users of 1.4.0
+  (as opposed to those upgrading from an earlier version).
+
 ## [v1.4.0] - 2026-03-25
 
 ### Added
