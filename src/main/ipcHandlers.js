@@ -18,7 +18,7 @@ import { app, ipcMain, shell } from 'electron'
 
 import { EditorWindow } from './window-editor'
 
-export async function addIpcHandlers(controller, mainWindow) {
+export async function addIpcHandlers(controller) {
 
     // Called when left pane asks for list of plans to be refreshed
     ipcMain.handle('refresh', async () => {
@@ -82,7 +82,7 @@ export async function addIpcHandlers(controller, mainWindow) {
 
     // Called when "Export PDF" clicked in left pane
     ipcMain.handle('exportPDF', () => {
-        mainWindow.exportPDF()
+        globalThis.mainWindow?.exportPDF()
     })
 
     // Get a global setting from the setting store
@@ -117,11 +117,11 @@ export async function addIpcHandlers(controller, mainWindow) {
     })
 
     ipcMain.handle('dragbarMoved', (event, width, finished) => {
-        mainWindow.dragbarMoved(width, finished)
+        globalThis.mainWindow?.dragbarMoved(width, finished)
     })
 
     ipcMain.handle('getWindowWidth', () => {
-        return mainWindow.getWidth()
+        return globalThis.mainWindow?.getWidth()
     })
 
 }

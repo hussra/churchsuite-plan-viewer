@@ -174,6 +174,8 @@ export class MainWindow {
 
 
     resizePanes() {
+        if (this.#win.isDestroyed()) return
+        
         const [width, height] = this.#win.getContentSize()
 
         this.#leftView.setBounds({

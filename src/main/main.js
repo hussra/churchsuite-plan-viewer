@@ -33,15 +33,15 @@ if (started) {
 app.whenReady().then(() => {
     // The Controller contains all the business logic for the application
     let controller = new Controller()
-    let mainWindow = new MainWindow(controller)
+    globalThis.mainWindow = new MainWindow(controller)
     
-    addIpcHandlers(controller, mainWindow)
+    addIpcHandlers(controller)
 
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     app.on('activate', () => {
         if (BaseWindow.getAllWindows().length === 0) {
-            mainWindow = new MainWindow(controller)
+            globalThis.mainWindow = new MainWindow(controller)
         }
     })
 })
