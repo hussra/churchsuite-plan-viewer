@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app, BrowserWindow } from 'electron'
+import { app, BaseWindow } from 'electron'
 
 import { addIpcHandlers } from './ipcHandlers'
 import { Controller } from './controller'
@@ -40,7 +40,7 @@ app.whenReady().then(() => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
+        if (BaseWindow.getAllWindows().length === 0) {
             mainWindow = new MainWindow(controller)
         }
     })
