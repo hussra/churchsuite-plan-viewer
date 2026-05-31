@@ -31,6 +31,9 @@ if (started) {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+    // Set dock icon on MacOS
+    app.dock?.setIcon('assets/icon.png')
+
     // The Controller contains all the business logic for the application
     let controller = new Controller()
     globalThis.mainWindow = new MainWindow(controller)
