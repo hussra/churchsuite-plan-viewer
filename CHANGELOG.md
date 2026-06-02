@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Simplify the subset of account properties made available to layout templates
 - Fix LiquidJS virtual file system
 - Fix broken migration script that would prevent the program working for new users of 1.4.0
   (as opposed to those upgrading from an earlier version).

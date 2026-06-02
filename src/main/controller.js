@@ -231,7 +231,7 @@ export class Controller extends EventEmitter {
     }
 
     async reload() {
-        await this.#getAccount()
+        await this.#getAccountInfo()
         await this.#getDefaultBrand(true)
         await this.#getTypes(true)
         await this.loadPlans()
@@ -287,11 +287,7 @@ export class Controller extends EventEmitter {
         // Get plan detail, items, brand, types from ChurchSuite API
         const detail = (await this.#getPlanDetail(this.#selectedPlanId)).data
         const items = (await this.#getPlanItems(this.#selectedPlanId)).data
-        const account = (await this.#getAccount()).data
-        delete account.billing_address
-        delete account.billing_contact
-        delete account.data_protection_contact
-        delete account.account_contact
+        const account = (await this.#getAccountInfo()).data
         const brand = (await this.#getDefaultBrand()).data
         const types = (await this.#getTypes())
 
@@ -557,8 +553,8 @@ export class Controller extends EventEmitter {
     }
 
 
-    async #getAccount() {
-        return this.#makeApiCall('https://api.churchsuite.com/v2/account')
+    async #getAccountInfo() {
+        return this.#makeApiCall('https://api.churchsuite.com/v2/account/info')
     }
 
 
