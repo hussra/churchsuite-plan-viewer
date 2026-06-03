@@ -21,6 +21,7 @@ import coherentpdf from 'coherentpdf'
 
 import { DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, DEFAULT_LEFT_PANEL_WIDTH, DRAGBAR_WIDTH, MINIMUM_WINDOW_WIDTH, MINIMUM_WINDOW_HEIGHT } from './constants'
 import { windowStateKeeper } from './windowStateKeeper'
+import { showAboutWindow } from './window-about'
 
 export class MainWindow {
 
