@@ -211,13 +211,11 @@ export class MainWindow {
 
 
     #createMenu() {
-
-        const isMac = process.platform === 'darwin'
         let menuTemplate = [
             {
                 label: 'File',
                 submenu: [
-                    isMac ? { role: 'close' } : { role: 'quit' }
+                    { role: 'quit' }
                 ]
             },
             {
@@ -231,27 +229,8 @@ export class MainWindow {
                     },
                     {
                         label: 'About...',
-                        click: async () => {
-                            const about = new BrowserWindow({
-                                parent: this.#win,
-                                title: app.getName(),
-                                modal: true,
-                                show: false,
-                                webPreferences: {
-                                    preload: ABOUT_PRELOAD_WEBPACK_ENTRY,
-                                }
-                            })
-
-                            about.menuBarVisible = false
-                            about.webContents.setWindowOpenHandler(({ url }) => {
-                                // Open urls with target="_blank" in a browser
-                                shell.openExternal(url)
-                                return { action: 'deny' }
-                            })
-                            about.loadURL(ABOUT_WEBPACK_ENTRY)
-                            about.once('ready-to-show', () => {
-                                about.show()
-                            })
+                        click: () => {
+                            showAboutWindow()
                         }
                     }
                 ]

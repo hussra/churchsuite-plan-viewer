@@ -14,11 +14,12 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app, BaseWindow } from 'electron'
+import { app, BaseWindow, Menu, shell } from 'electron'
 
 import { addIpcHandlers } from './ipcHandlers'
 import { Controller } from './controller'
 import { MainWindow } from './window-main'
+import { showAboutWindow } from './window-about'
 
 import started from 'electron-squirrel-startup'
 
@@ -31,8 +32,69 @@ if (started) {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-    // Set dock icon on MacOS
-    app.dock?.setIcon('assets/icon.png')
+
+    const isMac = process.platform === 'darwin'
+
+    if (isMac) {
+       
+        const template = [
+            // { role: 'appMenu' }
+            {
+                label: app.name,
+                submenu: [
+                    { label: `About ${app.name}`, click: () => { showAboutWindow() } },
+                    { type: 'separator' },
+                    { role: 'hide' },
+                    { role: 'hideOthers' },
+                    { role: 'unhide' },
+                    { type: 'separator' },
+                    { role: 'quit' }
+                ]
+            },
+            // { role: 'fileMenu' }
+            {
+                label: 'File',
+                submenu: [
+                    { role: 'close' }
+                ]
+            },
+            // { role: 'editMenu' }
+            {
+                label: 'Edit',
+                submenu: [
+                    { role: 'copy' },
+                    { role: 'selectAll' }
+                ]
+            },
+            // { role: 'windowMenu' }
+            {
+                label: 'Window',
+                submenu: [
+                    { role: 'minimize' },
+                    { type: 'separator' },
+                    { role: 'front' }
+                ]
+            },
+            {
+                role: 'help',
+                submenu: [
+                    {
+                        label: 'ChurchSuite Plan Viewer Help...',
+                        click: async () => {
+                            await shell.openExternal('https://hussra.github.io/churchsuite-plan-viewer/')
+                        }
+                    }
+                ]
+            }
+        ]
+
+        const menu = Menu.buildFromTemplate(template)
+        Menu.setApplicationMenu(menu)
+
+        // Set dock icon
+        app.dock.setIcon('assets/icon.png')
+    }
+
 
     // The Controller contains all the business logic for the application
     let controller = new Controller()
