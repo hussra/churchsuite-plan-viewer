@@ -16,7 +16,7 @@
 
 import * as fs from 'fs'
 import path from 'path'
-import { app, BaseWindow, BrowserWindow, dialog, Menu, nativeImage, screen, shell, WebContentsView } from 'electron'
+import { app, BaseWindow, dialog, Menu, nativeImage, screen, shell, WebContentsView } from 'electron'
 import coherentpdf from 'coherentpdf'
 
 import { DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, DEFAULT_LEFT_PANEL_WIDTH, DRAGBAR_WIDTH, MINIMUM_WINDOW_WIDTH, MINIMUM_WINDOW_HEIGHT } from './constants'
