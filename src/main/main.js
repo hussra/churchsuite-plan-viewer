@@ -90,9 +90,6 @@ app.whenReady().then(() => {
 
         const menu = Menu.buildFromTemplate(template)
         Menu.setApplicationMenu(menu)
-
-        // Set dock icon
-        app.dock.setIcon('assets/icon.png')
     }
 
 
