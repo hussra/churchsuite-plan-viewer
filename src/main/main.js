@@ -63,6 +63,7 @@ app.whenReady().then(() => {
                 label: 'Edit',
                 submenu: [
                     { role: 'copy' },
+                    { role: 'paste' },
                     { role: 'selectAll' }
                 ]
             },
