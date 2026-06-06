@@ -36,60 +36,7 @@ app.whenReady().then(() => {
     const isMac = process.platform === 'darwin'
 
     if (isMac) {
-       
-        const template = [
-            // { role: 'appMenu' }
-            {
-                label: app.name,
-                submenu: [
-                    { label: `About ${app.name}`, click: () => { showAboutWindow() } },
-                    { type: 'separator' },
-                    { role: 'hide' },
-                    { role: 'hideOthers' },
-                    { role: 'unhide' },
-                    { type: 'separator' },
-                    { role: 'quit' }
-                ]
-            },
-            // { role: 'fileMenu' }
-            {
-                label: 'File',
-                submenu: [
-                    { role: 'close' }
-                ]
-            },
-            // { role: 'editMenu' }
-            {
-                label: 'Edit',
-                submenu: [
-                    { role: 'copy' },
-                    { role: 'paste' },
-                    { role: 'selectAll' }
-                ]
-            },
-            // { role: 'windowMenu' }
-            {
-                label: 'Window',
-                submenu: [
-                    { role: 'minimize' },
-                    { type: 'separator' },
-                    { role: 'front' }
-                ]
-            },
-            {
-                role: 'help',
-                submenu: [
-                    {
-                        label: 'ChurchSuite Plan Viewer Help...',
-                        click: async () => {
-                            await shell.openExternal('https://hussra.github.io/churchsuite-plan-viewer/')
-                        }
-                    }
-                ]
-            }
-        ]
-
-        const menu = Menu.buildFromTemplate(template)
+        const menu = createApplicationMenu()
         Menu.setApplicationMenu(menu)
     }
 
@@ -117,3 +64,60 @@ app.on('window-all-closed', () => {
         app.quit()
     }
 })
+
+function createApplicationMenu() {
+    const template = [
+        // { role: 'appMenu' }
+        {
+            label: app.name,
+            submenu: [
+                { label: `About ${app.name}`, click: () => { showAboutWindow() } },
+                { type: 'separator' },
+                { role: 'hide' },
+                { role: 'hideOthers' },
+                { role: 'unhide' },
+                { type: 'separator' },
+                { role: 'quit' }
+            ]
+        },
+        // { role: 'fileMenu' }
+        {
+            label: 'File',
+            submenu: [
+                { role: 'close' }
+            ]
+        },
+        // { role: 'editMenu' }
+        {
+            label: 'Edit',
+            submenu: [
+                { label: 'Select All', accelerator: 'CmdOrCtrl+A', click: () => { globalThis.mainWindow.selectAll() } },
+                { label: 'Copy', accelerator: 'CmdOrCtrl+C', click: () => { globalThis.mainWindow.copy() } },
+                { role: 'paste' }
+            ]
+        },
+        // { role: 'windowMenu' }
+        {
+            label: 'Window',
+            submenu: [
+                { role: 'minimize' },
+                { type: 'separator' },
+                { role: 'front' }
+            ]
+        },
+        {
+            role: 'help',
+            submenu: [
+                {
+                    label: 'ChurchSuite Plan Viewer Help...',
+                    click: async () => {
+                        await shell.openExternal('https://hussra.github.io/churchsuite-plan-viewer/')
+                    }
+                }
+            ]
+        }
+    ]
+
+    const menu = Menu.buildFromTemplate(template)
+    return menu
+}

@@ -48,7 +48,7 @@ export class MainWindow {
         mainWindowStateKeeper.track(this.#win)
 
         this.#win.setIcon(this.#getIcon())
-        this.#win.setMenu(this.#createMenu())
+        this.#win.setMenu(this.#createMainMenu())
 
         // Left view
         this.#leftView = new WebContentsView({
@@ -60,17 +60,10 @@ export class MainWindow {
         this.#win.contentView.addChildView(this.#leftView)
 
         // Left context menu
-        if (!app.isPackaged) {
-            const leftContextMenu = Menu.buildFromTemplate([
-                {
-                   label: 'Inspect',
-                    click: async () => { this.#leftView.webContents.openDevTools({ mode: 'detach' }) }
-                }
-            ])
-            this.#leftView.webContents.on('context-menu', (_e, _params) => {
-                leftContextMenu.popup()
-            })
-        }
+        const leftContextMenu = this.#createLeftContextMenu()
+        this.#leftView.webContents.on('context-menu', (_e, _params) => {
+            leftContextMenu.popup()
+        })
 
         // Right view
         this.#rightView = new WebContentsView({
@@ -92,17 +85,7 @@ export class MainWindow {
         })
         
         // Right context menu
-        const rightContextMenuTemplate = [
-            { role: 'selectAll' },
-            { role: 'copy' }
-        ]
-        if (!app.isPackaged) {
-            rightContextMenuTemplate.push({
-                label: 'Inspect',
-                click: async () => { this.#rightView.webContents.openDevTools({ mode: 'detach' }) }
-            })
-        }
-        const rightContextMenu = Menu.buildFromTemplate(rightContextMenuTemplate)
+        const rightContextMenu = this.#createRightContextMenu()
         this.#rightView.webContents.on('context-menu', (_e, _params) => {
             rightContextMenu.popup()
         })
@@ -211,12 +194,28 @@ export class MainWindow {
     }
 
 
-    #createMenu() {
+    #createMainMenu() {
         let menuTemplate = [
             {
                 label: 'File',
                 submenu: [
                     { role: 'quit' }
+                ]
+            },
+            {
+                label: 'Edit',
+                submenu: [
+                    {
+                        label: 'Select All',
+                        accelerator: 'CmdOrCtrl+A',
+                        click: () => { this.selectAll() }
+                    },
+                    {
+                        label: 'Copy',
+                        accelerator: 'CmdOrCtrl+C',
+                        click: () => { this.copy() }
+                    },
+                    { role: 'paste' },
                 ]
             },
             {
@@ -239,6 +238,45 @@ export class MainWindow {
         ]
 
         return Menu.buildFromTemplate(menuTemplate)
+    }
+
+
+    copy() {
+        this.#rightView.webContents.copy()
+    }
+
+    selectAll() {
+        this.#rightView.webContents.selectAll()
+    }
+
+    #createLeftContextMenu() {
+        const leftContextMenuTemplate = [
+            { role: 'paste' },
+        ]
+        if (!app.isPackaged) {
+            leftContextMenuTemplate.push({
+                label: 'Inspect',
+                click: async () => { this.#leftView.webContents.openDevTools({ mode: 'detach' }) }
+            })
+        }
+
+        return Menu.buildFromTemplate(leftContextMenuTemplate)
+    }
+
+
+    #createRightContextMenu() {
+        const rightContextMenuTemplate = [
+            { label: 'Select All', accelerator: 'CmdOrCtrl+A', click: () => { this.selectAll() } },
+            { label: 'Copy', accelerator: 'CmdOrCtrl+C', click: () => { this.copy() } }
+        ]
+        if (!app.isPackaged) {
+            rightContextMenuTemplate.push({
+                label: 'Inspect',
+                click: async () => { this.#rightView.webContents.openDevTools({ mode: 'detach' }) }
+            })
+        }
+        const rightContextMenu = Menu.buildFromTemplate(rightContextMenuTemplate)
+        return rightContextMenu
     }
 
 
