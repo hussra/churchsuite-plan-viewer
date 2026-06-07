@@ -33,13 +33,10 @@ if (started) {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
 
-    const isMac = process.platform === 'darwin'
-
-    if (isMac) {
+    if (process.platform === 'darwin') {
         const menu = createApplicationMenu()
         Menu.setApplicationMenu(menu)
     }
-
 
     // The Controller contains all the business logic for the application
     let controller = new Controller()
@@ -118,6 +115,5 @@ function createApplicationMenu() {
         }
     ]
 
-    const menu = Menu.buildFromTemplate(template)
-    return menu
+    return Menu.buildFromTemplate(template)
 }
