@@ -19,6 +19,12 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 window.electronAPI.onSetPlan((planDetail) => {
+    if (window.getSelection) {
+        window.getSelection().removeAllRanges()
+    } else if (document.selection) {
+        document.selection.empty()
+    }
+
     if (planDetail.show) {
         document.getElementById('selectPlan').classList.add('d-none')
         document.getElementById('planContents').innerHTML = planDetail.html
