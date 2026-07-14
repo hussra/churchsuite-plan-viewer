@@ -16,6 +16,10 @@
   this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+body {
+  font-family: "Open Sans Variable", sans-serif;
+}
+
 @media screen {
   body {
     padding: 2rem;

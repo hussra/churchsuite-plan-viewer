@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@alenaksu/json-viewer": "^2.1.2",
+    "@fontsource-variable/open-sans": "^5.2.7",
     "@popperjs/core": "^2.11.8",
     "ajv": "^8.20.0",
     "bootstrap": "^5.3.8",
