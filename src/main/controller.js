@@ -286,7 +286,8 @@ export class Controller extends EventEmitter {
     async loadPlan() {
         // Get plan detail, items, brand, types from ChurchSuite API
         const detail = (await this.#getPlanDetail(this.#selectedPlanId)).data
-        const items = (await this.#getPlanItems(this.#selectedPlanId)).data
+        // Plan items are now returned in ID order, so sort them by the "order" property
+        const items = (await this.#getPlanItems(this.#selectedPlanId)).data.sort(({ order: a }, { order: b }) => a - b)
         const account = (await this.#getAccountInfo()).data
         const brand = (await this.#getDefaultBrand()).data
         const types = (await this.#getTypes())
