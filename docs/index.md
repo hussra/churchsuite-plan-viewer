@@ -10,5 +10,5 @@ formats to be printed, and for those formats to be edited in the built-in layout
 
 ![Screenshot of ChurchSuite Plan Viewer](assets/images/setup9.png)
 
-ChurchSuite Plan Viewer is &copy; 2025 [Richard Huss](https://github.com/hussra), and is Open Source software released under the
+ChurchSuite Plan Viewer is &copy; 2025-26 [Richard Huss](https://github.com/hussra), and is Open Source software released under the
 [GNU General Public License (GPL) v3](https://www.gnu.org/licenses/gpl-3.0.html).
