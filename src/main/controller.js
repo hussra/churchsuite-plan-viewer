@@ -15,10 +15,11 @@
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { EventEmitter } from 'node:events'
-import { safeStorage } from 'electron'
+import { safeStorage, shell } from 'electron'
 import Store from 'electron-store'
 import { request } from 'undici'
 import toValidIdentifier from 'to-valid-identifier'
+import log from 'electron-log/main'
 
 import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4, HIDDEN_ITEM_TYPE_NAME } from './constants'
 import { LayoutEngine } from './layout-engine'
@@ -32,11 +33,11 @@ export class Controller extends EventEmitter {
         this.#store = new Store({
             schema: SETTINGS_SCHEMA,
             beforeEachMigration: (store, context) => {
-		        console.log(`[main-config] migrate from ${context.fromVersion} to ${context.toVersion}`)
+		        log.info(`[store migrations] migrate from ${context.fromVersion} to ${context.toVersion}`)
 	        },
             migrations: {
                 '1.3.0': (store) => {
-                    console.log('[main-config] running migration for version 1.3.0: migrating custom template storage to new format')
+                    log.info('[store migrations] running migration for version 1.3.0: migrating custom template storage to new format')
                     const customTemplates = store.get('custom_templates')
 
                     if (customTemplates && Array.isArray(customTemplates)) {
@@ -48,10 +49,10 @@ export class Controller extends EventEmitter {
                     }
 
                     OLD_SETTINGS_TO_DELETE_1_3.forEach(key => store.delete(key))
-                    console.log('[main-config] migration for version 1.3.0 complete')
+                    log.info('[store migrations] migration for version 1.3.0 complete')
                 },
                 '1.4.0': (store) => {
-                    console.log('[main-config] running migration for version 1.4.0: migrating templates to layouts')
+                    log.info('[store migrations] running migration for version 1.4.0: migrating templates to layouts')
                     if (store.has('template')) {
                         store.set('layout', store.get('template'))
                     }
@@ -60,13 +61,19 @@ export class Controller extends EventEmitter {
                     }
                     store.set('templates', {})
                     OLD_SETTINGS_TO_DELETE_1_4.forEach(key => store.delete(key))
-                    console.log('[main-config] migration for version 1.4.0 complete')
+                    log.info('[store migrations] migration for version 1.4.0 complete')
                 }
             }
+        })
+        this.#store.onDidChange('enable_logging', ( newValue, _oldValue) => {
+            log.transports.file.level = (newValue ? 'debug' : 'error')
         })
         this.#store.onDidAnyChange(( _newValue, _oldValue) => {
             this.#configChanged()
         })
+
+        log.transports.file.level = (this.getGlobalSetting('enable_logging') ? 'debug' : 'error')
+        // shell.showItemInFolder(log.transports.file.getFile().path)
 
         this.#layoutEngine = new LayoutEngine(this)
         this.#chartEngine = new ChartEngine()
@@ -422,9 +429,7 @@ export class Controller extends EventEmitter {
         })
 
         if (statusCode != 200) {
-            console.log(`HTTP error retrieving ${url}`)
-            console.log(`Received HTTP status code: ${statusCode}`)
-            console.log(await body.text())
+            log.error(`[#makeApiCall] HTTP error retrieving ${url}: received HTTP status code ${statusCode}\n${await body.text()}`)
             // Retry once
             authToken = await this.#getAuthToken(true)
             const { statusCode: retryStatusCode, body: retryBody } = await request(url, {
@@ -434,8 +439,7 @@ export class Controller extends EventEmitter {
             })
 
             if (retryStatusCode != 200) {
-                console.log(`On retrying, received HTTP status code: ${retryStatusCode}`)
-                console.log(await retryBody.text())
+                log.error(`[#makeApiCall] On retrying, received HTTP status code: ${retryStatusCode}\n${await retryBody.text()}`)
                 this.connected = false
                 delete this.#cache[url]
                 return {}
@@ -447,6 +451,9 @@ export class Controller extends EventEmitter {
         this.connected = true
         const jsonResponse = await body.json()
         this.#cache[url] = jsonResponse
+        if (this.getGlobalSetting('enable_logging')) {
+            log.debug(`[#makeApiCall] API call to ${url} returned:\n${JSON.stringify(jsonResponse, null, 2)}`)
+        }
         return jsonResponse
     }
 

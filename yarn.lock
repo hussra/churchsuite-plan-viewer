@@ -2330,6 +2330,7 @@ __metadata:
     css-loader: "npm:^7.1.4"
     dompurify: "npm:^3.4.12"
     electron: "npm:^43.1.1"
+    electron-log: "npm:^5.4.4"
     electron-squirrel-startup: "npm:^1.0.1"
     electron-store: "npm:^11.0.2"
     eslint: "npm:^10.7.0"
@@ -3082,6 +3083,13 @@ __metadata:
   bin:
     electron-installer-redhat: src/cli.js
   conditions: (os=darwin | os=linux)
+  languageName: node
+  linkType: hard
+
+"electron-log@npm:^5.4.4":
+  version: 5.4.4
+  resolution: "electron-log@npm:5.4.4"
+  checksum: 10c0/bdcf44eb9d35306352d8ee827159c4b95c171f3c0c77e2a75c05c7da626e8f83588a82d6c02e6e18ff6d70056cdbc9a845a820e905151aa8a0040b46c8143b13
   languageName: node
   linkType: hard
 

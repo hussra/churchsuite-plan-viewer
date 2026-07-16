@@ -15,6 +15,7 @@
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { app, ipcMain, shell } from 'electron'
+import log from 'electron-log/main'
 
 import { EditorWindow } from './window-editor'
 
@@ -105,6 +106,11 @@ export async function addIpcHandlers(controller) {
 
     ipcMain.handle('openAuthHelpLink', async () => {
         shell.openExternal('https://hussra.github.io/churchsuite-plan-viewer/setup.html')
+    })
+
+    ipcMain.handle('showLogLocation', async () => {
+        const logFilePath = log.transports.file.getFile().path
+        shell.showItemInFolder(logFilePath)
     })
 
     // Called when left renderer startup is complete

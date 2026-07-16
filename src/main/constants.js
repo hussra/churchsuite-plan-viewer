@@ -108,6 +108,10 @@ export const SETTINGS_SCHEMA = {
         maximum: 500,
         default: 300
     },
+    enable_logging: {
+        type: 'boolean',
+        default: false
+    },
 
     // Selected template (pre-1.4)
     template: {
