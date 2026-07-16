@@ -14,11 +14,12 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { app, BrowserWindow } from 'electron'
+import { app, BaseWindow, Menu, shell } from 'electron'
 
 import { addIpcHandlers } from './ipcHandlers'
 import { Controller } from './controller'
 import { MainWindow } from './window-main'
+import { showAboutWindow } from './window-about'
 
 import started from 'electron-squirrel-startup'
 
@@ -31,17 +32,23 @@ if (started) {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+
+    if (process.platform === 'darwin') {
+        const menu = createApplicationMenu()
+        Menu.setApplicationMenu(menu)
+    }
+
     // The Controller contains all the business logic for the application
     let controller = new Controller()
-    let mainWindow = new MainWindow(controller)
+    globalThis.mainWindow = new MainWindow(controller)
     
-    addIpcHandlers(controller, mainWindow)
+    addIpcHandlers(controller)
 
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
-            mainWindow = new MainWindow(controller)
+        if (BaseWindow.getAllWindows().length === 0) {
+            globalThis.mainWindow = new MainWindow(controller)
         }
     })
 })
@@ -54,3 +61,59 @@ app.on('window-all-closed', () => {
         app.quit()
     }
 })
+
+function createApplicationMenu() {
+    const template = [
+        // { role: 'appMenu' }
+        {
+            label: app.name,
+            submenu: [
+                { label: `About ${app.name}`, click: () => { showAboutWindow() } },
+                { type: 'separator' },
+                { role: 'hide' },
+                { role: 'hideOthers' },
+                { role: 'unhide' },
+                { type: 'separator' },
+                { role: 'quit' }
+            ]
+        },
+        // { role: 'fileMenu' }
+        {
+            label: 'File',
+            submenu: [
+                { role: 'close' }
+            ]
+        },
+        // { role: 'editMenu' }
+        {
+            label: 'Edit',
+            submenu: [
+                { label: 'Select All', accelerator: 'CmdOrCtrl+A', click: () => { globalThis.mainWindow.selectAll() } },
+                { label: 'Copy', accelerator: 'CmdOrCtrl+C', click: () => { globalThis.mainWindow.copy() } },
+                { role: 'paste' }
+            ]
+        },
+        // { role: 'windowMenu' }
+        {
+            label: 'Window',
+            submenu: [
+                { role: 'minimize' },
+                { type: 'separator' },
+                { role: 'front' }
+            ]
+        },
+        {
+            role: 'help',
+            submenu: [
+                {
+                    label: 'ChurchSuite Plan Viewer Help...',
+                    click: async () => {
+                        await shell.openExternal('https://hussra.github.io/churchsuite-plan-viewer/')
+                    }
+                }
+            ]
+        }
+    ]
+
+    return Menu.buildFromTemplate(template)
+}

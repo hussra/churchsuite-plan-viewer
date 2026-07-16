@@ -14,11 +14,18 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import './right.css'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import '@fontsource-variable/open-sans'
+import './right.css'
 
 window.electronAPI.onSetPlan((planDetail) => {
+    if (window.getSelection) {
+        window.getSelection().removeAllRanges()
+    } else if (document.selection) {
+        document.selection.empty()
+    }
+
     if (planDetail.show) {
         document.getElementById('selectPlan').classList.add('d-none')
         document.getElementById('planContents').innerHTML = planDetail.html
