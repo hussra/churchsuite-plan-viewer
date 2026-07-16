@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+## [v1.5.0] - 2026-07-16
+
+### Added
+
 - If your ChurchSuite account contains a plan item category named "hidden", hide items
   of that category
 - Links within layouts will open in the default browser
@@ -133,7 +139,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial version of Companion Plan Viewer for the needs of Elmdon Church
 
-[Unreleased]: https://github.com/hussra/churchsuite-plan-viewer/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/hussra/churchsuite-plan-viewer/compare/v1.5.0...HEAD
+[v1.5.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.5.0
 [v1.4.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.4.0
 [v1.3.1]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.3.1
 [v1.3.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.3.0
