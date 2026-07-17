@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+## [v1.5.1] - 2026-07-17
+
+### Changed
+
+- Fix songs and lyrics not appearing if account does not contain an item type named "hidden" [#22](https://github.com/hussra/churchsuite-plan-viewer/issues/22)
+
 ## [v1.5.0] - 2026-07-16
 
 ### Added
@@ -139,7 +145,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial version of Companion Plan Viewer for the needs of Elmdon Church
 
-[Unreleased]: https://github.com/hussra/churchsuite-plan-viewer/compare/v1.5.0...HEAD
+[Unreleased]: https://github.com/hussra/churchsuite-plan-viewer/compare/v1.5.1...HEAD
+[v1.5.1]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.5.1
 [v1.5.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.5.0
 [v1.4.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.4.0
 [v1.3.1]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.3.1
