@@ -331,7 +331,10 @@ export class Controller extends EventEmitter {
 
         // Strip out items of type 'hidden'
         const hiddenType = Object.values(types).find(type => type.name.toLowerCase() == HIDDEN_ITEM_TYPE_NAME)
-        const filteredItems = items.filter(item => item.type_id != hiddenType?.id)
+        let filteredItems = items
+        if (hiddenType?.id) {
+            filteredItems = items.filter(item => item.type_id != hiddenType.id)
+        }
 
         // Build object to send to layout engine
         this.#selectedPlan = {
