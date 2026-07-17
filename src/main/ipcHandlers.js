@@ -108,6 +108,10 @@ export async function addIpcHandlers(controller) {
         shell.openExternal('https://hussra.github.io/churchsuite-plan-viewer/setup.html')
     })
 
+    ipcMain.handle('isLoggingAvailable', () => {
+        return controller.loggingAvailable
+    })
+
     ipcMain.handle('showLogLocation', async () => {
         const logFilePath = log.transports.file.getFile().path
         shell.showItemInFolder(logFilePath)

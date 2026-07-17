@@ -120,7 +120,7 @@ const loadSettings = async () => {
 
     const enable_logging = await window.electronAPI.getGlobalSetting('enable_logging')
     document.getElementById('enable_logging').checked = enable_logging
-    document.getElementById('log_location_text').classList.toggle('d-none', !enable_logging)
+    document.getElementById('show_log_location').closest('.form-text').classList.toggle('d-none', !enable_logging)
 
     // Authentication settings
     const client_secret = await window.electronAPI.getGlobalSetting('client_secret')
@@ -270,9 +270,10 @@ const load = async () => {
         await window.electronAPI.setGlobalSetting('ccli_licence', parseInt(document.getElementById('ccli_licence').value))
         refresh()
     })
+    document.getElementById('enable_logging').closest('.form-group').classList.toggle('d-none', !(await window.electronAPI.isLoggingAvailable()))
     document.getElementById('enable_logging').addEventListener('change', async () => {
         const enableLogging = document.getElementById('enable_logging').checked
-        document.getElementById('log_location_text').classList.toggle('d-none', !enableLogging)
+        document.getElementById('show_log_location').closest('.form-text').classList.toggle('d-none', !enableLogging)
         await window.electronAPI.setGlobalSetting('enable_logging', enableLogging)
         refresh()
     })

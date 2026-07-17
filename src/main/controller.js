@@ -15,13 +15,13 @@
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { EventEmitter } from 'node:events'
-import { safeStorage, shell } from 'electron'
+import { app, safeStorage, shell } from 'electron'
 import Store from 'electron-store'
 import { request } from 'undici'
 import toValidIdentifier from 'to-valid-identifier'
 import log from 'electron-log/main'
 
-import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4, HIDDEN_ITEM_TYPE_NAME } from './constants'
+import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4, HIDDEN_ITEM_TYPE_NAME, LOGGING_AVAILABLE_WHEN_PACKAGED } from './constants'
 import { LayoutEngine } from './layout-engine'
 import { ChartEngine } from './chart-engine'
 
@@ -73,7 +73,6 @@ export class Controller extends EventEmitter {
         })
 
         log.transports.file.level = (this.getGlobalSetting('enable_logging') ? 'debug' : 'error')
-        // shell.showItemInFolder(log.transports.file.getFile().path)
 
         this.#layoutEngine = new LayoutEngine(this)
         this.#chartEngine = new ChartEngine()
@@ -174,6 +173,10 @@ export class Controller extends EventEmitter {
 
     get layout() {
         return this.#layoutEngine.getLayoutById(this.#selectedLayout)
+    }
+
+    get loggingAvailable() {
+        return LOGGING_AVAILABLE_WHEN_PACKAGED || !app.isPackaged
     }
 
     getGlobalSetting(key) {
@@ -612,11 +615,11 @@ export class Controller extends EventEmitter {
      * @returns boolean
      */
     #isIterable(input) {  
-    if (input === null || input === undefined) {
-        return false
-    }
+        if (input === null || input === undefined) {
+            return false
+        }
 
-    return typeof input[Symbol.iterator] === 'function'
+        return typeof input[Symbol.iterator] === 'function'
     }
 
     appStartupComplete() {

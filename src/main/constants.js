@@ -240,3 +240,5 @@ export const IGNORE_EMPTY_STANZA_TYPES = [
 ]
 
 export const HIDDEN_ITEM_TYPE_NAME = 'hidden'
+
+export const LOGGING_AVAILABLE_WHEN_PACKAGED = false
