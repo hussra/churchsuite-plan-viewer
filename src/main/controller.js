@@ -21,7 +21,7 @@ import { request } from 'undici'
 import toValidIdentifier from 'to-valid-identifier'
 import log from 'electron-log/main'
 
-import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4, HIDDEN_ITEM_TYPE_NAME, LOGGING_AVAILABLE_WHEN_PACKAGED } from './constants'
+import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4, HIDDEN_ITEM_TYPE_NAME, LOGGING_AVAILABLE_WHEN_PACKAGED, API_SCOPES_REQUIRED } from './constants'
 import { LayoutEngine } from './layout-engine'
 import { ChartEngine } from './chart-engine'
 
@@ -398,7 +398,7 @@ export class Controller extends EventEmitter {
                     'Content-Type': 'application/json',
                     'Authorization': 'Basic ' + Buffer.from(this.getGlobalSetting('client_id') + ":" + this.getGlobalSetting('client_secret')).toString('base64'),
                 },
-                body: '{"grant_type": "client_credentials", "scope": "full_access"}',
+                body: `{"grant_type": "client_credentials", "scope": "${API_SCOPES_REQUIRED}"}`,
             })
 
         if (statusCode == 200) {
