@@ -15,7 +15,7 @@
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { EventEmitter } from 'node:events'
-import { app, safeStorage, shell } from 'electron'
+import { app, safeStorage } from 'electron'
 import Store from 'electron-store'
 import { request } from 'undici'
 import toValidIdentifier from 'to-valid-identifier'
