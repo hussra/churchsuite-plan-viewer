@@ -119,6 +119,14 @@ export class MainWindow {
             this.#leftView.webContents.send('setConnected', connected)
         })
 
+        this.#controller.on('authChanged', () => {
+            const hasSavedToken = !!this.#controller.getGlobalSetting('access_token')
+            this.#leftView.webContents.send('setAuthState', {
+                authenticated: hasSavedToken || (this.#controller.isConfigured() && this.#controller.connected),
+                name: this.#controller.authenticatedUserName || this.#controller.getGlobalSetting('user_name') || ''
+            })
+        })
+
         this.#controller.on('plansChanged', () => {
             this.#leftView.webContents.send('setPlans', this.#controller.allPlans)
         })
@@ -147,6 +155,9 @@ export class MainWindow {
     #css = ''
     #dragbarPosition = DEFAULT_LEFT_PANEL_WIDTH
 
+    handleOAuthCallback(url) {
+        return this.#controller.handleAuthorizationResponse(url)
+    }
 
     dragbarMoved(width, finished) {
         this.#dragbarPosition = width

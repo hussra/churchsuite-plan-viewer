@@ -72,6 +72,22 @@ export async function addIpcHandlers(controller) {
         return controller.isConfigured()
     })
 
+    ipcMain.handle('login', async () => {
+        return controller.initiateLogin()
+    })
+
+    ipcMain.handle('logout', async () => {
+        controller.logout()
+    })
+
+    ipcMain.handle('getAuthState', () => {
+        const hasSavedToken = !!controller.getGlobalSetting('access_token')
+        return {
+            authenticated: hasSavedToken || (controller.isConfigured() && controller.connected),
+            name: controller.authenticatedUserName || controller.getGlobalSetting('user_name') || ''
+        }
+    })
+
     // Called when plan selected in left pane
     ipcMain.handle('selectPlan', (event, planId) => {
         controller.selectedPlanId = planId

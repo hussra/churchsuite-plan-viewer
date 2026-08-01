@@ -27,6 +27,14 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
   <div id="leftmain">
   <h1>ChurchSuite Plan Viewer</h1>
 
+  <div id="authPanel" class="mb-3">
+    <button class="btn btn-primary w-100" type="button" id="loginButton">Log in</button>
+    <div id="authenticatedUser" class="d-none">
+      <div class="fw-semibold" id="welcomeText">Welcome</div>
+      <button class="btn btn-outline-secondary btn-sm mt-2" type="button" id="logoutButton">Log out</button>
+    </div>
+  </div>
+
   <form>
 
     <div class="container d-none" id="mainControlsTop">
@@ -188,40 +196,6 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
 
           </div>
         </div><!-- layoutSettings -->
-      </div>
-
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-            data-bs-target="#authenticationSettings" aria-controls="authenticationSettings">
-            Authentication settings
-          </button>
-        </h2>
-
-        <div id="authenticationSettings" class="accordion-collapse collapse" data-bs-parent="#settingsAccordion">
-          <div class="accordion-body">
-
-            <p>
-              <em>
-                <small>
-                  See the <a id="authHelpLink" href="#">documentation</a>
-                  for help on how to configure ChurchSuite access for this program.
-                </small>
-              </em>
-            </p>
-            
-            <div class="form-group mb-2">
-              <label for="client_id">Client Identifier</label>
-              <input type="password" class="form-control" id="client_id">
-            </div>
-            <div class="form-group mb-2">
-              <label for="client_secret">Client Secret</label>
-              <input type="password" class="form-control" id="client_secret">
-            </div>
-          </div>
-
-        </div><!-- authenticationSettings -->
-
       </div>
     </div>
 

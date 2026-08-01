@@ -29,6 +29,14 @@ body {
   padding: 1rem;
 }
 
+#authPanel {
+  margin-top: 0.5rem;
+}
+
+#welcomeText {
+  margin-bottom: 0;
+}
+
 #dragbar {
   background-color:#8f8f8f;
   min-height:100%;

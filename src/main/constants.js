@@ -21,6 +21,11 @@ export const MINIMUM_WINDOW_HEIGHT = 600
 export const DEFAULT_LEFT_PANEL_WIDTH = 300
 export const DRAGBAR_WIDTH = 4
 
+export const CHURCHSUITE_CLIENT_ID = 'fll06gfgb09tlboikvzy'
+export const CHURCHSUITE_REDIRECT_URI = 'churchsuite-plan-viewer:redir'
+export const CHURCHSUITE_AUTH_URL = 'https://login.churchsuite.com/oauth2/authorize'
+export const CHURCHSUITE_TOKEN_URL = 'https://login.churchsuite.com/oauth2/token'
+
 export const OLD_SETTINGS_TO_DELETE_1_3 = ['font_size', 'name_style', 'song_lyrics', 'page_size', 'two_up', 'page_numbers']
 export const OLD_SETTINGS_TO_DELETE_1_4 = ['custom_templates']
 
@@ -69,11 +74,15 @@ export const WINDOW_STATE_SCHEMA = {
 
 export const SETTINGS_SCHEMA = {
     // Authentication
-    client_secret: {
+    access_token: {
         type: 'string',
         default: ''
     },
-    client_id: {
+    refresh_token: {
+        type: 'string',
+        default: ''
+    },
+    user_name: {
         type: 'string',
         default: ''
     },
@@ -243,4 +252,4 @@ export const HIDDEN_ITEM_TYPE_NAME = 'hidden'
 
 export const LOGGING_AVAILABLE_WHEN_PACKAGED = false
 
-export const API_SCOPES_REQUIRED = 'account planning.read'
+export const API_SCOPES_REQUIRED = 'account user planning.read'

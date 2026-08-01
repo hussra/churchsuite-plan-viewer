@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import path from 'path'
 import { app, BaseWindow, Menu, shell } from 'electron'
 
 import { addIpcHandlers } from './ipcHandlers'
@@ -26,6 +27,14 @@ import started from 'electron-squirrel-startup'
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
     app.quit()
+}
+
+if (process.defaultApp) {
+    if (process.argv.length >= 2) {
+        app.setAsDefaultProtocolClient('churchsuite-plan-viewer', process.execPath, [path.resolve(process.argv[1])])
+    }
+} else {
+    app.setAsDefaultProtocolClient('churchsuite-plan-viewer')
 }
 
 // This method will be called when Electron has finished
@@ -43,6 +52,13 @@ app.whenReady().then(() => {
     globalThis.mainWindow = new MainWindow(controller)
     
     addIpcHandlers(controller)
+
+    app.on('open-url', (event, url) => {
+        event.preventDefault()
+        if (url && globalThis.mainWindow) {
+            globalThis.mainWindow.handleOAuthCallback(url)
+        }
+    })
 
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.

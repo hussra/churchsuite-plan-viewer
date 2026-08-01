@@ -28,8 +28,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
     getGlobalSetting: (key) => ipcRenderer.invoke('getGlobalSetting', key),
     setGlobalSetting: (key, value) => ipcRenderer.invoke('setGlobalSetting', key, value),
+    login: () => ipcRenderer.invoke('login'),
+    logout: () => ipcRenderer.invoke('logout'),
+    getAuthState: () => ipcRenderer.invoke('getAuthState'),
 
-    openAuthHelpLink: () => ipcRenderer.invoke('openAuthHelpLink'),
     isLoggingAvailable: () => ipcRenderer.invoke('isLoggingAvailable'),
     showLogLocation: () => ipcRenderer.invoke('showLogLocation'),
 
@@ -41,6 +43,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
     // Messages from main process to left renderer
     onSetConnected: (callback) => ipcRenderer.on('setConnected', (_event, value) => callback(value)),
+    onSetAuthState: (callback) => ipcRenderer.on('setAuthState', (_event, value) => callback(value)),
     onSetPlans: (callback) => ipcRenderer.on('setPlans', (_event, value) => callback(value)),
     onsetLayouts: (callback) => ipcRenderer.on('setLayouts', (_event, value) => callback(value)),
     onSetLayout: (callback) => ipcRenderer.on('setLayout', (_event, value) => callback(value)),

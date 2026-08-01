@@ -15,13 +15,14 @@
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { EventEmitter } from 'node:events'
-import { app, safeStorage } from 'electron'
+import { createHash, randomBytes } from 'node:crypto'
+import { app, safeStorage, shell } from 'electron'
 import Store from 'electron-store'
 import { request } from 'undici'
 import toValidIdentifier from 'to-valid-identifier'
 import log from 'electron-log/main'
 
-import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4, HIDDEN_ITEM_TYPE_NAME, LOGGING_AVAILABLE_WHEN_PACKAGED, API_SCOPES_REQUIRED } from './constants'
+import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4, HIDDEN_ITEM_TYPE_NAME, LOGGING_AVAILABLE_WHEN_PACKAGED, API_SCOPES_REQUIRED, CHURCHSUITE_CLIENT_ID, CHURCHSUITE_REDIRECT_URI, CHURCHSUITE_AUTH_URL, CHURCHSUITE_TOKEN_URL } from './constants'
 import { LayoutEngine } from './layout-engine'
 import { ChartEngine } from './chart-engine'
 
@@ -72,6 +73,12 @@ export class Controller extends EventEmitter {
             this.#configChanged()
         })
 
+        this.#authToken = this.getGlobalSetting('access_token') || null
+        this.#userName = this.getGlobalSetting('user_name') || ''
+        this.#isConnected = !!this.#authToken
+        this.deleteGlobalSetting('client_secret')
+        this.deleteGlobalSetting('client_id')
+
         log.transports.file.level = (this.getGlobalSetting('enable_logging') ? 'debug' : 'error')
 
         this.#layoutEngine = new LayoutEngine(this)
@@ -82,6 +89,9 @@ export class Controller extends EventEmitter {
 
     #authToken = null
     #isConnected = false
+    #userName = ''
+    #oauthState = null
+    #pkceCodeVerifier = null
 
     #defaultBrand = null
     #types = null
@@ -125,6 +135,10 @@ export class Controller extends EventEmitter {
 
     get connected() {
         return this.#isConnected
+    }
+
+    get authenticatedUserName() {
+        return this.#userName
     }
 
     set connected(isConnected) {
@@ -180,23 +194,25 @@ export class Controller extends EventEmitter {
     }
 
     getGlobalSetting(key) {
-        if ((key == 'client_secret') || (key == 'client_id')) {
+        if ((key == 'access_token') || (key == 'refresh_token')) {
             const value = this.#store.get(key)
+            if (!value) {
+                return ''
+            }
             if (value.startsWith('base64:')) {
                 return safeStorage.decryptString(Buffer.from(value.substring(7), 'base64'))
-            } else {
-                // Encrypt value and store that
-                this.#store.set(key, 'base64:' + safeStorage.encryptString(value).toString('base64'))
-                return value
             }
-        } else {
-            return this.#store.get(key)
+            this.#store.set(key, 'base64:' + safeStorage.encryptString(value).toString('base64'))
+            return value
         }
+
+        return this.#store.get(key)
     }
 
     setGlobalSetting(key, value) {
-        if ((key == 'client_secret') || (key == 'client_id')) {
-            this.#store.set(key, 'base64:' + safeStorage.encryptString(value).toString('base64'))
+        if ((key == 'access_token') || (key == 'refresh_token')) {
+            const storedValue = (value == null || value == '') ? '' : 'base64:' + safeStorage.encryptString(value).toString('base64')
+            this.#store.set(key, storedValue)
         } else {
             this.#store.set(key, value)
         }
@@ -237,7 +253,106 @@ export class Controller extends EventEmitter {
     }
 
     isConfigured() {
-        return (this.#store.get('client_id') != '') && (this.#store.get('client_secret') != '')
+        return !!this.#authToken || !!this.getGlobalSetting('access_token')
+    }
+
+    async initiateLogin() {
+        const verifier = randomBytes(32).toString('base64url')
+        this.#pkceCodeVerifier = verifier
+        this.#oauthState = randomBytes(16).toString('base64url')
+
+        const challenge = createHash('sha256').update(verifier).digest('base64url')
+        const url = new URL(CHURCHSUITE_AUTH_URL)
+        url.searchParams.set('client_id', CHURCHSUITE_CLIENT_ID)
+        url.searchParams.set('redirect_uri', CHURCHSUITE_REDIRECT_URI)
+        url.searchParams.set('response_type', 'code')
+        url.searchParams.set('scope', API_SCOPES_REQUIRED)
+        url.searchParams.set('state', this.#oauthState)
+        url.searchParams.set('code_challenge', challenge)
+        url.searchParams.set('code_challenge_method', 'S256')
+
+        await shell.openExternal(url.toString())
+    }
+
+    async handleAuthorizationResponse(rawUrl) {
+        try {
+            const url = new URL(rawUrl)
+            if (url.protocol !== 'churchsuite-plan-viewer:') {
+                return false
+            }
+
+            const code = url.searchParams.get('code')
+            const state = url.searchParams.get('state')
+            if (!code || !state || state !== this.#oauthState) {
+                log.error('[auth] OAuth callback rejected: missing or invalid state/code')
+                this.logout()
+                return false
+            }
+
+            this.#oauthState = null
+            const tokenBody = new URLSearchParams({
+                grant_type: 'authorization_code',
+                client_id: CHURCHSUITE_CLIENT_ID,
+                code,
+                redirect_uri: CHURCHSUITE_REDIRECT_URI,
+                code_verifier: this.#pkceCodeVerifier || ''
+            })
+
+            const { statusCode, body } = await request(CHURCHSUITE_TOKEN_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: tokenBody.toString()
+            })
+
+            if (statusCode !== 200) {
+                const errorText = await body.text()
+                log.error(`[auth] OAuth token exchange failed (${statusCode}): ${errorText}`)
+                this.logout()
+                return false
+            }
+
+            const tokenResponse = await body.json()
+            this.#authToken = tokenResponse.access_token || null
+            this.#pkceCodeVerifier = null
+
+            if (!this.#authToken) {
+                this.logout()
+                return false
+            }
+
+            this.setGlobalSetting('access_token', this.#authToken)
+            if (tokenResponse.refresh_token) {
+                this.setGlobalSetting('refresh_token', tokenResponse.refresh_token)
+            }
+
+            const user = await this.#getCurrentUser()
+            this.#userName = user?.data?.name || ''
+            if (this.#userName) {
+                this.setGlobalSetting('user_name', this.#userName)
+            }
+
+            this.connected = true
+            this.emit('authChanged')
+            return true
+        } catch (error) {
+            log.error(`[auth] Failed to process OAuth redirect: ${error.message}`)
+            this.logout()
+            return false
+        }
+    }
+
+    logout() {
+        this.#authToken = null
+        this.#pkceCodeVerifier = null
+        this.#oauthState = null
+        this.#userName = ''
+        this.setGlobalSetting('access_token', '')
+        this.setGlobalSetting('refresh_token', '')
+        this.setGlobalSetting('user_name', '')
+        this.connected = false
+        this.emit('authChanged')
     }
 
     async reload() {
@@ -386,28 +501,18 @@ export class Controller extends EventEmitter {
 
     // Get a ChurchSuite authentication token
     async #getAuthToken(force = false) {
-
-        if (this.#authToken && !force) return this.#authToken
-
-        const { statusCode, body } = await request(
-            'https://login.churchsuite.com',
-            {
-                path: '/oauth2/token',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Basic ' + Buffer.from(this.getGlobalSetting('client_id') + ":" + this.getGlobalSetting('client_secret')).toString('base64'),
-                },
-                body: `{"grant_type": "client_credentials", "scope": "${API_SCOPES_REQUIRED}"}`,
-            })
-
-        if (statusCode == 200) {
-            this.#authToken = (await body.json()).access_token
-        } else {
-            this.#authToken = null
+        if (this.#authToken && !force) {
+            return this.#authToken
         }
 
-        return this.#authToken
+        const storedToken = this.getGlobalSetting('access_token')
+        if (storedToken) {
+            this.#authToken = storedToken
+            return this.#authToken
+        }
+
+        this.#authToken = null
+        return null
     }
 
 
@@ -433,6 +538,13 @@ export class Controller extends EventEmitter {
 
         if (statusCode != 200) {
             log.error(`[#makeApiCall] HTTP error retrieving ${url}: received HTTP status code ${statusCode}\n${await body.text()}`)
+
+            if (statusCode === 401 || statusCode === 403) {
+                this.logout()
+                delete this.#cache[url]
+                return {}
+            }
+
             // Retry once
             authToken = await this.#getAuthToken(true)
             const { statusCode: retryStatusCode, body: retryBody } = await request(url, {
@@ -569,6 +681,11 @@ export class Controller extends EventEmitter {
 
     async #getAccountInfo() {
         return this.#makeApiCall('https://api.churchsuite.com/v2/account/info')
+    }
+
+
+    async #getCurrentUser() {
+        return this.#makeApiCall('https://api.churchsuite.com/v2/account/users/current')
     }
 
 
