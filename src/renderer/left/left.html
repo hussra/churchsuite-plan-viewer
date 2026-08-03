@@ -34,7 +34,7 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
     <button class="btn btn-primary w-100 mt-2" type="button" id="clientIdSaveButton">Save client ID</button>
   </div>
 
-  <div id="configuredContent" class="d-none">
+  <div id="configuredContent" class="d-none h-100 d-flex flex-column">
     <div id="authPanel" class="mb-3">
       <button class="btn btn-primary w-100" type="button" id="loginButton">Log in</button>
       <div id="authenticatedUser" class="d-none">
@@ -43,7 +43,7 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
       </div>
     </div>
 
-    <form>
+    <form class="flex-grow-1">
 
       <div class="container d-none" id="mainControlsTop">
       <div class="form-group mb-2">
@@ -222,6 +222,11 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
       </div><!-- mainControlsBottom -->
 
     </form>
+
+    <div id="resetClientIdPanel" class="mt-auto pt-3 d-none">
+      <small class="text-secondary d-block mb-2">If you need to use a different ChurchSuite client ID, you can clear the saved one here.</small>
+      <button class="btn btn-outline-secondary btn-sm w-100" type="button" id="forgetClientIdButton">Forget saved client ID</button>
+    </div>
   </div>
   </div>
 </body>

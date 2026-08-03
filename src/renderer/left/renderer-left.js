@@ -118,6 +118,7 @@ const loadSettings = async () => {
     const currentClientId = (await window.electronAPI.getGlobalSetting('churchsuite_client_id') || '').trim()
     document.getElementById('churchsuite_client_id').value = currentClientId
     document.getElementById('clientIdSetupInput').value = currentClientId
+    await updateAuthUI(await window.electronAPI.getAuthState())
 
     // Global settings
     const show_templates = await window.electronAPI.getGlobalSetting('show_templates')
@@ -142,18 +143,22 @@ const loadSettings = async () => {
     document.getElementById('show_log_location').closest('.form-text').classList.toggle('d-none', !enable_logging)
 }
 
-const updateAuthUI = (state = { authenticated: false, name: '' }) => {
+const updateAuthUI = async (state = { authenticated: false, name: '' }) => {
     const loginButton = document.getElementById('loginButton')
     const authenticatedUser = document.getElementById('authenticatedUser')
     const welcomeText = document.getElementById('welcomeText')
+    const resetClientIdPanel = document.getElementById('resetClientIdPanel')
+    const clientId = (await window.electronAPI.getGlobalSetting('churchsuite_client_id') || '').trim()
 
     if (state.authenticated) {
         loginButton.classList.add('d-none')
         authenticatedUser.classList.remove('d-none')
         welcomeText.textContent = `Welcome ${state.name || 'User'}`
+        resetClientIdPanel.classList.add('d-none')
     } else {
         loginButton.classList.remove('d-none')
         authenticatedUser.classList.add('d-none')
+        resetClientIdPanel.classList.toggle('d-none', !clientId)
     }
 }
 
@@ -281,6 +286,13 @@ const load = async () => {
     })
     document.getElementById('logoutButton').addEventListener('click', async () => {
         await window.electronAPI.logout()
+    })
+    document.getElementById('forgetClientIdButton').addEventListener('click', async () => {
+        await window.electronAPI.setGlobalSetting('churchsuite_client_id', '')
+        document.getElementById('churchsuite_client_id').value = ''
+        document.getElementById('clientIdSetupInput').value = ''
+        await loadSettings()
+        await updateAuthUI({ authenticated: false, name: '' })
     })
     document.getElementById('clientIdSaveButton').addEventListener('click', async () => {
         const clientId = document.getElementById('clientIdSetupInput').value.trim()
