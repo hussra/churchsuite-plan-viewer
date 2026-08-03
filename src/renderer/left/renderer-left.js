@@ -99,7 +99,26 @@ const selectLayout = (_event) => {
     window.electronAPI.selectLayout(layoutId)
 }
 
+const updateClientIdSetupVisibility = async () => {
+    const clientId = (await window.electronAPI.getGlobalSetting('churchsuite_client_id') || '').trim()
+    const hasClientId = !!clientId
+
+    document.getElementById('clientIdSetup').classList.toggle('d-none', hasClientId)
+    document.getElementById('configuredContent').classList.toggle('d-none', !hasClientId)
+
+    if (hasClientId) {
+        document.getElementById('clientIdSetupInput').value = clientId
+        document.getElementById('churchsuite_client_id').value = clientId
+    }
+}
+
 const loadSettings = async () => {
+    await updateClientIdSetupVisibility()
+
+    const currentClientId = (await window.electronAPI.getGlobalSetting('churchsuite_client_id') || '').trim()
+    document.getElementById('churchsuite_client_id').value = currentClientId
+    document.getElementById('clientIdSetupInput').value = currentClientId
+
     // Global settings
     const show_templates = await window.electronAPI.getGlobalSetting('show_templates')
     document.getElementById('show_templates').checked = show_templates
@@ -262,6 +281,23 @@ const load = async () => {
     })
     document.getElementById('logoutButton').addEventListener('click', async () => {
         await window.electronAPI.logout()
+    })
+    document.getElementById('clientIdSaveButton').addEventListener('click', async () => {
+        const clientId = document.getElementById('clientIdSetupInput').value.trim()
+        if (!clientId) {
+            document.getElementById('clientIdError').classList.remove('d-none')
+            return
+        }
+
+        document.getElementById('clientIdError').classList.add('d-none')
+        await window.electronAPI.setGlobalSetting('churchsuite_client_id', clientId)
+        await loadSettings()
+    })
+    document.getElementById('churchsuite_client_id').addEventListener('change', async () => {
+        const clientId = document.getElementById('churchsuite_client_id').value.trim()
+        await window.electronAPI.setGlobalSetting('churchsuite_client_id', clientId)
+        document.getElementById('clientIdSetupInput').value = clientId
+        await loadSettings()
     })
 
     // Global settings

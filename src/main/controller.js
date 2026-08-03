@@ -23,7 +23,7 @@ import { request } from 'undici'
 import toValidIdentifier from 'to-valid-identifier'
 import log from 'electron-log/main'
 
-import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4, HIDDEN_ITEM_TYPE_NAME, LOGGING_AVAILABLE_WHEN_PACKAGED, API_SCOPES_REQUIRED, CHURCHSUITE_CLIENT_ID, CHURCHSUITE_REDIRECT_URI, CHURCHSUITE_AUTH_URL, CHURCHSUITE_TOKEN_URL } from './constants'
+import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4, HIDDEN_ITEM_TYPE_NAME, LOGGING_AVAILABLE_WHEN_PACKAGED, API_SCOPES_REQUIRED, CHURCHSUITE_REDIRECT_URI, CHURCHSUITE_AUTH_URL, CHURCHSUITE_TOKEN_URL } from './constants'
 import { LayoutEngine } from './layout-engine'
 import { ChartEngine } from './chart-engine'
 
@@ -254,6 +254,10 @@ export class Controller extends EventEmitter {
         this.connected = (this.#authToken != null)
     }
 
+    getClientId() {
+        return (this.getGlobalSetting('churchsuite_client_id') || '').trim()
+    }
+
     isConfigured() {
         return !!this.#authToken || !!this.getGlobalSetting('access_token')
     }
@@ -313,13 +317,19 @@ export class Controller extends EventEmitter {
     }
 
     async initiateLogin() {
+        const clientId = this.getClientId()
+        if (!clientId) {
+            log.error('[auth] OAuth client ID is not configured')
+            return false
+        }
+
         const verifier = randomBytes(32).toString('base64url')
         this.#pkceCodeVerifier = verifier
         this.#oauthState = randomBytes(16).toString('base64url')
 
         const challenge = createHash('sha256').update(verifier).digest('base64url')
         const url = new URL(CHURCHSUITE_AUTH_URL)
-        url.searchParams.set('client_id', CHURCHSUITE_CLIENT_ID)
+        url.searchParams.set('client_id', clientId)
         url.searchParams.set('redirect_uri', CHURCHSUITE_REDIRECT_URI)
         url.searchParams.set('response_type', 'code')
         url.searchParams.set('scope', API_SCOPES_REQUIRED)
@@ -329,10 +339,18 @@ export class Controller extends EventEmitter {
 
         await this.#startRedirectServer()
         await shell.openExternal(url.toString())
+        return true
     }
 
     async handleAuthorizationResponse(rawUrl) {
         try {
+            const clientId = this.getClientId()
+            if (!clientId) {
+                log.error('[auth] OAuth client ID is not configured')
+                this.logout()
+                return false
+            }
+
             const url = new URL(rawUrl)
             const redirectUrl = new URL(CHURCHSUITE_REDIRECT_URI)
             if (url.protocol !== 'http:' || url.origin !== redirectUrl.origin || url.pathname !== redirectUrl.pathname) {
@@ -350,7 +368,7 @@ export class Controller extends EventEmitter {
             this.#oauthState = null
             const tokenBody = new URLSearchParams({
                 grant_type: 'authorization_code',
-                client_id: CHURCHSUITE_CLIENT_ID,
+                client_id: clientId,
                 code,
                 redirect_uri: CHURCHSUITE_REDIRECT_URI,
                 code_verifier: this.#pkceCodeVerifier || ''
