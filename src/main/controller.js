@@ -16,6 +16,7 @@
 
 import { EventEmitter } from 'node:events'
 import { createHash, randomBytes } from 'node:crypto'
+import { createServer } from 'node:http'
 import { app, safeStorage, shell } from 'electron'
 import Store from 'electron-store'
 import { request } from 'undici'
@@ -92,6 +93,7 @@ export class Controller extends EventEmitter {
     #userName = ''
     #oauthState = null
     #pkceCodeVerifier = null
+    #redirectServer = null
 
     #defaultBrand = null
     #types = null
@@ -256,6 +258,60 @@ export class Controller extends EventEmitter {
         return !!this.#authToken || !!this.getGlobalSetting('access_token')
     }
 
+    async #startRedirectServer() {
+        if (this.#redirectServer) {
+            return
+        }
+
+        const redirectUrl = new URL(CHURCHSUITE_REDIRECT_URI)
+
+        await new Promise((resolve, reject) => {
+            this.#redirectServer = createServer(async (req, res) => {
+                try {
+                    const requestUrl = new URL(req.url || '/', `http://${req.headers.host || redirectUrl.host}`)
+                    const isCallback = requestUrl.origin === redirectUrl.origin && requestUrl.pathname === redirectUrl.pathname
+                    if (!isCallback) {
+                        res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+                        res.end('Not found')
+                        return
+                    }
+
+                    const result = await this.handleAuthorizationResponse(requestUrl.toString())
+                    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
+                    res.end(result ? '<html><body><h1>Authentication complete</h1><p>You can close this window and return to the app.</p></body></html>' : '<html><body><h1>Authentication failed</h1><p>The app could not complete sign-in. Please try again.</p></body></html>')
+                    this.#stopRedirectServer()
+                } catch (error) {
+                    log.error(`[auth] Failed to handle redirect request: ${error.message}`)
+                    res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' })
+                    res.end('Authentication callback failed')
+                    this.#stopRedirectServer()
+                }
+            })
+
+            this.#redirectServer.on('error', (error) => {
+                log.error(`[auth] Redirect server failed to start: ${error.message}`)
+                this.#redirectServer = null
+                reject(error)
+            })
+
+            this.#redirectServer.listen(redirectUrl.port, redirectUrl.hostname, () => {
+                this.#redirectServer.unref()
+                resolve()
+            })
+        })
+    }
+
+    #stopRedirectServer() {
+        if (!this.#redirectServer) {
+            return
+        }
+
+        this.#redirectServer.close(() => {
+            this.#redirectServer = null
+        })
+        this.#redirectServer = null
+    }
+
     async initiateLogin() {
         const verifier = randomBytes(32).toString('base64url')
         this.#pkceCodeVerifier = verifier
@@ -271,13 +327,15 @@ export class Controller extends EventEmitter {
         url.searchParams.set('code_challenge', challenge)
         url.searchParams.set('code_challenge_method', 'S256')
 
+        await this.#startRedirectServer()
         await shell.openExternal(url.toString())
     }
 
     async handleAuthorizationResponse(rawUrl) {
         try {
             const url = new URL(rawUrl)
-            if (url.protocol !== 'churchsuite-plan-viewer:') {
+            const redirectUrl = new URL(CHURCHSUITE_REDIRECT_URI)
+            if (url.protocol !== 'http:' || url.origin !== redirectUrl.origin || url.pathname !== redirectUrl.pathname) {
                 return false
             }
 
@@ -344,6 +402,7 @@ export class Controller extends EventEmitter {
     }
 
     logout() {
+        this.#stopRedirectServer()
         this.#authToken = null
         this.#pkceCodeVerifier = null
         this.#oauthState = null

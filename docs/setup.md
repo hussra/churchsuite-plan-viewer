@@ -48,7 +48,7 @@ until you have installed and run the program.
 
 Now you can download and install ChurchSuite Plan Viewer from the [releases page](https://github.com/hussra/churchsuite-plan-viewer/releases).
 
-When it first runs, it will show a **Log in** button at the top of the left panel. Click it to sign in to ChurchSuite using the built-in OAuth flow. The app uses the PKCE authorisation code flow and redirects back to the custom URL scheme `churchsuite-plan-viewer:redir`.
+When it first runs, it will show a **Log in** button at the top of the left panel. Click it to sign in to ChurchSuite using the built-in OAuth flow. The app uses the PKCE authorisation code flow and opens a local loopback callback listener at `http://127.0.0.1:3456/callback` to receive the redirect from ChurchSuite.
 
 Once successfully signed in, the left pane will show a welcome message and a **Log out** button, and you will then see the plan and layout controls, with the selected plan preview on the right.
 

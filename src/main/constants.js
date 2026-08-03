@@ -22,7 +22,7 @@ export const DEFAULT_LEFT_PANEL_WIDTH = 300
 export const DRAGBAR_WIDTH = 4
 
 export const CHURCHSUITE_CLIENT_ID = 'fll06gfgb09tlboikvzy'
-export const CHURCHSUITE_REDIRECT_URI = 'churchsuite-plan-viewer:redir'
+export const CHURCHSUITE_REDIRECT_URI = 'http://127.0.0.1:3456/callback'
 export const CHURCHSUITE_AUTH_URL = 'https://login.churchsuite.com/oauth2/authorize'
 export const CHURCHSUITE_TOKEN_URL = 'https://login.churchsuite.com/oauth2/token'
 
