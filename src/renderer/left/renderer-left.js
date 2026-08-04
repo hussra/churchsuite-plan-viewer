@@ -108,7 +108,6 @@ const updateClientIdSetupVisibility = async () => {
 
     if (hasClientId) {
         document.getElementById('clientIdSetupInput').value = clientId
-        document.getElementById('churchsuite_client_id').value = clientId
     }
 }
 
@@ -116,7 +115,6 @@ const loadSettings = async () => {
     await updateClientIdSetupVisibility()
 
     const currentClientId = (await window.electronAPI.getGlobalSetting('churchsuite_client_id') || '').trim()
-    document.getElementById('churchsuite_client_id').value = currentClientId
     document.getElementById('clientIdSetupInput').value = currentClientId
     await updateAuthUI(await window.electronAPI.getAuthState())
 
@@ -289,7 +287,6 @@ const load = async () => {
     })
     document.getElementById('forgetClientIdButton').addEventListener('click', async () => {
         await window.electronAPI.setGlobalSetting('churchsuite_client_id', '')
-        document.getElementById('churchsuite_client_id').value = ''
         document.getElementById('clientIdSetupInput').value = ''
         await loadSettings()
         await updateAuthUI({ authenticated: false, name: '' })
@@ -303,12 +300,6 @@ const load = async () => {
 
         document.getElementById('clientIdError').classList.add('d-none')
         await window.electronAPI.setGlobalSetting('churchsuite_client_id', clientId)
-        await loadSettings()
-    })
-    document.getElementById('churchsuite_client_id').addEventListener('change', async () => {
-        const clientId = document.getElementById('churchsuite_client_id').value.trim()
-        await window.electronAPI.setGlobalSetting('churchsuite_client_id', clientId)
-        document.getElementById('clientIdSetupInput').value = clientId
         await loadSettings()
     })
 
