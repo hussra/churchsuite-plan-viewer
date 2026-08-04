@@ -16,6 +16,7 @@
 
 import { EventEmitter } from 'node:events'
 import { createHash, randomBytes } from 'node:crypto'
+import { readFileSync } from 'node:fs'
 import { createServer } from 'node:http'
 import { app, safeStorage, shell } from 'electron'
 import Store from 'electron-store'
@@ -26,6 +27,9 @@ import log from 'electron-log/main'
 import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4, HIDDEN_ITEM_TYPE_NAME, LOGGING_AVAILABLE_WHEN_PACKAGED, API_SCOPES_REQUIRED, CHURCHSUITE_REDIRECT_URI, CHURCHSUITE_AUTH_URL, CHURCHSUITE_TOKEN_URL } from './constants'
 import { LayoutEngine } from './layout-engine'
 import { ChartEngine } from './chart-engine'
+
+const REDIRECT_SUCCESS_HTML = readFileSync(new URL('./redirect-success.html', import.meta.url), 'utf8')
+const REDIRECT_FAILURE_HTML = readFileSync(new URL('./redirect-failure.html', import.meta.url), 'utf8')
 
 export class Controller extends EventEmitter {
 
@@ -282,7 +286,7 @@ export class Controller extends EventEmitter {
 
                     const result = await this.handleAuthorizationResponse(requestUrl.toString())
                     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
-                    res.end(result ? '<html><body><h1>Authentication complete</h1><p>You can close this window and return to the app.</p></body></html>' : '<html><body><h1>Authentication failed</h1><p>The app could not complete sign-in. Please try again.</p></body></html>')
+                    res.end(result ? REDIRECT_SUCCESS_HTML : REDIRECT_FAILURE_HTML)
                     this.#stopRedirectServer()
                 } catch (error) {
                     log.error(`[auth] Failed to handle redirect request: ${error.message}`)
