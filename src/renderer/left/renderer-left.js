@@ -279,6 +279,9 @@ const load = async () => {
     document.getElementById('editButton').addEventListener('click', editLayouts)
 
     // Authentication
+    document.getElementById('authHelpLink').addEventListener('click', async () => {
+        await window.electronAPI.openAuthHelpLink()
+    })
     document.getElementById('loginButton').addEventListener('click', async () => {
         await window.electronAPI.login()
     })

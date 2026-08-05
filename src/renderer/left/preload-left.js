@@ -31,6 +31,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     login: () => ipcRenderer.invoke('login'),
     logout: () => ipcRenderer.invoke('logout'),
     getAuthState: () => ipcRenderer.invoke('getAuthState'),
+    openAuthHelpLink: () => ipcRenderer.invoke('openAuthHelpLink'),
 
     isLoggingAvailable: () => ipcRenderer.invoke('isLoggingAvailable'),
     showLogLocation: () => ipcRenderer.invoke('showLogLocation'),
