@@ -16,6 +16,8 @@
 
 import { app, BaseWindow, Menu, shell } from 'electron'
 
+import path from 'node:path'
+
 import { addIpcHandlers } from './ipcHandlers'
 import { Controller } from './controller'
 import { MainWindow } from './window-main'
@@ -32,6 +34,14 @@ if (started) {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+
+    if (process.defaultApp) {
+        if (process.argv.length >= 2) {
+            app.setAsDefaultProtocolClient('churchsuite-plan-viewer', process.execPath, [path.resolve(process.argv[1])])
+        }
+    } else {
+        app.setAsDefaultProtocolClient('churchsuite-plan-viewer')
+    }
 
     if (process.platform === 'darwin') {
         const menu = createApplicationMenu()
