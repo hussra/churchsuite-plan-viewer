@@ -433,7 +433,9 @@ export class Controller extends EventEmitter {
         this.setGlobalSetting('refresh_token', '')
         this.setGlobalSetting('user_name', '')
         this.connected = false
+        this.#showPlanView = false
         this.emit('authChanged')
+        this.emit('viewChanged')
     }
 
     async reload() {
