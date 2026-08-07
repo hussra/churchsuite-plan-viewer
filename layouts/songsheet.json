@@ -1,6 +1,0 @@
-{
-    "name": "Song Lyrics",
-    "filenameSuffix": "-songsheet",
-    "song_lyrics": true,
-    "hide_settings": "name_style,song_lyrics,timings,time_format"
-}
