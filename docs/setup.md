@@ -7,6 +7,9 @@ rank: 1
 
 This guide will help you set up and configure the ChurchSuite Plan Viewer application.
 
+The way you set this up will change extensively in version 1.6 - these instructions apply to
+v1.5 and earlier.
+
 ### Setting up access
 
 Before you can use ChurchSuite Plan Viewer, you will need to set up a user account in ChurchSuite and grant "API access".
