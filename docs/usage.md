@@ -1,7 +1,7 @@
 ---
 title: Using the program
 layout: default
-rank: 2
+rank: 3
 ---
 ## Using the program
 

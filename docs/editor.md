@@ -1,7 +1,7 @@
 ---
 title: Layout editor
 layout: default
-rank: 4
+rank: 5
 ---
 ## Layout editor
 

@@ -1,7 +1,7 @@
 ---
 title: ChurchSuite tips
 layout: default
-rank: 3
+rank: 4
 ---
 ## ChurchSuite tips
 
