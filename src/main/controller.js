@@ -423,6 +423,59 @@ export class Controller extends EventEmitter {
         }
     }
 
+    async #refreshAccessToken() {
+        const clientId = this.getClientId()
+        const refreshToken = this.getGlobalSetting('refresh_token')
+
+        if (!clientId || !refreshToken) {
+            log.warn('[auth] Refresh token exchange skipped: missing client ID or refresh token')
+            return null
+        }
+
+        try {
+            const tokenBody = new URLSearchParams({
+                grant_type: 'refresh_token',
+                client_id: clientId,
+                refresh_token: refreshToken
+            })
+
+            const { statusCode, body } = await request(CHURCHSUITE_TOKEN_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: tokenBody.toString()
+            })
+
+            if (statusCode !== 200) {
+                const errorText = await body.text()
+                log.error(`[auth] OAuth refresh token exchange failed (${statusCode}): ${errorText}`)
+                return null
+            }
+
+            const tokenResponse = await body.json()
+            const refreshedAccessToken = tokenResponse.access_token || null
+            if (!refreshedAccessToken) {
+                log.error('[auth] OAuth refresh token exchange returned no access token')
+                return null
+            }
+
+            this.#authToken = refreshedAccessToken
+            this.setGlobalSetting('access_token', this.#authToken)
+
+            if (tokenResponse.refresh_token) {
+                this.setGlobalSetting('refresh_token', tokenResponse.refresh_token)
+            }
+
+            this.connected = true
+            this.emit('authChanged')
+            return this.#authToken
+        } catch (error) {
+            log.error(`[auth] Failed to refresh OAuth access token: ${error.message}`)
+            return null
+        }
+    }
+
     logout() {
         this.#stopRedirectServer()
         this.#authToken = null
@@ -619,17 +672,17 @@ export class Controller extends EventEmitter {
             }
         })
 
-        if (statusCode != 200) {
-            log.error(`[#makeApiCall] HTTP error retrieving ${url}: received HTTP status code ${statusCode}\n${await body.text()}`)
+        if (statusCode === 401 || statusCode === 403) {
+            log.warn(`[#makeApiCall] API call to ${url} was rejected with HTTP status code ${statusCode}; attempting token refresh`)
 
-            if (statusCode === 401 || statusCode === 403) {
+            const refreshedAccessToken = await this.#refreshAccessToken()
+            if (!refreshedAccessToken) {
                 this.logout()
                 delete this.#cache[url]
                 return {}
             }
 
-            // Retry once
-            authToken = await this.#getAuthToken(true)
+            authToken = refreshedAccessToken
             const { statusCode: retryStatusCode, body: retryBody } = await request(url, {
                 headers: {
                     'Authorization': 'Bearer ' + authToken
@@ -637,13 +690,26 @@ export class Controller extends EventEmitter {
             })
 
             if (retryStatusCode != 200) {
-                log.error(`[#makeApiCall] On retrying, received HTTP status code: ${retryStatusCode}\n${await retryBody.text()}`)
-                this.connected = false
+                log.error(`[#makeApiCall] On retrying after refresh, received HTTP status code: ${retryStatusCode}\n${await retryBody.text()}`)
+                if (retryStatusCode === 401 || retryStatusCode === 403) {
+                    this.logout()
+                } else {
+                    this.connected = false
+                }
                 delete this.#cache[url]
                 return {}
             }
 
+            statusCode = retryStatusCode
             body = retryBody
+        }
+
+        if (statusCode != 200) {
+            log.error(`[#makeApiCall] HTTP error retrieving ${url}: received HTTP status code ${statusCode}\n${await body.text()}`)
+
+            this.connected = false
+            delete this.#cache[url]
+            return {}
         }
 
         this.connected = true
