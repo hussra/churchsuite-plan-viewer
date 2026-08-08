@@ -426,7 +426,7 @@ export class Controller extends EventEmitter {
         const refreshToken = this.getGlobalSetting('refresh_token')
 
         if (!clientId || !refreshToken) {
-            log.warn('[auth] Refresh token exchange skipped: missing client ID or refresh token')
+            log.info('[auth] Refresh token exchange skipped: missing client ID or refresh token')
             return null
         }
 
@@ -689,6 +689,7 @@ export class Controller extends EventEmitter {
 
             if (retryStatusCode != 200) {
                 log.error(`[#makeApiCall] On retrying after refresh, received HTTP status code: ${retryStatusCode}\n${await retryBody.text()}`)
+                // TODO revisit this, including distinguishing between 401 and 403, and whether to log out or flag a permissions issue.
                 if (retryStatusCode === 401 || retryStatusCode === 403) {
                     this.logout()
                 } else {
