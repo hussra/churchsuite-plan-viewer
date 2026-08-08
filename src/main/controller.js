@@ -24,7 +24,7 @@ import { request } from 'undici'
 import toValidIdentifier from 'to-valid-identifier'
 import log from 'electron-log/main'
 
-import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4, HIDDEN_ITEM_TYPE_NAME, LOGGING_AVAILABLE_WHEN_PACKAGED, API_SCOPES_REQUIRED, CHURCHSUITE_REDIRECT_URI, CHURCHSUITE_AUTH_URL, CHURCHSUITE_TOKEN_URL } from './constants'
+import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4, OLD_SETTINGS_TO_DELETE_1_6, HIDDEN_ITEM_TYPE_NAME, LOGGING_AVAILABLE_WHEN_PACKAGED, API_SCOPES_REQUIRED, CHURCHSUITE_REDIRECT_URI, CHURCHSUITE_AUTH_URL, CHURCHSUITE_TOKEN_URL } from './constants'
 import { LayoutEngine } from './layout-engine'
 import { ChartEngine } from './chart-engine'
 
@@ -68,6 +68,11 @@ export class Controller extends EventEmitter {
                     store.set('templates', {})
                     OLD_SETTINGS_TO_DELETE_1_4.forEach(key => store.delete(key))
                     log.info('[store migrations] migration for version 1.4.0 complete')
+                },
+                '1.6.0': (store) => {
+                    log.info('[store migrations] running migration for version 1.6.0: deleting old settings that are no longer used')
+                    OLD_SETTINGS_TO_DELETE_1_6.forEach(key => store.delete(key))
+                    log.info('[store migrations] migration for version 1.6.0 complete')
                 }
             }
         })
@@ -78,8 +83,6 @@ export class Controller extends EventEmitter {
         this.#authToken = this.getGlobalSetting('access_token') || null
         this.#userName = this.getGlobalSetting('user_name') || ''
         this.#isConnected = !!this.#authToken
-        this.deleteGlobalSetting('client_secret')
-        this.deleteGlobalSetting('client_id')
 
         log.transports.file.level = (this.getGlobalSetting('enable_logging') ? 'debug' : 'error')
 

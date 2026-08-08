@@ -27,6 +27,7 @@ export const CHURCHSUITE_TOKEN_URL = 'https://login.churchsuite.com/oauth2/token
 
 export const OLD_SETTINGS_TO_DELETE_1_3 = ['font_size', 'name_style', 'song_lyrics', 'page_size', 'two_up', 'page_numbers']
 export const OLD_SETTINGS_TO_DELETE_1_4 = ['custom_templates']
+export const OLD_SETTINGS_TO_DELETE_1_6 = ['client_id', 'client_secret']
 
 export const LAYOUTS_DIR = 'layouts'
 
