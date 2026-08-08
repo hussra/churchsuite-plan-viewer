@@ -68,10 +68,6 @@ export async function addIpcHandlers(controller) {
        globalThis.editorWindow?.importLayout()
     })
 
-    ipcMain.handle('isConfigured', async () => {
-        return controller.isConfigured()
-    })
-
     ipcMain.handle('login', async () => {
         return controller.initiateLogin()
     })
@@ -83,7 +79,7 @@ export async function addIpcHandlers(controller) {
     ipcMain.handle('getAuthState', () => {
         const hasSavedToken = !!controller.getGlobalSetting('access_token')
         return {
-            authenticated: hasSavedToken || (controller.isConfigured() && controller.connected),
+            authenticated: hasSavedToken || controller.connected,
             name: controller.authenticatedUserName || controller.getGlobalSetting('user_name') || ''
         }
     })

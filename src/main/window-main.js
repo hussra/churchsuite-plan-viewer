@@ -122,7 +122,7 @@ export class MainWindow {
         this.#controller.on('authChanged', () => {
             const hasSavedToken = !!this.#controller.getGlobalSetting('access_token')
             this.#leftView.webContents.send('setAuthState', {
-                authenticated: hasSavedToken || (this.#controller.isConfigured() && this.#controller.connected),
+                authenticated: hasSavedToken || this.#controller.connected,
                 name: this.#controller.authenticatedUserName || this.#controller.getGlobalSetting('user_name') || ''
             })
         })

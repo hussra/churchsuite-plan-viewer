@@ -152,7 +152,7 @@ export class Controller extends EventEmitter {
         this.#isConnected = isConnected
 
         if (changed || !isConnected) {
-            this.emit('configChanged', this.isConfigured() && isConnected)
+            this.emit('configChanged', isConnected)
             if (isConnected) {
                 this.reload()
             }
@@ -260,10 +260,6 @@ export class Controller extends EventEmitter {
 
     getClientId() {
         return (this.getGlobalSetting('churchsuite_client_id') || '').trim()
-    }
-
-    isConfigured() {
-        return !!this.#authToken || !!this.getGlobalSetting('access_token')
     }
 
     async #startRedirectServer() {
