@@ -257,3 +257,7 @@ export const HIDDEN_ITEM_TYPE_NAME = 'hidden'
 export const LOGGING_AVAILABLE_WHEN_PACKAGED = false
 
 export const API_SCOPES_REQUIRED = 'account user planning.read'
+
+export const HTML_DIR = 'src/main/html'
+export const REDIRECT_SUCCESS_HTML = 'redirect-success.html'
+export const REDIRECT_FAILURE_HTML = 'redirect-failure.html'

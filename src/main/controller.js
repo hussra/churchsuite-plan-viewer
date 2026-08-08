@@ -14,9 +14,10 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import * as path from 'node:path'
+import * as fs from 'fs'
 import { EventEmitter } from 'node:events'
 import { createHash, randomBytes } from 'node:crypto'
-import { readFileSync } from 'node:fs'
 import { createServer } from 'node:http'
 import { app, safeStorage, shell } from 'electron'
 import Store from 'electron-store'
@@ -27,9 +28,6 @@ import log from 'electron-log/main'
 import * as Constants from './constants'
 import { LayoutEngine } from './layout-engine'
 import { ChartEngine } from './chart-engine'
-
-const REDIRECT_SUCCESS_HTML = readFileSync(new URL('./redirect-success.html', import.meta.url), 'utf8')
-const REDIRECT_FAILURE_HTML = readFileSync(new URL('./redirect-failure.html', import.meta.url), 'utf8')
 
 export class Controller extends EventEmitter {
 
@@ -199,6 +197,15 @@ export class Controller extends EventEmitter {
         return Constants.LOGGING_AVAILABLE_WHEN_PACKAGED || !app.isPackaged
     }
 
+    get htmlDir() {
+        return app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", Constants.HTML_DIR) : Constants.HTML_DIR
+    }
+
+    #getHtmlFromDisk(filename) {
+        const htmlFile = path.resolve(this.htmlDir, filename)
+        return fs.readFileSync(htmlFile, "UTF-8")
+    }
+
     getGlobalSetting(key) {
         if ((key == 'access_token') || (key == 'refresh_token')) {
             const value = this.#store.get(key)
@@ -275,8 +282,9 @@ export class Controller extends EventEmitter {
                     }
 
                     const result = await this.handleAuthorizationResponse(requestUrl.toString())
+                    const filename = result ? Constants.REDIRECT_SUCCESS_HTML : Constants.REDIRECT_FAILURE_HTML
                     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
-                    res.end(result ? REDIRECT_SUCCESS_HTML : REDIRECT_FAILURE_HTML)
+                    res.end(this.#getHtmlFromDisk(filename))
                     this.#stopRedirectServer()
                 } catch (error) {
                     log.error(`[auth] Failed to handle redirect request: ${error.message}`)
