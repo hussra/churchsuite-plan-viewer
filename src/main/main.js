@@ -25,23 +25,42 @@ import { showAboutWindow } from './window-about'
 
 import started from 'electron-squirrel-startup'
 
+let controller = null
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
     app.quit()
 }
 
+// Protocol handler for churchsuite-plan-viewer:// links.
+if (process.defaultApp) {
+    if (process.argv.length >= 2) {
+        app.setAsDefaultProtocolClient('churchsuite-plan-viewer', process.execPath, [path.resolve(process.argv[1])])
+    }
+} else {
+    app.setAsDefaultProtocolClient('churchsuite-plan-viewer')
+}
+
+// Only allow a single instance of the application to run. If a second instance is launched, focus existing window.
+if (!app.requestSingleInstanceLock()) {
+    app.quit()
+} else {
+    app.on('second-instance', async (_event, _commandLine, _workingDirectory) => {
+        // Someone tried to run a second instance, we should focus our window.
+        if ((BaseWindow.getAllWindows().length === 0) && (controller !== null)) {
+            globalThis.mainWindow = new MainWindow(controller)
+        }
+        if (globalThis.mainWindow) {
+            globalThis.mainWindow.restoreOrFocus()
+        }
+    })
+}
+
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-
-    if (process.defaultApp) {
-        if (process.argv.length >= 2) {
-            app.setAsDefaultProtocolClient('churchsuite-plan-viewer', process.execPath, [path.resolve(process.argv[1])])
-        }
-    } else {
-        app.setAsDefaultProtocolClient('churchsuite-plan-viewer')
-    }
 
     if (process.platform === 'darwin') {
         const menu = createApplicationMenu()
@@ -49,7 +68,7 @@ app.whenReady().then(() => {
     }
 
     // The Controller contains all the business logic for the application
-    let controller = new Controller()
+    controller = new Controller()
     globalThis.mainWindow = new MainWindow(controller)
     
     addIpcHandlers(controller)

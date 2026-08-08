@@ -363,4 +363,12 @@ export class MainWindow {
         })
     }
 
+
+    restoreOrFocus() {
+        if (this.#win.isMinimized()) {
+            this.#win.restore()
+        }
+        this.#win.focus()
+    }
+
 }
