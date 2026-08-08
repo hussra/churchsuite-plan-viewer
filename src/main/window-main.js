@@ -115,7 +115,7 @@ export class MainWindow {
             this.resizePanes()
         })
 
-        this.#controller.on('configChanged', (connected) => {
+        this.#controller.on('connectionStatusChanged', (connected) => {
             this.#leftView.webContents.send('setConnected', connected)
         })
 

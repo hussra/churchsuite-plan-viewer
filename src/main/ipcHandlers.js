@@ -130,8 +130,8 @@ export async function addIpcHandlers(controller) {
     })
 
     // Called when left renderer startup is complete
-    ipcMain.handle('leftRendererStartupComplete', () => {
-        controller.appStartupComplete()
+    ipcMain.handle('leftRendererStartupComplete', async () => {
+        await controller.appStartupComplete()
     })
 
     ipcMain.handle('getVersion', () => {

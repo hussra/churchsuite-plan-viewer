@@ -74,9 +74,6 @@ export class Controller extends EventEmitter {
         this.#store.onDidChange('enable_logging', ( newValue, _oldValue) => {
             log.transports.file.level = (newValue ? 'debug' : 'error')
         })
-        this.#store.onDidAnyChange(( _newValue, _oldValue) => {
-            this.#configChanged()
-        })
 
         this.#authToken = this.getGlobalSetting('access_token') || null
         this.#userName = this.getGlobalSetting('user_name') || ''
@@ -152,7 +149,7 @@ export class Controller extends EventEmitter {
         this.#isConnected = isConnected
 
         if (changed || !isConnected) {
-            this.emit('configChanged', isConnected)
+            this.emit('connectionStatusChanged', isConnected)
             if (isConnected) {
                 this.reload()
             }
@@ -250,12 +247,6 @@ export class Controller extends EventEmitter {
         } else {
             this.loadPlan()
         }
-    }
-
-    async #configChanged() {
-        // Force reauthentication
-        await this.#getAuthToken(true)
-        this.connected = (this.#authToken != null)
     }
 
     getClientId() {
@@ -884,10 +875,13 @@ export class Controller extends EventEmitter {
         return typeof input[Symbol.iterator] === 'function'
     }
 
-    appStartupComplete() {
-        // Force reconnection
-        this.#isConnected = false
-        this.#configChanged()
+    async appStartupComplete() {
+        await this.#getAuthToken(true)
+        this.connected = (this.#authToken != null)
+        this.emit('connectionStatusChanged', this.connected)
+        if (this.connected) {
+            this.reload()
+        }
     }
 
 }
