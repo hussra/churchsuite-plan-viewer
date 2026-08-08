@@ -24,7 +24,7 @@ import { request } from 'undici'
 import toValidIdentifier from 'to-valid-identifier'
 import log from 'electron-log/main'
 
-import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4, OLD_SETTINGS_TO_DELETE_1_6, HIDDEN_ITEM_TYPE_NAME, LOGGING_AVAILABLE_WHEN_PACKAGED, API_SCOPES_REQUIRED, CHURCHSUITE_REDIRECT_URI, CHURCHSUITE_AUTH_URL, CHURCHSUITE_TOKEN_URL } from './constants'
+import * as Constants from './constants'
 import { LayoutEngine } from './layout-engine'
 import { ChartEngine } from './chart-engine'
 
@@ -37,7 +37,7 @@ export class Controller extends EventEmitter {
         super()
 
         this.#store = new Store({
-            schema: SETTINGS_SCHEMA,
+            schema: Constants.SETTINGS_SCHEMA,
             beforeEachMigration: (store, context) => {
 		        log.info(`[store migrations] migrate from ${context.fromVersion} to ${context.toVersion}`)
 	        },
@@ -54,7 +54,7 @@ export class Controller extends EventEmitter {
                         })
                     }
 
-                    OLD_SETTINGS_TO_DELETE_1_3.forEach(key => store.delete(key))
+                    Constants.OLD_SETTINGS_TO_DELETE_1_3.forEach(key => store.delete(key))
                     log.info('[store migrations] migration for version 1.3.0 complete')
                 },
                 '1.4.0': (store) => {
@@ -66,12 +66,12 @@ export class Controller extends EventEmitter {
                         store.set('layouts', store.get('templates'))
                     }
                     store.set('templates', {})
-                    OLD_SETTINGS_TO_DELETE_1_4.forEach(key => store.delete(key))
+                    Constants.OLD_SETTINGS_TO_DELETE_1_4.forEach(key => store.delete(key))
                     log.info('[store migrations] migration for version 1.4.0 complete')
                 },
                 '1.6.0': (store) => {
                     log.info('[store migrations] running migration for version 1.6.0: deleting old settings that are no longer used')
-                    OLD_SETTINGS_TO_DELETE_1_6.forEach(key => store.delete(key))
+                    Constants.OLD_SETTINGS_TO_DELETE_1_6.forEach(key => store.delete(key))
                     log.info('[store migrations] migration for version 1.6.0 complete')
                 }
             }
@@ -196,7 +196,7 @@ export class Controller extends EventEmitter {
     }
 
     get loggingAvailable() {
-        return LOGGING_AVAILABLE_WHEN_PACKAGED || !app.isPackaged
+        return Constants.LOGGING_AVAILABLE_WHEN_PACKAGED || !app.isPackaged
     }
 
     getGlobalSetting(key) {
@@ -261,7 +261,7 @@ export class Controller extends EventEmitter {
             return
         }
 
-        const redirectUrl = new URL(CHURCHSUITE_REDIRECT_URI)
+        const redirectUrl = new URL(Constants.CHURCHSUITE_REDIRECT_URI)
 
         await new Promise((resolve, reject) => {
             this.#redirectServer = createServer(async (req, res) => {
@@ -322,11 +322,11 @@ export class Controller extends EventEmitter {
         this.#oauthState = randomBytes(16).toString('base64url')
 
         const challenge = createHash('sha256').update(verifier).digest('base64url')
-        const url = new URL(CHURCHSUITE_AUTH_URL)
+        const url = new URL(Constants.CHURCHSUITE_AUTH_URL)
         url.searchParams.set('client_id', clientId)
-        url.searchParams.set('redirect_uri', CHURCHSUITE_REDIRECT_URI)
+        url.searchParams.set('redirect_uri', Constants.CHURCHSUITE_REDIRECT_URI)
         url.searchParams.set('response_type', 'code')
-        url.searchParams.set('scope', API_SCOPES_REQUIRED)
+        url.searchParams.set('scope', Constants.API_SCOPES_REQUIRED)
         url.searchParams.set('state', this.#oauthState)
         url.searchParams.set('code_challenge', challenge)
         url.searchParams.set('code_challenge_method', 'S256')
@@ -346,7 +346,7 @@ export class Controller extends EventEmitter {
             }
 
             const url = new URL(rawUrl)
-            const redirectUrl = new URL(CHURCHSUITE_REDIRECT_URI)
+            const redirectUrl = new URL(Constants.CHURCHSUITE_REDIRECT_URI)
             if (url.protocol !== 'http:' || url.origin !== redirectUrl.origin || url.pathname !== redirectUrl.pathname) {
                 return false
             }
@@ -364,11 +364,11 @@ export class Controller extends EventEmitter {
                 grant_type: 'authorization_code',
                 client_id: clientId,
                 code,
-                redirect_uri: CHURCHSUITE_REDIRECT_URI,
+                redirect_uri: Constants.CHURCHSUITE_REDIRECT_URI,
                 code_verifier: this.#pkceCodeVerifier || ''
             })
 
-            const { statusCode, body } = await request(CHURCHSUITE_TOKEN_URL, {
+            const { statusCode, body } = await request(Constants.CHURCHSUITE_TOKEN_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -429,7 +429,7 @@ export class Controller extends EventEmitter {
                 refresh_token: refreshToken
             })
 
-            const { statusCode, body } = await request(CHURCHSUITE_TOKEN_URL, {
+            const { statusCode, body } = await request(Constants.CHURCHSUITE_TOKEN_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -581,7 +581,7 @@ export class Controller extends EventEmitter {
         }
 
         // Strip out items of type 'hidden'
-        const hiddenType = Object.values(types).find(type => type.name.toLowerCase() == HIDDEN_ITEM_TYPE_NAME)
+        const hiddenType = Object.values(types).find(type => type.name.toLowerCase() == Constants.HIDDEN_ITEM_TYPE_NAME)
         let filteredItems = items
         if (hiddenType?.id) {
             filteredItems = items.filter(item => item.type_id != hiddenType.id)
