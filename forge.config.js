@@ -41,6 +41,7 @@ module.exports = {
       name: '@electron-forge/maker-dmg',
       config: (arch) => ({
         background: './assets/background-DMG.png',
+        icon: './assets/icon.icns',
         format: 'ULFO',
         iconSize: 200,
         contents: [
