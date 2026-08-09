@@ -29,7 +29,8 @@ module.exports = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: "layouts", to: "layouts" }
+        { from: "layouts", to: "layouts" },
+        { from: "src/main/html", to: "src/main/html" },
       ],
     }),
   ],
