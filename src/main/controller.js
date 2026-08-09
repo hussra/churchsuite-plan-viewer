@@ -208,9 +208,14 @@ export class Controller extends EventEmitter {
 
     getGlobalSetting(key) {
         if ((key == 'access_token') || (key == 'refresh_token')) {
+            if (!safeStorage.isEncryptionAvailable()) {
+                log.debug(`[settings] Cannot retrieve ${key}: safeStorage encryption is not available`)
+                return null
+            }
+
             const value = this.#store.get(key)
             if (!value) {
-                return ''
+                return null
             }
             if (value.startsWith('base64:')) {
                 return safeStorage.decryptString(Buffer.from(value.substring(7), 'base64'))
@@ -224,6 +229,10 @@ export class Controller extends EventEmitter {
 
     setGlobalSetting(key, value) {
         if ((key == 'access_token') || (key == 'refresh_token')) {
+            if (!safeStorage.isEncryptionAvailable()) {
+                log.debug(`[settings] Cannot store ${key}: safeStorage encryption is not available`)
+                return
+            }
             const storedValue = (value == null || value == '') ? '' : 'base64:' + safeStorage.encryptString(value).toString('base64')
             this.#store.set(key, storedValue)
         } else {
