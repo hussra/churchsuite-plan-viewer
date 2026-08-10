@@ -25,217 +25,219 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
 <body>
   <div id="dragbar"></div>
   <div id="leftmain">
-  <h1>ChurchSuite Plan Viewer</h1>
+    <h1>ChurchSuite Plan Viewer</h1>
 
-  <form>
+    <div id="clientIdSetup" class="mb-3">
+      <p>
+        <em>
+          <small>
+            See the <a id="authHelpLink" href="#">documentation</a>
+            for help on how to configure ChurchSuite access for this program.
+          </small>
+        </em>
+      </p>
 
-    <div class="container d-none" id="mainControlsTop">
-      <div class="form-group mb-2">
-        <label for="plan">Select a plan</label>
-        <div class="input-group">
-          <select class="form-select" id="plan" aria-label="Select a plan">
-            <option value="">--Select plan--</option>
-          </select>
-          <button class="btn btn-outline-secondary" type="button" id="refreshButton" title="Refresh">
-            <i class="bi bi-arrow-clockwise"></i>
-          </button>
+      <label class="form-label" for="clientIdSetupInput">
+        ChurchSuite OAuth Client Identifier
+      </label>
+      <input class="form-control" type="text" id="clientIdSetupInput" placeholder="Enter client ID" />
+      <div id="clientIdError" class="text-danger small mt-2 d-none">A client ID is required before continuing.</div>
+      <button class="btn btn-primary w-100 mt-2" type="button" id="clientIdSaveButton">Save</button>
+    </div><!-- clientIdSetup -->
+
+    <div id="configuredContent" class="d-none h-100 d-flex flex-column">
+
+      <div id="authPanel" class="mb-3">
+        <button class="btn btn-primary w-100" type="button" id="loginButton">Log in</button>
+        <div id="authenticatedUser" class="d-none">
+          <div class="fw-semibold" id="welcomeText">Welcome</div>
+          <button class="btn btn-outline-secondary btn-sm mt-2" type="button" id="logoutButton">Log out</button>
         </div>
       </div>
 
-      <div class="form-group mb-2">
-        <label for="layout">Select a layout</label>
-        <div class="input-group">
-          <select class="form-select" id="layout" aria-label="Select a layout">
-            <option value="">--Select layout--</option>
-          </select>
-          <button class="btn btn-outline-secondary" type="button" id="editButton" title="Edit Layouts">
-            <i class="bi bi-pencil"></i>
-          </button>
-        </div>
-      </div>
-    </div><!-- mainControlsTop -->
+      <form class="flex-grow-1">
 
-    <div class="accordion mb-2" id="settingsAccordion">
-
-      <div id="globalSettingsAccordionItem" class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-            data-bs-target="#globalSettings" aria-controls="globalSettings">
-            Global settings
-          </button>
-        </h2>
-
-        <div id="globalSettings" class="accordion-collapse collapse" data-bs-parent="#settingsAccordion">
-          <div class="accordion-body">
-
-            <div class="form-group mb-2">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="show_templates">
-                <label class="form-check-label" for="show_templates">Show plan templates</label>
-              </div>
-            </div>
-
-            <div class="form-group mb-2">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="past_plans">
-                <label class="form-check-label" for="past_plans">Show past plans</label>
-              </div>
-            </div>
-
-            <div class="form-group mb-2">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="draft_plans">
-                <label class="form-check-label" for="draft_plans">Include draft plans</label>
-              </div>
-            </div>
-
-            <div class="form-group mb-2">
-              <label class="form-label" for="plans_quantity">Number of plans to show</label>
-              <input type="number" min="1" max="250" class="form-control" id="plans_quantity" />
-            </div>
-            
-            <div class="form-group mb-2">
-              <label class="form-label" for="plans_quantity">CCLI Licence No</label>
-              <input type="number" min="1" class="form-control" id="ccli_licence" />
-            </div>
-
-            <div class="form-group mb-2">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="enable_logging">
-                <label class="form-check-label" for="enable_logging">Enable logging</label>
-                <p class="form-text"><small><a href="#" id="show_log_location">Show log file location</a></small></p>
-              </div>
-            </div>
-
-          </div>
-        </div><!-- globalSettings -->
-      </div>
-
-      <div id="layoutSettingsAccordionItem" class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-            data-bs-target="#layoutSettings" aria-controls="layoutSettings">
-            Layout settings
-          </button>
-        </h2>
-
-        <div id="layoutSettings" class="accordion-collapse collapse" data-bs-parent="#settingsAccordion">
-          <div class="accordion-body">
-
-            <div class="form-group mb-2">
-              <label class="form-label" for="plans_quantity">Base font size (px)</label>
-              <input type="number" min="10" max="24" class="form-control" id="font_size" />
-            </div>
-
-            <div class="form-group mb-2">
-              <label for="name_style">Default name style</label>
-              <div class="input-group">
-                <select class="form-select" id="name_style" aria-label="Show names as">
-                  <option value="first">Fred</option>
-                  <option value="first_initial">Fred J</option>
-                  <option value="first_last">Fred Jones</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group mb-2">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="song_lyrics">
-                <label class="form-check-label" for="song_lyrics">Show song lyrics</label>
-              </div>
-            </div>
-
-            <div class="form-group mb-2">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="timings">
-                <label class="form-check-label" for="timings">Show timings</label>
-              </div>
-            </div>
-
-            <div class="form-group mb-2">
-              <label for="time_format">Time format</label>
-              <div class="input-group">
-                <select class="form-select" id="time_format" aria-label="Time format">
-                  <option value="%l.%M%P">12-hour (10.15am)</option>
-                  <option value="%H:%M">24-hour (10:15)</option>
-                  <option value="%H:%M:%S">24-hour with seconds (10:15:00)</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group mb-2">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="page_numbers">
-                <label class="form-check-label" for="page_numbers">Show page numbers</label>
-              </div>
-            </div>
-
-            <div class="form-group mb-2">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="two_up">
-                <label class="form-check-label" for="two_up">2 copies per sheet</label>
-              </div>
-            </div>
-
-            <div class="form-group mb-2">
-              <label for="page_size">Page size</label>
-              <select class="form-select" id="page_size" aria-label="Page size">
-                <option value="a4">A4</option>
-                <option value="a5">A5</option>
-                <option value="letter">Letter</option>
+        <div class="container d-none" id="mainControlsTop">
+          <div class="form-group mb-2">
+            <label for="plan">Select a plan</label>
+            <div class="input-group">
+              <select class="form-select" id="plan" aria-label="Select a plan">
+                <option value="">--Select plan--</option>
               </select>
-            </div>
-
-          </div>
-        </div><!-- layoutSettings -->
-      </div>
-
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-            data-bs-target="#authenticationSettings" aria-controls="authenticationSettings">
-            Authentication settings
-          </button>
-        </h2>
-
-        <div id="authenticationSettings" class="accordion-collapse collapse" data-bs-parent="#settingsAccordion">
-          <div class="accordion-body">
-
-            <p>
-              <em>
-                <small>
-                  See the <a id="authHelpLink" href="#">documentation</a>
-                  for help on how to configure ChurchSuite access for this program.
-                </small>
-              </em>
-            </p>
-            
-            <div class="form-group mb-2">
-              <label for="client_id">Client Identifier</label>
-              <input type="password" class="form-control" id="client_id">
-            </div>
-            <div class="form-group mb-2">
-              <label for="client_secret">Client Secret</label>
-              <input type="password" class="form-control" id="client_secret">
+              <button class="btn btn-outline-secondary" type="button" id="refreshButton" title="Refresh">
+                <i class="bi bi-arrow-clockwise"></i>
+              </button>
             </div>
           </div>
 
-        </div><!-- authenticationSettings -->
+          <div class="form-group mb-2">
+            <label for="layout">Select a layout</label>
+            <div class="input-group">
+              <select class="form-select" id="layout" aria-label="Select a layout">
+                <option value="">--Select layout--</option>
+              </select>
+              <button class="btn btn-outline-secondary" type="button" id="editButton" title="Edit Layouts">
+                <i class="bi bi-pencil"></i>
+              </button>
+            </div>
+          </div>
+        </div><!-- mainControlsTop -->
 
-      </div>
-    </div>
+        <div class="accordion mb-2" id="settingsAccordion">
 
-    <div class="container d-none" id="mainControlsBottom">
-      <div class="mb-2">
-        <button type="button" class="btn btn-primary" id="exportPDF">
-          <i class="bi bi-file-earmark-pdf"></i>
-          Create PDF
-        </button>
-      </div>
-    </div><!-- mainControlsBottom -->
+          <div id="globalSettingsAccordionItem" class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#globalSettings" aria-controls="globalSettings">
+                Global settings
+              </button>
+            </h2>
 
-  </form>
-  </div>
+            <div id="globalSettings" class="accordion-collapse collapse" data-bs-parent="#settingsAccordion">
+              <div class="accordion-body">
+
+                <div class="form-group mb-2">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="show_templates">
+                    <label class="form-check-label" for="show_templates">Show plan templates</label>
+                  </div>
+                </div>
+
+                <div class="form-group mb-2">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="past_plans">
+                    <label class="form-check-label" for="past_plans">Show past plans</label>
+                  </div>
+                </div>
+
+                <div class="form-group mb-2">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="draft_plans">
+                    <label class="form-check-label" for="draft_plans">Include draft plans</label>
+                  </div>
+                </div>
+
+                <div class="form-group mb-2">
+                  <label class="form-label" for="plans_quantity">Number of plans to show</label>
+                  <input type="number" min="1" max="250" class="form-control" id="plans_quantity" />
+                </div>
+                
+                <div class="form-group mb-2">
+                  <label class="form-label" for="plans_quantity">CCLI Licence No</label>
+                  <input type="number" min="1" class="form-control" id="ccli_licence" />
+                </div>
+
+                <div class="form-group mb-2">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="enable_logging">
+                    <label class="form-check-label" for="enable_logging">Enable logging</label>
+                    <p class="form-text"><small><a href="#" id="show_log_location">Show log file location</a></small></p>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- globalSettings -->
+          </div><!-- globalSettingsAccordionItem -->
+
+          <div id="layoutSettingsAccordionItem" class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#layoutSettings" aria-controls="layoutSettings">
+                Layout settings
+              </button>
+            </h2>
+
+            <div id="layoutSettings" class="accordion-collapse collapse" data-bs-parent="#settingsAccordion">
+              <div class="accordion-body">
+
+                <div class="form-group mb-2">
+                  <label class="form-label" for="plans_quantity">Base font size (px)</label>
+                  <input type="number" min="10" max="24" class="form-control" id="font_size" />
+                </div>
+
+                <div class="form-group mb-2">
+                  <label for="name_style">Default name style</label>
+                  <div class="input-group">
+                    <select class="form-select" id="name_style" aria-label="Show names as">
+                      <option value="first">Fred</option>
+                      <option value="first_initial">Fred J</option>
+                      <option value="first_last">Fred Jones</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group mb-2">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="song_lyrics">
+                    <label class="form-check-label" for="song_lyrics">Show song lyrics</label>
+                  </div>
+                </div>
+
+                <div class="form-group mb-2">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="timings">
+                    <label class="form-check-label" for="timings">Show timings</label>
+                  </div>
+                </div>
+
+                <div class="form-group mb-2">
+                  <label for="time_format">Time format</label>
+                  <div class="input-group">
+                    <select class="form-select" id="time_format" aria-label="Time format">
+                      <option value="%l.%M%P">12-hour (10.15am)</option>
+                      <option value="%H:%M">24-hour (10:15)</option>
+                      <option value="%H:%M:%S">24-hour with seconds (10:15:00)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group mb-2">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="page_numbers">
+                    <label class="form-check-label" for="page_numbers">Show page numbers</label>
+                  </div>
+                </div>
+
+                <div class="form-group mb-2">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="two_up">
+                    <label class="form-check-label" for="two_up">2 copies per sheet</label>
+                  </div>
+                </div>
+
+                <div class="form-group mb-2">
+                  <label for="page_size">Page size</label>
+                  <select class="form-select" id="page_size" aria-label="Page size">
+                    <option value="a4">A4</option>
+                    <option value="a5">A5</option>
+                    <option value="letter">Letter</option>
+                  </select>
+                </div>
+
+              </div>
+            </div><!-- layoutSettings -->
+          </div><!-- layoutSettingsAccordionItem -->
+        </div><!-- settingsAccordion -->
+
+        <div class="container d-none" id="mainControlsBottom">
+          <div class="mb-2">
+            <button type="button" class="btn btn-primary" id="exportPDF">
+              <i class="bi bi-file-earmark-pdf"></i>
+              Create PDF
+            </button>
+          </div>
+        </div><!-- mainControlsBottom -->
+
+      </form>
+
+      <div id="resetClientIdPanel" class="mt-auto pt-3 d-none">
+        <small class="text-secondary d-block mb-2">If you need to log into a different ChurchSuite account, you can clear the saved one here.</small>
+        <button class="btn btn-outline-secondary btn-sm w-100" type="button" id="forgetClientIdButton">Forget saved ChurchSuite account</button>
+      </div><!-- resetClientIdPanel -->
+      
+    </div><!-- configuredContent -->
+
+  </div><!-- leftmain -->
 </body>
 
 </html>

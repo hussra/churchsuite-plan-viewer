@@ -99,7 +99,25 @@ const selectLayout = (_event) => {
     window.electronAPI.selectLayout(layoutId)
 }
 
+const updateClientIdSetupVisibility = async () => {
+    const clientId = (await window.electronAPI.getGlobalSetting('churchsuite_client_id') || '').trim()
+    const hasClientId = !!clientId
+
+    document.getElementById('clientIdSetup').classList.toggle('d-none', hasClientId)
+    document.getElementById('configuredContent').classList.toggle('d-none', !hasClientId)
+
+    if (hasClientId) {
+        document.getElementById('clientIdSetupInput').value = clientId
+    }
+}
+
 const loadSettings = async () => {
+    await updateClientIdSetupVisibility()
+
+    const currentClientId = (await window.electronAPI.getGlobalSetting('churchsuite_client_id') || '').trim()
+    document.getElementById('clientIdSetupInput').value = currentClientId
+    await updateAuthUI(await window.electronAPI.getAuthState())
+
     // Global settings
     const show_templates = await window.electronAPI.getGlobalSetting('show_templates')
     document.getElementById('show_templates').checked = show_templates
@@ -121,13 +139,25 @@ const loadSettings = async () => {
     const enable_logging = await window.electronAPI.getGlobalSetting('enable_logging')
     document.getElementById('enable_logging').checked = enable_logging
     document.getElementById('show_log_location').closest('.form-text').classList.toggle('d-none', !enable_logging)
+}
 
-    // Authentication settings
-    const client_secret = await window.electronAPI.getGlobalSetting('client_secret')
-    document.getElementById('client_secret').value = client_secret
+const updateAuthUI = async (state = { authenticated: false, name: '' }) => {
+    const loginButton = document.getElementById('loginButton')
+    const authenticatedUser = document.getElementById('authenticatedUser')
+    const welcomeText = document.getElementById('welcomeText')
+    const resetClientIdPanel = document.getElementById('resetClientIdPanel')
+    const clientId = (await window.electronAPI.getGlobalSetting('churchsuite_client_id') || '').trim()
 
-    const client_id = await window.electronAPI.getGlobalSetting('client_id')
-    document.getElementById('client_id').value = client_id
+    if (state.authenticated) {
+        loginButton.classList.add('d-none')
+        authenticatedUser.classList.remove('d-none')
+        welcomeText.textContent = `Welcome ${state.name || 'User'}`
+        resetClientIdPanel.classList.add('d-none')
+    } else {
+        loginButton.classList.remove('d-none')
+        authenticatedUser.classList.add('d-none')
+        resetClientIdPanel.classList.toggle('d-none', !clientId)
+    }
 }
 
 const showHideControls = (connected) => {
@@ -136,13 +166,11 @@ const showHideControls = (connected) => {
         document.getElementById('mainControlsBottom').classList.remove('d-none')
         document.getElementById('globalSettingsAccordionItem').classList.remove('d-none')
         document.getElementById('layoutSettingsAccordionItem').classList.remove('d-none')
-        document.getElementById('authenticationSettings').classList.remove('show')
     } else {
         document.getElementById('mainControlsTop').classList.add('d-none')
         document.getElementById('mainControlsBottom').classList.add('d-none')
         document.getElementById('globalSettingsAccordionItem').classList.add('d-none')
         document.getElementById('layoutSettingsAccordionItem').classList.add('d-none')
-        document.getElementById('authenticationSettings').classList.add('show')
     }
 }
 
@@ -152,6 +180,10 @@ const refresh = () => {
 
 window.electronAPI.onSetConnected((connected) => {
     showHideControls(connected)
+})
+
+window.electronAPI.onSetAuthState((state) => {
+    updateAuthUI(state)
 })
 
 window.electronAPI.onSetPlans((plans) => {
@@ -246,6 +278,34 @@ const load = async () => {
     document.getElementById('layout').addEventListener('change', selectLayout)
     document.getElementById('editButton').addEventListener('click', editLayouts)
 
+    // Authentication
+    document.getElementById('authHelpLink').addEventListener('click', async () => {
+        await window.electronAPI.openAuthHelpLink()
+    })
+    document.getElementById('loginButton').addEventListener('click', async () => {
+        await window.electronAPI.login()
+    })
+    document.getElementById('logoutButton').addEventListener('click', async () => {
+        await window.electronAPI.logout()
+    })
+    document.getElementById('forgetClientIdButton').addEventListener('click', async () => {
+        await window.electronAPI.setGlobalSetting('churchsuite_client_id', '')
+        document.getElementById('clientIdSetupInput').value = ''
+        await loadSettings()
+        await updateAuthUI({ authenticated: false, name: '' })
+    })
+    document.getElementById('clientIdSaveButton').addEventListener('click', async () => {
+        const clientId = document.getElementById('clientIdSetupInput').value.trim()
+        if (!clientId) {
+            document.getElementById('clientIdError').classList.remove('d-none')
+            return
+        }
+
+        document.getElementById('clientIdError').classList.add('d-none')
+        await window.electronAPI.setGlobalSetting('churchsuite_client_id', clientId)
+        await loadSettings()
+    })
+
     // Global settings
     document.getElementById('show_templates').addEventListener('change', async () => {
         const showTemplates = document.getElementById('show_templates').checked
@@ -313,21 +373,11 @@ const load = async () => {
         refresh()
     })
 
-    // Authentication settings
-    document.getElementById('authHelpLink').addEventListener('click', async () => {
-        await window.electronAPI.openAuthHelpLink()
-    })
-    document.getElementById('client_secret').addEventListener('change', async () => {
-        await window.electronAPI.setGlobalSetting('client_secret', document.getElementById('client_secret').value)
-    })
-    document.getElementById('client_id').addEventListener('change', async () => {
-        await window.electronAPI.setGlobalSetting('client_id', document.getElementById('client_id').value)
-    })
-
     // Export PDF button
     document.getElementById('exportPDF').addEventListener('click', exportPDF)
 
     await loadSettings()
+    updateAuthUI(await window.electronAPI.getAuthState())
 
     window.electronAPI.leftRendererStartupComplete()
 }

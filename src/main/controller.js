@@ -14,14 +14,18 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import * as path from 'node:path'
+import * as fs from 'fs'
 import { EventEmitter } from 'node:events'
-import { app, safeStorage } from 'electron'
+import { createHash, randomBytes } from 'node:crypto'
+import { createServer } from 'node:http'
+import { app, safeStorage, shell } from 'electron'
 import Store from 'electron-store'
 import { request } from 'undici'
 import toValidIdentifier from 'to-valid-identifier'
 import log from 'electron-log/main'
 
-import { SETTINGS_SCHEMA, OLD_SETTINGS_TO_DELETE_1_3, OLD_SETTINGS_TO_DELETE_1_4, HIDDEN_ITEM_TYPE_NAME, LOGGING_AVAILABLE_WHEN_PACKAGED, API_SCOPES_REQUIRED } from './constants'
+import * as Constants from './constants'
 import { LayoutEngine } from './layout-engine'
 import { ChartEngine } from './chart-engine'
 
@@ -31,7 +35,7 @@ export class Controller extends EventEmitter {
         super()
 
         this.#store = new Store({
-            schema: SETTINGS_SCHEMA,
+            schema: Constants.SETTINGS_SCHEMA,
             beforeEachMigration: (store, context) => {
 		        log.info(`[store migrations] migrate from ${context.fromVersion} to ${context.toVersion}`)
 	        },
@@ -48,7 +52,7 @@ export class Controller extends EventEmitter {
                         })
                     }
 
-                    OLD_SETTINGS_TO_DELETE_1_3.forEach(key => store.delete(key))
+                    Constants.OLD_SETTINGS_TO_DELETE_1_3.forEach(key => store.delete(key))
                     log.info('[store migrations] migration for version 1.3.0 complete')
                 },
                 '1.4.0': (store) => {
@@ -60,17 +64,23 @@ export class Controller extends EventEmitter {
                         store.set('layouts', store.get('templates'))
                     }
                     store.set('templates', {})
-                    OLD_SETTINGS_TO_DELETE_1_4.forEach(key => store.delete(key))
+                    Constants.OLD_SETTINGS_TO_DELETE_1_4.forEach(key => store.delete(key))
                     log.info('[store migrations] migration for version 1.4.0 complete')
+                },
+                '1.6.0': (store) => {
+                    log.info('[store migrations] running migration for version 1.6.0: deleting old settings that are no longer used')
+                    Constants.OLD_SETTINGS_TO_DELETE_1_6.forEach(key => store.delete(key))
+                    log.info('[store migrations] migration for version 1.6.0 complete')
                 }
             }
         })
         this.#store.onDidChange('enable_logging', ( newValue, _oldValue) => {
             log.transports.file.level = (newValue ? 'debug' : 'error')
         })
-        this.#store.onDidAnyChange(( _newValue, _oldValue) => {
-            this.#configChanged()
-        })
+
+        this.#authToken = this.getGlobalSetting('access_token') || null
+        this.#userName = this.getGlobalSetting('user_name') || ''
+        this.#isConnected = !!this.#authToken
 
         log.transports.file.level = (this.getGlobalSetting('enable_logging') ? 'debug' : 'error')
 
@@ -82,6 +92,10 @@ export class Controller extends EventEmitter {
 
     #authToken = null
     #isConnected = false
+    #userName = ''
+    #oauthState = null
+    #pkceCodeVerifier = null
+    #redirectServer = null
 
     #defaultBrand = null
     #types = null
@@ -127,12 +141,16 @@ export class Controller extends EventEmitter {
         return this.#isConnected
     }
 
+    get authenticatedUserName() {
+        return this.#userName
+    }
+
     set connected(isConnected) {
         const changed = (isConnected != this.#isConnected)
         this.#isConnected = isConnected
 
         if (changed || !isConnected) {
-            this.emit('configChanged', this.isConfigured() && isConnected)
+            this.emit('connectionStatusChanged', isConnected)
             if (isConnected) {
                 this.reload()
             }
@@ -176,27 +194,47 @@ export class Controller extends EventEmitter {
     }
 
     get loggingAvailable() {
-        return LOGGING_AVAILABLE_WHEN_PACKAGED || !app.isPackaged
+        return Constants.LOGGING_AVAILABLE_WHEN_PACKAGED || !app.isPackaged
+    }
+
+    get htmlDir() {
+        return app.isPackaged ? path.join(process.resourcesPath, "app.asar", ".webpack", "main", Constants.HTML_DIR) : Constants.HTML_DIR
+    }
+
+    #getHtmlFromDisk(filename) {
+        const htmlFile = path.resolve(this.htmlDir, filename)
+        return fs.readFileSync(htmlFile, "UTF-8")
     }
 
     getGlobalSetting(key) {
-        if ((key == 'client_secret') || (key == 'client_id')) {
+        if ((key == 'access_token') || (key == 'refresh_token')) {
+            if (!safeStorage.isEncryptionAvailable()) {
+                log.debug(`[settings] Cannot retrieve ${key}: safeStorage encryption is not available`)
+                return null
+            }
+
             const value = this.#store.get(key)
+            if (!value) {
+                return null
+            }
             if (value.startsWith('base64:')) {
                 return safeStorage.decryptString(Buffer.from(value.substring(7), 'base64'))
-            } else {
-                // Encrypt value and store that
-                this.#store.set(key, 'base64:' + safeStorage.encryptString(value).toString('base64'))
-                return value
             }
-        } else {
-            return this.#store.get(key)
+            this.#store.set(key, 'base64:' + safeStorage.encryptString(value).toString('base64'))
+            return value
         }
+
+        return this.#store.get(key)
     }
 
     setGlobalSetting(key, value) {
-        if ((key == 'client_secret') || (key == 'client_id')) {
-            this.#store.set(key, 'base64:' + safeStorage.encryptString(value).toString('base64'))
+        if ((key == 'access_token') || (key == 'refresh_token')) {
+            if (!safeStorage.isEncryptionAvailable()) {
+                log.debug(`[settings] Cannot store ${key}: safeStorage encryption is not available`)
+                return
+            }
+            const storedValue = (value == null || value == '') ? '' : 'base64:' + safeStorage.encryptString(value).toString('base64')
+            this.#store.set(key, storedValue)
         } else {
             this.#store.set(key, value)
         }
@@ -230,14 +268,234 @@ export class Controller extends EventEmitter {
         }
     }
 
-    async #configChanged() {
-        // Force reauthentication
-        await this.#getAuthToken(true)
-        this.connected = (this.#authToken != null)
+    getClientId() {
+        return (this.getGlobalSetting('churchsuite_client_id') || '').trim()
     }
 
-    isConfigured() {
-        return (this.#store.get('client_id') != '') && (this.#store.get('client_secret') != '')
+    async #startRedirectServer() {
+        if (this.#redirectServer) {
+            return
+        }
+
+        const redirectUrl = new URL(Constants.CHURCHSUITE_REDIRECT_URI)
+
+        await new Promise((resolve, reject) => {
+            this.#redirectServer = createServer(async (req, res) => {
+                try {
+                    const requestUrl = new URL(req.url || '/', `http://${req.headers.host || redirectUrl.host}`)
+                    const isCallback = requestUrl.origin === redirectUrl.origin && requestUrl.pathname === redirectUrl.pathname
+                    if (!isCallback) {
+                        res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+                        res.end('Not found')
+                        return
+                    }
+
+                    const result = await this.handleAuthorizationResponse(requestUrl.toString())
+                    const filename = result ? Constants.REDIRECT_SUCCESS_HTML : Constants.REDIRECT_FAILURE_HTML
+                    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
+                    res.end(this.#getHtmlFromDisk(filename))
+                    this.#stopRedirectServer()
+                } catch (error) {
+                    log.error(`[auth] Failed to handle redirect request: ${error.message}`)
+                    res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' })
+                    res.end('Authentication callback failed')
+                    this.#stopRedirectServer()
+                }
+            })
+
+            this.#redirectServer.on('error', (error) => {
+                log.error(`[auth] Redirect server failed to start: ${error.message}`)
+                this.#redirectServer = null
+                reject(error)
+            })
+
+            this.#redirectServer.listen(redirectUrl.port, redirectUrl.hostname, () => {
+                this.#redirectServer.unref()
+                resolve()
+            })
+        })
+    }
+
+    #stopRedirectServer() {
+        if (!this.#redirectServer) {
+            return
+        }
+
+        this.#redirectServer.close(() => {
+            this.#redirectServer = null
+        })
+        this.#redirectServer = null
+    }
+
+    async initiateLogin() {
+        const clientId = this.getClientId()
+        if (!clientId) {
+            log.error('[auth] OAuth client ID is not configured')
+            return false
+        }
+
+        const verifier = randomBytes(32).toString('base64url')
+        this.#pkceCodeVerifier = verifier
+        this.#oauthState = randomBytes(16).toString('base64url')
+
+        const challenge = createHash('sha256').update(verifier).digest('base64url')
+        const url = new URL(Constants.CHURCHSUITE_AUTH_URL)
+        url.searchParams.set('client_id', clientId)
+        url.searchParams.set('redirect_uri', Constants.CHURCHSUITE_REDIRECT_URI)
+        url.searchParams.set('response_type', 'code')
+        url.searchParams.set('scope', Constants.API_SCOPES_REQUIRED)
+        url.searchParams.set('state', this.#oauthState)
+        url.searchParams.set('code_challenge', challenge)
+        url.searchParams.set('code_challenge_method', 'S256')
+
+        await this.#startRedirectServer()
+        await shell.openExternal(url.toString())
+        return true
+    }
+
+    async handleAuthorizationResponse(rawUrl) {
+        try {
+            const clientId = this.getClientId()
+            if (!clientId) {
+                log.error('[auth] OAuth client ID is not configured')
+                this.logout()
+                return false
+            }
+
+            const url = new URL(rawUrl)
+            const redirectUrl = new URL(Constants.CHURCHSUITE_REDIRECT_URI)
+            if (url.protocol !== 'http:' || url.origin !== redirectUrl.origin || url.pathname !== redirectUrl.pathname) {
+                return false
+            }
+
+            const code = url.searchParams.get('code')
+            const state = url.searchParams.get('state')
+            if (!code || !state || state !== this.#oauthState) {
+                log.error('[auth] OAuth callback rejected: missing or invalid state/code')
+                this.logout()
+                return false
+            }
+
+            this.#oauthState = null
+            const tokenBody = new URLSearchParams({
+                grant_type: 'authorization_code',
+                client_id: clientId,
+                code,
+                redirect_uri: Constants.CHURCHSUITE_REDIRECT_URI,
+                code_verifier: this.#pkceCodeVerifier || ''
+            })
+
+            const { statusCode, body } = await request(Constants.CHURCHSUITE_TOKEN_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: tokenBody.toString()
+            })
+
+            if (statusCode !== 200) {
+                const errorText = await body.text()
+                log.error(`[auth] OAuth token exchange failed (${statusCode}): ${errorText}`)
+                this.logout()
+                return false
+            }
+
+            const tokenResponse = await body.json()
+            this.#authToken = tokenResponse.access_token || null
+            this.#pkceCodeVerifier = null
+
+            if (!this.#authToken) {
+                this.logout()
+                return false
+            }
+
+            this.setGlobalSetting('access_token', this.#authToken)
+            if (tokenResponse.refresh_token) {
+                this.setGlobalSetting('refresh_token', tokenResponse.refresh_token)
+            }
+
+            const user = await this.#getCurrentUser()
+            this.#userName = user?.data?.name || ''
+            if (this.#userName) {
+                this.setGlobalSetting('user_name', this.#userName)
+            }
+
+            this.connected = true
+            this.emit('authChanged')
+            return true
+        } catch (error) {
+            log.error(`[auth] Failed to process OAuth redirect: ${error.message}`)
+            this.logout()
+            return false
+        }
+    }
+
+    async #refreshAccessToken() {
+        const clientId = this.getClientId()
+        const refreshToken = this.getGlobalSetting('refresh_token')
+
+        if (!clientId || !refreshToken) {
+            log.info('[auth] Refresh token exchange skipped: missing client ID or refresh token')
+            return null
+        }
+
+        try {
+            const tokenBody = new URLSearchParams({
+                grant_type: 'refresh_token',
+                client_id: clientId,
+                refresh_token: refreshToken
+            })
+
+            const { statusCode, body } = await request(Constants.CHURCHSUITE_TOKEN_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: tokenBody.toString()
+            })
+
+            if (statusCode !== 200) {
+                const errorText = await body.text()
+                log.error(`[auth] OAuth refresh token exchange failed (${statusCode}): ${errorText}`)
+                return null
+            }
+
+            const tokenResponse = await body.json()
+            const refreshedAccessToken = tokenResponse.access_token || null
+            if (!refreshedAccessToken) {
+                log.error('[auth] OAuth refresh token exchange returned no access token')
+                return null
+            }
+
+            this.#authToken = refreshedAccessToken
+            this.setGlobalSetting('access_token', this.#authToken)
+
+            if (tokenResponse.refresh_token) {
+                this.setGlobalSetting('refresh_token', tokenResponse.refresh_token)
+            }
+
+            this.connected = true
+            this.emit('authChanged')
+            return this.#authToken
+        } catch (error) {
+            log.error(`[auth] Failed to refresh OAuth access token: ${error.message}`)
+            return null
+        }
+    }
+
+    logout() {
+        this.#stopRedirectServer()
+        this.#authToken = null
+        this.#pkceCodeVerifier = null
+        this.#oauthState = null
+        this.#userName = ''
+        this.setGlobalSetting('access_token', '')
+        this.setGlobalSetting('refresh_token', '')
+        this.setGlobalSetting('user_name', '')
+        this.connected = false
+        this.#showPlanView = false
+        this.emit('authChanged')
+        this.emit('viewChanged')
     }
 
     async reload() {
@@ -340,7 +598,7 @@ export class Controller extends EventEmitter {
         }
 
         // Strip out items of type 'hidden'
-        const hiddenType = Object.values(types).find(type => type.name.toLowerCase() == HIDDEN_ITEM_TYPE_NAME)
+        const hiddenType = Object.values(types).find(type => type.name.toLowerCase() == Constants.HIDDEN_ITEM_TYPE_NAME)
         let filteredItems = items
         if (hiddenType?.id) {
             filteredItems = items.filter(item => item.type_id != hiddenType.id)
@@ -386,28 +644,18 @@ export class Controller extends EventEmitter {
 
     // Get a ChurchSuite authentication token
     async #getAuthToken(force = false) {
-
-        if (this.#authToken && !force) return this.#authToken
-
-        const { statusCode, body } = await request(
-            'https://login.churchsuite.com',
-            {
-                path: '/oauth2/token',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Basic ' + Buffer.from(this.getGlobalSetting('client_id') + ":" + this.getGlobalSetting('client_secret')).toString('base64'),
-                },
-                body: `{"grant_type": "client_credentials", "scope": "${API_SCOPES_REQUIRED}"}`,
-            })
-
-        if (statusCode == 200) {
-            this.#authToken = (await body.json()).access_token
-        } else {
-            this.#authToken = null
+        if (this.#authToken && !force) {
+            return this.#authToken
         }
 
-        return this.#authToken
+        const storedToken = this.getGlobalSetting('access_token')
+        if (storedToken) {
+            this.#authToken = storedToken
+            return this.#authToken
+        }
+
+        this.#authToken = null
+        return null
     }
 
 
@@ -431,10 +679,17 @@ export class Controller extends EventEmitter {
             }
         })
 
-        if (statusCode != 200) {
-            log.error(`[#makeApiCall] HTTP error retrieving ${url}: received HTTP status code ${statusCode}\n${await body.text()}`)
-            // Retry once
-            authToken = await this.#getAuthToken(true)
+        if (statusCode === 401 || statusCode === 403) {
+            log.warn(`[#makeApiCall] API call to ${url} was rejected with HTTP status code ${statusCode}; attempting token refresh`)
+
+            const refreshedAccessToken = await this.#refreshAccessToken()
+            if (!refreshedAccessToken) {
+                this.logout()
+                delete this.#cache[url]
+                return {}
+            }
+
+            authToken = refreshedAccessToken
             const { statusCode: retryStatusCode, body: retryBody } = await request(url, {
                 headers: {
                     'Authorization': 'Bearer ' + authToken
@@ -442,13 +697,27 @@ export class Controller extends EventEmitter {
             })
 
             if (retryStatusCode != 200) {
-                log.error(`[#makeApiCall] On retrying, received HTTP status code: ${retryStatusCode}\n${await retryBody.text()}`)
-                this.connected = false
+                log.error(`[#makeApiCall] On retrying after refresh, received HTTP status code: ${retryStatusCode}\n${await retryBody.text()}`)
+                // TODO revisit this, including distinguishing between 401 and 403, and whether to log out or flag a permissions issue.
+                if (retryStatusCode === 401 || retryStatusCode === 403) {
+                    this.logout()
+                } else {
+                    this.connected = false
+                }
                 delete this.#cache[url]
                 return {}
             }
 
+            statusCode = retryStatusCode
             body = retryBody
+        }
+
+        if (statusCode != 200) {
+            log.error(`[#makeApiCall] HTTP error retrieving ${url}: received HTTP status code ${statusCode}\n${await body.text()}`)
+
+            this.connected = false
+            delete this.#cache[url]
+            return {}
         }
 
         this.connected = true
@@ -572,6 +841,11 @@ export class Controller extends EventEmitter {
     }
 
 
+    async #getCurrentUser() {
+        return this.#makeApiCall('https://api.churchsuite.com/v2/account/users/current')
+    }
+
+
     // Get the default brand for our account, and add a data.logo.data_url property
     async #getDefaultBrand(force = false) {
         if ((this.#defaultBrand == null) || force) {
@@ -622,10 +896,13 @@ export class Controller extends EventEmitter {
         return typeof input[Symbol.iterator] === 'function'
     }
 
-    appStartupComplete() {
-        // Force reconnection
-        this.#isConnected = false
-        this.#configChanged()
+    async appStartupComplete() {
+        await this.#getAuthToken(true)
+        this.connected = (this.#authToken != null)
+        this.emit('connectionStatusChanged', this.connected)
+        if (this.connected) {
+            this.reload()
+        }
     }
 
 }

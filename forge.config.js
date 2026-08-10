@@ -38,6 +38,24 @@ module.exports = {
       platforms: ['darwin'],
     },
     {
+      name: '@electron-forge/maker-dmg',
+      config: (arch) => ({
+        background: './assets/background-DMG.png',
+        icon: './assets/icon.icns',
+        format: 'ULFO',
+        iconSize: 200,
+        contents: [
+        {
+          x: 140,
+          y: 276,
+          type: "file",
+          path: `${process.cwd()}/out/ChurchSuite Plan Viewer-darwin-${arch}/ChurchSuite Plan Viewer.app`,
+        },
+        { x: 518, y: 276, type: "link", path: "/Applications" },
+      ]
+      })
+    },
+    {
       name: '@electron-forge/maker-deb',
       config: {},
     },

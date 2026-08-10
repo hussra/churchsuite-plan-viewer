@@ -68,8 +68,20 @@ export async function addIpcHandlers(controller) {
        globalThis.editorWindow?.importLayout()
     })
 
-    ipcMain.handle('isConfigured', async () => {
-        return controller.isConfigured()
+    ipcMain.handle('login', async () => {
+        return controller.initiateLogin()
+    })
+
+    ipcMain.handle('logout', async () => {
+        controller.logout()
+    })
+
+    ipcMain.handle('getAuthState', () => {
+        const hasSavedToken = !!controller.getGlobalSetting('access_token')
+        return {
+            authenticated: hasSavedToken || controller.connected,
+            name: controller.authenticatedUserName || controller.getGlobalSetting('user_name') || ''
+        }
     })
 
     // Called when plan selected in left pane
@@ -118,8 +130,8 @@ export async function addIpcHandlers(controller) {
     })
 
     // Called when left renderer startup is complete
-    ipcMain.handle('leftRendererStartupComplete', () => {
-        controller.appStartupComplete()
+    ipcMain.handle('leftRendererStartupComplete', async () => {
+        await controller.appStartupComplete()
     })
 
     ipcMain.handle('getVersion', () => {
