@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Change the way the app logs into ChurchSuite, using "authorisation code grant"
+- macOS support
+
 ### Changed
 
 - Add logging in development (and optionally in packaged builds) to help in diagnosing issues for other users
