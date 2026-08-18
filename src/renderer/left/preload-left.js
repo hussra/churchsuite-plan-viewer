@@ -43,7 +43,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getWindowWidth: () => ipcRenderer.invoke('getWindowWidth'),
 
     // Messages from main process to left renderer
-    onSetConnected: (callback) => ipcRenderer.on('setConnected', (_event, value) => callback(value)),
     onSetAuthState: (callback) => ipcRenderer.on('setAuthState', (_event, value) => callback(value)),
     onSetPlans: (callback) => ipcRenderer.on('setPlans', (_event, value) => callback(value)),
     onsetLayouts: (callback) => ipcRenderer.on('setLayouts', (_event, value) => callback(value)),

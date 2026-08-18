@@ -115,10 +115,6 @@ export class MainWindow {
             this.resizePanes()
         })
 
-        this.#controller.on('connectionStatusChanged', (connected) => {
-            this.#leftView.webContents.send('setConnected', connected)
-        })
-
         this.#controller.on('authChanged', () => {
             const hasSavedToken = !!this.#controller.getGlobalSetting('access_token')
             this.#leftView.webContents.send('setAuthState', {

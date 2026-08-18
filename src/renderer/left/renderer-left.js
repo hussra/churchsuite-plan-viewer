@@ -178,12 +178,10 @@ const refresh = () => {
     window.electronAPI.refresh()
 }
 
-window.electronAPI.onSetConnected((connected) => {
-    showHideControls(connected)
-})
-
 window.electronAPI.onSetAuthState((state) => {
     updateAuthUI(state)
+    // Show/hide controls based on authentication/connection state
+    showHideControls(!!state.authenticated)
 })
 
 window.electronAPI.onSetPlans((plans) => {
