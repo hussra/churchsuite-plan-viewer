@@ -2408,23 +2408,23 @@ __metadata:
     commonmark: "npm:^0.31.2"
     copy-webpack-plugin: "npm:^14.0.0"
     css-loader: "npm:^7.1.4"
-    dompurify: "npm:^3.4.12"
-    electron: "npm:^43.2.0"
+    dompurify: "npm:^3.4.13"
+    electron: "npm:^43.4.0"
     electron-log: "npm:^5.4.4"
     electron-squirrel-startup: "npm:^1.0.1"
     electron-store: "npm:^11.0.2"
-    eslint: "npm:^10.8.0"
+    eslint: "npm:^10.8.1"
     eslint-webpack-plugin: "npm:^6.0.0"
-    globals: "npm:^17.8.0"
+    globals: "npm:^17.11.0"
     html-loader: "npm:^5.1.0"
     jsdom: "npm:26.1.0"
-    liquidjs: "npm:^10.27.2"
-    nanoid: "npm:^6.0.0"
+    liquidjs: "npm:^10.29.0"
+    nanoid: "npm:^6.0.1"
     node-loader: "npm:^2.1.0"
     original-fs: "npm:^1.2.0"
     style-loader: "npm:^4.0.0"
     to-valid-identifier: "npm:^1.0.0"
-    undici: "npm:^8.9.0"
+    undici: "npm:^8.10.0"
     webpack: "npm:^5.109.2"
   languageName: unknown
   linkType: soft
@@ -3050,15 +3050,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:^3.4.12":
-  version: 3.4.12
-  resolution: "dompurify@npm:3.4.12"
+"dompurify@npm:^3.4.13":
+  version: 3.4.13
+  resolution: "dompurify@npm:3.4.13"
   dependencies:
     "@types/trusted-types": "npm:^2.0.7"
   dependenciesMeta:
     "@types/trusted-types":
       optional: true
-  checksum: 10c0/127a13817353d4e20e75a991a9022a04c3af12af7479f68e2b8bee6dbc7330a96edfb8f4ebff96f4f0f24cd43e8dbba46214131f510c3aa87a843bd8b610d0ab
+  checksum: 10c0/9c2a1a71e1a1d8b77953db7a39ffc935ef4ed4f10fe40770232128c2cbfd4c3dc677d3d7bae51eb24cc52d9ff3548612dc540ecb4343e89b26e809d2be2e0cfe
   languageName: node
   linkType: hard
 
@@ -3258,9 +3258,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^43.2.0":
-  version: 43.2.0
-  resolution: "electron@npm:43.2.0"
+"electron@npm:^43.4.0":
+  version: 43.4.0
+  resolution: "electron@npm:43.4.0"
   dependencies:
     "@electron-internal/extract-zip": "npm:^1.0.1"
     "@electron/get": "npm:^5.0.0"
@@ -3268,7 +3268,7 @@ __metadata:
   bin:
     electron: cli.js
     install-electron: install.js
-  checksum: 10c0/91b72eb60960e9dc24e684f8dfc8dd2a965e444a23174e6e470cbb747e782c1e449cd2a4d57dc4edf47df1cca8b8988050ebfbc1c44913f37afe11fb207faaa6
+  checksum: 10c0/8b03553d1a5d186d4d95f80195ff634f6afd4ea9db7e09fdc67f251f93e7e2447da9a233e05281289450335ad8a01630609ffb5f3467ab38e71b65be489c9342
   languageName: node
   linkType: hard
 
@@ -3533,9 +3533,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^10.8.0":
-  version: 10.8.0
-  resolution: "eslint@npm:10.8.0"
+"eslint@npm:^10.8.1":
+  version: 10.8.1
+  resolution: "eslint@npm:10.8.1"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.8.0"
     "@eslint-community/regexpp": "npm:^4.12.2"
@@ -3574,7 +3574,7 @@ __metadata:
       optional: true
   bin:
     eslint: bin/eslint.js
-  checksum: 10c0/2dbc523578834088615f388e08418d2620b25655f7a398f6d415765fa2a3a25d6b8b43bd3293d40f977e12752323a841d52654a2648697a00c0102c9794bb3dc
+  checksum: 10c0/0c4720a43ef2052829db18e37aa79adb5f0a62137bdf4a4f8e9507bbbbf888ba0669fc03e4b7139d8f27b59b051bbbcd0a3988b068c30fa934a766d60a81f599
   languageName: node
   linkType: hard
 
@@ -4333,10 +4333,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^17.8.0":
-  version: 17.8.0
-  resolution: "globals@npm:17.8.0"
-  checksum: 10c0/e31b36cef3befd446487674dc6ca7b8f8e62a3b76aadd975dbf80ffa732366b3ac58df8941999eb6b1406d97480103711db85d2a49c955da47ff5ec688bee9b5
+"globals@npm:^17.11.0":
+  version: 17.11.0
+  resolution: "globals@npm:17.11.0"
+  checksum: 10c0/5e1be3d816e04d4d0d01b1cdd40e46b5fb6b5e9f15aece9a5919b060e0fb1b3f1b9e7327dce97ef19e05513a6d65872e0834999ddea251557556dddd0f5fde30
   languageName: node
   linkType: hard
 
@@ -5223,15 +5223,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"liquidjs@npm:^10.27.2":
-  version: 10.27.2
-  resolution: "liquidjs@npm:10.27.2"
+"liquidjs@npm:^10.29.0":
+  version: 10.29.0
+  resolution: "liquidjs@npm:10.29.0"
   dependencies:
     commander: "npm:^10.0.0"
   bin:
     liquid: bin/liquid.js
     liquidjs: bin/liquid.js
-  checksum: 10c0/aac43b9b0296914de6031cc6957682a6391949ca5c4a3b914b762352c0f2ac8849bc42d85b82ae25c8168945fc9b45b378ca3654b375cde37b44497c43a6f6e8
+  checksum: 10c0/32f88e3218a73277b55f2e4536354ea07a9d7c742c198d7c298e14534cf6f63ef1a88ae230c725c8808d5990d7061478ff8cc57df12754e8ca343e3ef7744da6
   languageName: node
   linkType: hard
 
@@ -5903,12 +5903,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "nanoid@npm:6.0.0"
+"nanoid@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "nanoid@npm:6.0.1"
   bin:
     nanoid: bin/nanoid.js
-  checksum: 10c0/45bc79b7fc3f8f7110986fee7ac8acc2dc673b4c9ebe0c28a05fd0b2c2bb7a0b9942e43a558e39ea3c41a7fb74c7de1a0f8b73263b025f82e87cdb4a769188c3
+  checksum: 10c0/5b362ad9822388dfebdf655849c76d3539e074d1003fbe6eb5dff8687faf93a9abbb19bdc5d134b9b8599f875f9b091feacfd7099b34b5fef23bc3f5be41dd10
   languageName: node
   linkType: hard
 
@@ -8048,10 +8048,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^8.9.0":
-  version: 8.9.0
-  resolution: "undici@npm:8.9.0"
-  checksum: 10c0/e3d9fa35a9aa8360d9f56e66bd372f451ee053e25066a97fd9fab3816267035660f67870c6d709a58a5411551657af78c4475be5b31c113b04f70251309900d0
+"undici@npm:^8.10.0":
+  version: 8.10.0
+  resolution: "undici@npm:8.10.0"
+  checksum: 10c0/37ae2b1db8f65c3a003504e2040e96887b99f9db16ba07dcf49c37ed8b7f8c72f4452f2d46f52f7c9e49518fe8325e3b5e7e02ac3a2424886bd67d4b62a0ecab
   languageName: node
   linkType: hard
 
