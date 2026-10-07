@@ -72,23 +72,11 @@ app.whenReady().then(() => {
     globalThis.mainWindow = new MainWindow(controller)
     
     addIpcHandlers(controller)
-
-    // On OS X it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    app.on('activate', () => {
-        if (BaseWindow.getAllWindows().length === 0) {
-            globalThis.mainWindow = new MainWindow(controller)
-        }
-    })
 })
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
+// Quit when all windows are closed
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit()
-    }
+    app.quit()
 })
 
 function createApplicationMenu() {
