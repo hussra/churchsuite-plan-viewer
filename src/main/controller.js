@@ -528,6 +528,7 @@ export class Controller extends EventEmitter {
             const planData = await this.#getPlans()
 
             let allPlans = []
+
             if (planData.data) {
                 allPlans = await Promise.all(planData.data.map(async (plan) => {
                     const timestamp = Date.parse(plan.date + " " + plan.time)
@@ -540,12 +541,7 @@ export class Controller extends EventEmitter {
                 }))
             }
 
-            // For past plans, sort in reverse date order (most recent first)
-            if (this.getGlobalSetting('past_plans')) {
-                this.#allPlans = allPlans.sort(({ timestamp: a }, { timestamp: b }) => b - a)
-            } else {
-                this.#allPlans = allPlans.sort(({ timestamp: a }, { timestamp: b }) => a - b)
-            }
+            this.#allPlans = allPlans
         }
 
         this.emit('plansChanged')
@@ -555,7 +551,7 @@ export class Controller extends EventEmitter {
         // Get plan detail, items, brand, types from ChurchSuite API
         const detail = (await this.#getPlanDetail(this.#selectedPlanId)).data
         // Plan items are now returned in ID order, so sort them by the "order" property
-        const items = (await this.#getPlanItems(this.#selectedPlanId)).data.sort(({ order: a }, { order: b }) => a - b)
+        const items = (await this.#getPlanItems(this.#selectedPlanId)).data
         const account = (await this.#getAccountInfo()).data
         const brand = (await this.#getDefaultBrand()).data
         const types = (await this.#getTypes())
@@ -742,9 +738,9 @@ export class Controller extends EventEmitter {
         let url = 'https://api.churchsuite.com/v2/planning/plans'
 
         if (this.getGlobalSetting('past_plans')) {
-            url = url + `?starts_before=${today}`
+            url = url + `?starts_before=${today}&order_by=date:desc`
         } else {
-            url = url + `?starts_after=${yesterday}`
+            url = url + `?starts_after=${yesterday}&order_by=date:asc`
         }
 
         const limit = this.getGlobalSetting('plans_quantity')
@@ -774,10 +770,8 @@ export class Controller extends EventEmitter {
     // Get plan templates
     async #getPlanTemplates() {
 
-        let url = 'https://api.churchsuite.com/v2/planning/templates'
-
         const limit = this.getGlobalSetting('plans_quantity')
-        url = url + `?per_page=${limit}`
+        let url = `https://api.churchsuite.com/v2/planning/templates?per_page=${limit}`
 
         return await this.#makeApiCall(url)
     }
@@ -796,9 +790,9 @@ export class Controller extends EventEmitter {
     // Get the items for a plan or plan template, by ID
     async #getPlanItems(planId) {
         if (this.getGlobalSetting('show_templates')) {
-            return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/template_items?template_ids%5B%5D=${planId}`)
+            return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/template_items?template_ids%5B%5D=${planId}&order_by=order:asc`)
         } else {
-            return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/plan_items?plan_ids%5B%5D=${planId}`)
+            return this.#makeApiCall(`https://api.churchsuite.com/v2/planning/plan_items?plan_ids%5B%5D=${planId}&order_by=order:asc`)
         }
     }
 
