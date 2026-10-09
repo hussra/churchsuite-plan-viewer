@@ -31,15 +31,15 @@
     "@eslint/js": "^10.0.1",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
     "copy-webpack-plugin": "^14.0.0",
-    "css-loader": "^7.1.4",
-    "electron": "^43.4.0",
-    "eslint": "^10.8.1",
+    "css-loader": "^7.1.5",
+    "electron": "^44.7.0",
+    "eslint": "^10.12.0",
     "eslint-webpack-plugin": "^6.0.0",
-    "globals": "^17.11.0",
+    "globals": "^17.13.0",
     "node-loader": "^2.1.0",
     "original-fs": "^1.2.0",
     "style-loader": "^4.0.0",
-    "webpack": "^5.109.2"
+    "webpack": "^5.111.1"
   },
   "dependencies": {
     "@alenaksu/json-viewer": "^2.1.2",
@@ -47,19 +47,19 @@
     "@popperjs/core": "^2.11.8",
     "ajv": "^8.20.0",
     "bootstrap": "^5.3.8",
-    "bootstrap-icons": "^1.13.1",
+    "bootstrap-icons": "^1.13.2",
     "coherentpdf": "^2.5.5",
     "commonmark": "^0.31.2",
-    "dompurify": "^3.4.13",
+    "dompurify": "^3.4.16",
     "electron-log": "^5.4.4",
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^11.0.2",
     "html-loader": "^5.1.0",
     "jsdom": "26.1.0",
-    "liquidjs": "^10.29.0",
-    "nanoid": "^6.0.1",
+    "liquidjs": "^10.30.0",
+    "nanoid": "^6.0.2",
     "to-valid-identifier": "^1.0.0",
-    "undici": "^8.10.0"
+    "undici": "^8.11.2"
   },
   "resolutions": {
     "extract-zip": "npm:@electron-internal/extract-zip@1.0.3"
