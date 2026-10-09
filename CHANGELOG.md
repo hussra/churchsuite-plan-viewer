@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Add logging in development (and optionally in packaged builds) to help in diagnosing issues for other users
+- Use ChurchSuite native sorting where available
 
 ## [v1.5.1] - 2026-07-17
 
