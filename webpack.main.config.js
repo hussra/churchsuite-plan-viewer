@@ -34,4 +34,5 @@ module.exports = {
       ],
     }),
   ],
+  externals: process.env["NODE_ENV"] === "production" ? {} : { jsdom: "jsdom" },
 };
