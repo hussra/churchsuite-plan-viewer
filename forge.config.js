@@ -20,127 +20,127 @@ const { FusesPlugin } = require('@electron-forge/plugin-fuses');
 const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 
 module.exports = {
-  packagerConfig: {
-    asar: true,
-    icon: 'assets/icon'
-  },
-  rebuildConfig: {},
-  makers: [
-    {
-      name: '@electron-forge/maker-squirrel',
-      config: {
-        name: "churchsuite-plan-viewer",
-        productName: "ChurchSuite Plan Viewer",
-        iconUrl: "https://raw.githubusercontent.com/hussra/churchsuite-plan-viewer/refs/heads/main/assets/icon.ico",
-        setupIcon: "./assets/icon.ico"
-      },
+    packagerConfig: {
+        asar: true,
+        icon: 'assets/icon'
     },
-    {
-      name: '@electron-forge/maker-zip',
-      platforms: ['darwin'],
-    },
-    {
-      name: '@electron-forge/maker-dmg',
-      config: (arch) => ({
-        background: './assets/background-DMG.png',
-        icon: './assets/icon.icns',
-        format: 'ULFO',
-        iconSize: 200,
-        contents: [
+    rebuildConfig: {},
+    makers: [
         {
-          x: 140,
-          y: 276,
-          type: "file",
-          path: `${process.cwd()}/out/ChurchSuite Plan Viewer-darwin-${arch}/ChurchSuite Plan Viewer.app`,
+            name: '@electron-forge/maker-squirrel',
+            config: {
+                name: "churchsuite-plan-viewer",
+                productName: "ChurchSuite Plan Viewer",
+                iconUrl: "https://raw.githubusercontent.com/hussra/churchsuite-plan-viewer/refs/heads/main/assets/icon.ico",
+                setupIcon: "./assets/icon.ico"
+            },
         },
-        { x: 518, y: 276, type: "link", path: "/Applications" },
-      ]
-      })
-    },
-    {
-      name: '@electron-forge/maker-deb',
-      config: {},
-    },
-    {
-      name: '@electron-forge/maker-rpm',
-      config: {},
-    },
-  ],
-  plugins: [
-    {
-      name: '@electron-forge/plugin-auto-unpack-natives',
-      config: {},
-    },
-    {
-      name: '@electron-forge/plugin-webpack',
-      config: {
-        mainConfig: './webpack.main.config.js',
-        renderer: {
-          config: './webpack.renderer.config.js',
-          entryPoints: [
-            {
-              html: './src/renderer/left/left.html',
-              js: './src/renderer/left/renderer-left.js',
-              name: 'left_pane',
-              preload: {
-                js: './src/renderer/left/preload-left.js',
-              },
+        {
+            name: '@electron-forge/maker-zip',
+            platforms: ['darwin'],
+        },
+        {
+            name: '@electron-forge/maker-dmg',
+            config: (arch) => ({
+                background: './assets/background-DMG.png',
+                icon: './assets/icon.icns',
+                format: 'ULFO',
+                iconSize: 200,
+                contents: [
+                    {
+                        x: 140,
+                        y: 276,
+                        type: "file",
+                        path: `${process.cwd()}/out/ChurchSuite Plan Viewer-darwin-${arch}/ChurchSuite Plan Viewer.app`,
+                    },
+                    { x: 518, y: 276, type: "link", path: "/Applications" },
+                ]
+            })
+        },
+        {
+            name: '@electron-forge/maker-deb',
+            config: {},
+        },
+        {
+            name: '@electron-forge/maker-rpm',
+            config: {},
+        },
+    ],
+    plugins: [
+        {
+            name: '@electron-forge/plugin-auto-unpack-natives',
+            config: {},
+        },
+        {
+            name: '@electron-forge/plugin-webpack',
+            config: {
+                mainConfig: './webpack.main.config.js',
+                renderer: {
+                    config: './webpack.renderer.config.js',
+                    entryPoints: [
+                        {
+                            html: './src/renderer/left/left.html',
+                            js: './src/renderer/left/renderer-left.js',
+                            name: 'left_pane',
+                            preload: {
+                                js: './src/renderer/left/preload-left.js',
+                            },
+                        },
+                        {
+                            html: './src/renderer/right/right.html',
+                            js: './src/renderer/right/renderer-right.js',
+                            name: 'right_pane',
+                            preload: {
+                                js: './src/renderer/right/preload-right.js',
+                            },
+                        },
+                        {
+                            html: './src/renderer/about/about.html',
+                            js: './src/renderer/about/renderer-about.js',
+                            name: 'about',
+                            preload: {
+                                js: './src/renderer/about/preload-about.js',
+                            },
+                        },
+                        {
+                            html: './src/renderer/editor/editor.html',
+                            js: './src/renderer/editor/renderer-editor.js',
+                            name: 'editor',
+                            preload: {
+                                js: './src/renderer/editor/preload-editor.js',
+                            },
+                        }
+                    ],
+                },
             },
-            {
-              html: './src/renderer/right/right.html',
-              js: './src/renderer/right/renderer-right.js',
-              name: 'right_pane',
-              preload: {
-                js: './src/renderer/right/preload-right.js',
-              },
-            },
-            {
-              html: './src/renderer/about/about.html',
-              js: './src/renderer/about/renderer-about.js',
-              name: 'about',
-              preload: {
-                js: './src/renderer/about/preload-about.js',
-              },
-            },
-            {
-              html: './src/renderer/editor/editor.html',
-              js: './src/renderer/editor/renderer-editor.js',
-              name: 'editor',
-              preload: {
-                js: './src/renderer/editor/preload-editor.js',
-              },
+        },
+        // Fuses are used to enable/disable various Electron functionality
+        // at package time, before code signing the application
+        new FusesPlugin({
+            version: FuseVersion.V1,
+            [FuseV1Options.RunAsNode]: false,
+            [FuseV1Options.EnableCookieEncryption]: true,
+            [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
+            [FuseV1Options.EnableNodeCliInspectArguments]: false,
+            [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
+            [FuseV1Options.OnlyLoadAppFromAsar]: true,
+        }),
+    ],
+    hooks: {
+        packageAfterCopy: async (_cfg, buildPath) => {
+            const source = path.resolve(
+                __dirname,
+                "node_modules/jsdom/lib/jsdom/browser/default-stylesheet.css"
+            );
+
+            const targetDir = path.join(buildPath, "..", "browser");
+            const targetFile = path.join(targetDir, "default-stylesheet.css");
+
+            if (!fs.existsSync(targetDir)) {
+                fs.mkdirSync(targetDir, { recursive: true });
             }
-          ],
-        },
-      },
-    },
-    // Fuses are used to enable/disable various Electron functionality
-    // at package time, before code signing the application
-    new FusesPlugin({
-      version: FuseVersion.V1,
-      [FuseV1Options.RunAsNode]: false,
-      [FuseV1Options.EnableCookieEncryption]: true,
-      [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
-      [FuseV1Options.EnableNodeCliInspectArguments]: false,
-      [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
-      [FuseV1Options.OnlyLoadAppFromAsar]: true,
-    }),
-  ],
-  hooks: {
-    packageAfterCopy: async (_cfg, buildPath) => {
-      const source = path.resolve(
-        __dirname,
-        "node_modules/jsdom/lib/jsdom/browser/default-stylesheet.css"
-      );
 
-      const targetDir = path.join(buildPath, "..", "browser");
-      const targetFile = path.join(targetDir, "default-stylesheet.css");
-
-      if (!fs.existsSync(targetDir)) {
-        fs.mkdirSync(targetDir, { recursive: true });
-      }
-
-      fs.copyFileSync(source, targetFile);
+            fs.copyFileSync(source, targetFile);
+        }
     }
-  }
 };

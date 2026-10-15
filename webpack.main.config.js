@@ -17,22 +17,22 @@
 const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
-  /**
-   * This is the main entry point for your application, it's the first file
-   * that runs in the main process.
-   */
-  entry: './src/main/main.js',
-  // Put your normal webpack config below here
-  module: {
-    rules: require('./webpack.rules'),
-  },
-  plugins: [
-    new CopyPlugin({
-      patterns: [
-        { from: "layouts", to: "layouts" },
-        { from: "src/main/html", to: "src/main/html" },
-      ],
-    }),
-  ],
-  externals: process.env["NODE_ENV"] === "production" ? {} : { jsdom: "jsdom" },
+    /**
+     * This is the main entry point for your application, it's the first file
+     * that runs in the main process.
+     */
+    entry: './src/main/main.js',
+    // Put your normal webpack config below here
+    module: {
+        rules: require('./webpack.rules'),
+    },
+    plugins: [
+        new CopyPlugin({
+            patterns: [
+                { from: "layouts", to: "layouts" },
+                { from: "src/main/html", to: "src/main/html" },
+            ],
+        }),
+    ],
+    externals: process.env["NODE_ENV"] === "production" ? {} : { jsdom: "jsdom" },
 };

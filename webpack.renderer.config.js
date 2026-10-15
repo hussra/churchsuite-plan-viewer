@@ -17,14 +17,14 @@
 const rules = require('./webpack.rules');
 
 rules.push(...[{
-  test: /\.css$/,
-  use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+    test: /\.css$/,
+    use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
 },
 { test: /\.(html)$/, use: ["html-loader"] }]);
 
 module.exports = {
-  // Put your normal webpack config below here
-  module: {
-    rules,
-  },
+    // Put your normal webpack config below here
+    module: {
+        rules,
+    },
 };
