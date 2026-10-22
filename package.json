@@ -65,5 +65,5 @@
     "resolutions": {
         "extract-zip": "npm:@electron-internal/extract-zip@1.0.3"
     },
-    "packageManager": "yarn@4.10.3"
+    "packageManager": "yarn@4.18.1"
 }
