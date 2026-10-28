@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 
+const path = require('path');
+const fs = require('fs');
 const { FusesPlugin } = require('@electron-forge/plugin-fuses');
 const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 
@@ -106,4 +108,21 @@ module.exports = {
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
   ],
+  hooks: {
+    packageAfterCopy: async (_cfg, buildPath) => {
+      const source = path.resolve(
+        __dirname,
+        "node_modules/jsdom/lib/jsdom/browser/default-stylesheet.css"
+      );
+
+      const targetDir = path.join(buildPath, "..", "browser");
+      const targetFile = path.join(targetDir, "default-stylesheet.css");
+
+      if (!fs.existsSync(targetDir)) {
+        fs.mkdirSync(targetDir, { recursive: true });
+      }
+
+      fs.copyFileSync(source, targetFile);
+    }
+  }
 };
