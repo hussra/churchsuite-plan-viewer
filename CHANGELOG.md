@@ -18,6 +18,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use ChurchSuite native sorting where available
 - Dependency updates
 
+## [v1.5.2] - 2026-10-28
+
+### Changed
+
+- Dependency updates, including Electron and Node
+
 ## [v1.5.1] - 2026-07-17
 
 ### Changed
@@ -152,7 +158,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial version of Companion Plan Viewer for the needs of Elmdon Church
 
-[Unreleased]: https://github.com/hussra/churchsuite-plan-viewer/compare/v1.5.1...HEAD
+[Unreleased]: https://github.com/hussra/churchsuite-plan-viewer/compare/v1.5.2...HEAD
+[v1.5.2]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.5.2
 [v1.5.1]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.5.1
 [v1.5.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.5.0
 [v1.4.0]: https://github.com/hussra/churchsuite-plan-viewer/releases/tag/v1.4.0
